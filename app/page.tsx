@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Brand } from "@/components/brand";
 import { RevealController } from "@/components/reveal-controller";
 import { SiteHeader } from "@/components/site-header";
+import { HomeHeroSlider } from "@/components/home-hero-slider";
 import { catalogue } from "@/lib/catalogue";
 
 const categories = [
@@ -125,68 +126,7 @@ export default function HomePage() {
       <SiteHeader />
 
       <main>
-        <section className="store-hero video-hero" aria-labelledby="hero-title">
-          <video
-            className="hero-background-video"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            poster="/images/workshop/stitching-video-poster.jpg"
-            aria-hidden="true"
-          >
-            <source
-              src="/videos/stitching/stitching-process.mp4"
-              type="video/mp4"
-            />
-          </video>
-
-          <div className="hero-video-overlay" aria-hidden="true" />
-
-          <div className="store-hero-copy reveal">
-            <p className="eyebrow">
-              <span />
-              Handcrafted in Sialkot · Established 1922
-            </p>
-
-            <h1 id="hero-title">
-              Ceremonial craft,
-              <br />
-              <strong>made by hand.</strong>
-            </h1>
-
-            <p className="store-hero-intro">
-              Goldwork, bullion embroidery, ceremonial regalia, badges,
-              crests and custom insignia made in our Sialkot workshop.
-            </p>
-
-            <div className="store-hero-actions">
-              <a
-                className="button button-gold"
-                href={catalogue.published ? catalogue.path : "#collections"}
-              >
-                {catalogue.published ? "View catalogue" : "Explore collection"}
-                <span aria-hidden="true">↗</span>
-              </a>
-
-              <a className="button button-outline-light" href="/sign-up">
-                Send an enquiry
-              </a>
-            </div>
-
-            <div className="store-hero-features" aria-label="Company highlights">
-              <span>Handmade</span>
-              <span>Made to order</span>
-              <span>Worldwide enquiries</span>
-            </div>
-          </div>
-
-          <a className="hero-video-scroll" href="#craft" aria-label="Explore our work">
-            <span>Explore our work</span>
-            <i aria-hidden="true" />
-          </a>
-        </section>
+        <HomeHeroSlider />
 
         <section className="commerce-section category-section" id="craft">
           <div className="commerce-heading reveal">
