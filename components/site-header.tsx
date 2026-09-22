@@ -1,17 +1,33 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Brand } from "@/components/brand";
 
 export function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const updateHeader = () => {
+      setScrolled(window.scrollY > 28);
+    };
+
+    updateHeader();
+    window.addEventListener("scroll", updateHeader, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", updateHeader);
+    };
+  }, []);
 
   function closeMenu() {
     setMenuOpen(false);
   }
 
   return (
-    <header className="site-header">
+    <header className={`site-header ${scrolled ? "is-scrolled" : ""}`}>
+      <div className="site-progress" aria-hidden="true" />
+
       <div className="header-inner">
         <Brand />
 
