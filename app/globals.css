@@ -3788,3 +3788,471 @@ h3 em {
     animation: none;
   }
 }
+
+
+/* =========================================================
+   SAMSUNG-INSPIRED CLEAN PRODUCT PRESENTATION
+   Original MM Rashid content and assets
+========================================================= */
+
+.commerce-home {
+  background: #ffffff;
+}
+
+.commerce-home h1,
+.commerce-home h2,
+.commerce-home h3,
+.commerce-home .product-copy h3,
+.commerce-home .collection-card-title h3,
+.commerce-home .category-tile-copy h3,
+.commerce-home .faq-list summary {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Hero carousel */
+.samsung-hero {
+  position: relative;
+  height: clamp(700px, 82vh, 900px);
+  min-height: 700px;
+  overflow: hidden;
+  background: #07152f;
+}
+
+.samsung-hero-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 720ms cubic-bezier(.2,.7,.2,1);
+  will-change: transform;
+}
+
+.samsung-hero-slide {
+  position: relative;
+  display: grid;
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  grid-template-columns: minmax(360px, .82fr) minmax(0, 1.18fr);
+  align-items: center;
+  gap: clamp(24px, 4vw, 70px);
+  padding: 126px clamp(30px, 7vw, 120px) 80px;
+  overflow: hidden;
+}
+
+.samsung-hero-blue {
+  background:
+    radial-gradient(circle at 76% 44%, rgba(47,103,196,.62), transparent 34%),
+    linear-gradient(120deg, #07152f 0%, #102d5d 100%);
+}
+
+.samsung-hero-navy {
+  background:
+    radial-gradient(circle at 78% 42%, rgba(142,97,18,.3), transparent 36%),
+    linear-gradient(120deg, #050b17 0%, #0b1d3b 100%);
+}
+
+.samsung-hero-indigo {
+  background:
+    radial-gradient(circle at 78% 42%, rgba(104,73,176,.34), transparent 36%),
+    linear-gradient(120deg, #091126 0%, #1f2550 100%);
+}
+
+.samsung-hero-copy {
+  position: relative;
+  z-index: 3;
+  max-width: 590px;
+  color: #fff;
+}
+
+.samsung-hero-copy > p {
+  margin: 0 0 18px;
+  color: rgba(255,255,255,.72);
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.samsung-hero-copy h1 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(3.5rem, 5.8vw, 6.4rem);
+  font-weight: 700;
+  letter-spacing: -.055em;
+  line-height: .95;
+}
+
+.samsung-hero-copy > span {
+  display: block;
+  max-width: 540px;
+  margin-top: 24px;
+  color: rgba(255,255,255,.78);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.samsung-hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 30px;
+}
+
+.samsung-text-action {
+  padding: 11px 2px 8px;
+  color: #fff;
+  border-bottom: 2px solid rgba(255,255,255,.8);
+  font-size: .79rem;
+  font-weight: 800;
+}
+
+.samsung-primary-action {
+  display: inline-flex;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  color: #111;
+  border-radius: 999px;
+  background: #fff;
+  font-size: .78rem;
+  font-weight: 800;
+  transition: transform 180ms ease, background 180ms ease;
+}
+
+.samsung-primary-action:hover {
+  background: #f2f2f2;
+  transform: translateY(-2px);
+}
+
+.samsung-hero-product {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: min(70vh, 650px);
+  min-height: 500px;
+}
+
+.samsung-hero-product img {
+  object-fit: contain;
+  object-position: center;
+  padding: clamp(18px, 2vw, 34px);
+  filter: drop-shadow(0 30px 55px rgba(0,0,0,.24));
+  transform: scale(.94);
+  transition: transform 900ms cubic-bezier(.2,.7,.2,1);
+}
+
+.samsung-hero-slide[aria-hidden="false"] .samsung-hero-product img {
+  transform: scale(1);
+}
+
+.samsung-hero-controls {
+  position: absolute;
+  z-index: 10;
+  right: 0;
+  bottom: 24px;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.samsung-arrow {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  padding: 0;
+  color: #fff;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,.35);
+  border-radius: 50%;
+  background: rgba(0,0,0,.16);
+}
+
+.samsung-dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  border-radius: 999px;
+  background: rgba(0,0,0,.18);
+  backdrop-filter: blur(10px);
+}
+
+.samsung-dots button {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  cursor: pointer;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,.42);
+  transition: width 220ms ease, background 220ms ease;
+}
+
+.samsung-dots button.is-active {
+  width: 24px;
+  border-radius: 999px;
+  background: #fff;
+}
+
+/* Samsung-like section rhythm */
+.commerce-section {
+  padding-top: clamp(82px, 8vw, 132px);
+  padding-bottom: clamp(82px, 8vw, 132px);
+}
+
+.commerce-heading {
+  max-width: 980px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 14px;
+  margin-right: auto;
+  margin-bottom: 48px;
+  margin-left: auto;
+  text-align: center;
+}
+
+.commerce-heading h2,
+.faq-intro h2 {
+  font-size: clamp(2.6rem, 4.3vw, 4.5rem);
+  font-weight: 700;
+  letter-spacing: -.045em;
+  line-height: 1;
+}
+
+.commerce-heading-copy {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.commerce-kicker {
+  color: #4d4d4d;
+  letter-spacing: .08em;
+}
+
+.commerce-view-all {
+  gap: 10px;
+  padding: 0;
+  color: #111;
+  border: 0;
+  font-size: .77rem;
+  letter-spacing: 0;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+
+.category-section,
+.collection-section,
+.workshop-store,
+.faq-section {
+  background: #fff;
+}
+
+.featured-section,
+.reasons-section {
+  background: #f7f7f7;
+}
+
+/* Large rounded Samsung-style content cards */
+.category-tile,
+.product-card,
+.collection-card {
+  overflow: hidden;
+  border: 0;
+  border-radius: 28px;
+}
+
+.category-tile {
+  min-height: 540px;
+  background: #111;
+}
+
+.category-tile-copy {
+  padding: 34px;
+}
+
+.category-tile-copy h3 {
+  font-weight: 700;
+  letter-spacing: -.025em;
+}
+
+.product-card,
+.collection-card {
+  background: #fff;
+  box-shadow: none;
+}
+
+.product-image,
+.collection-card-image {
+  background: #f1f3f6;
+}
+
+.product-image img,
+.collection-card-image img {
+  padding: 30px;
+}
+
+.product-badge {
+  color: #111;
+  border-radius: 999px;
+  background: #fff;
+}
+
+.product-copy h3,
+.collection-card-title h3 {
+  font-weight: 700;
+  letter-spacing: -.02em;
+}
+
+.product-link {
+  color: #111;
+  border-bottom: 1px solid #111;
+}
+
+.collection-promo {
+  margin: 0 clamp(18px, 3.5vw, 56px);
+  overflow: hidden;
+  border-radius: 32px;
+}
+
+.heritage-store {
+  margin: 0 clamp(18px, 3.5vw, 56px);
+  overflow: hidden;
+  border-radius: 32px;
+}
+
+.reason-card {
+  border-color: rgba(0,0,0,.12);
+}
+
+.reason-card h3 {
+  font-weight: 700;
+  letter-spacing: -.02em;
+}
+
+.faq-section {
+  grid-template-columns: .8fr 1.2fr;
+}
+
+.faq-intro h2 {
+  color: #111;
+}
+
+.faq-list summary {
+  color: #111;
+  font-weight: 700;
+  letter-spacing: -.015em;
+}
+
+/* More neutral Samsung-like CTA while retaining MM Rashid gold */
+.button-gold {
+  color: #111;
+  border: 0;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: none;
+}
+
+.contact-store .button-gold,
+.collection-promo .button-gold {
+  color: #111;
+  background: #fff;
+}
+
+.button-outline-light {
+  border-radius: 999px;
+}
+
+/* Keep the brand identity in accents, not everywhere */
+.commerce-home .commerce-kicker,
+.commerce-home .product-copy p,
+.commerce-home .product-badge {
+  text-transform: none;
+}
+
+@media (max-width: 1000px) {
+  .samsung-hero {
+    height: auto;
+    min-height: 820px;
+  }
+
+  .samsung-hero-slide {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(330px, 1fr);
+    gap: 20px;
+    padding: 120px 28px 72px;
+    text-align: center;
+  }
+
+  .samsung-hero-copy {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .samsung-hero-copy > span {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .samsung-hero-actions {
+    justify-content: center;
+  }
+
+  .samsung-hero-product {
+    height: 430px;
+    min-height: 0;
+  }
+}
+
+@media (max-width: 620px) {
+  .samsung-hero {
+    min-height: 760px;
+  }
+
+  .samsung-hero-slide {
+    padding: 108px 20px 70px;
+  }
+
+  .samsung-hero-copy h1 {
+    font-size: clamp(2.8rem, 12vw, 4.2rem);
+  }
+
+  .samsung-hero-copy > p {
+    font-size: .62rem;
+  }
+
+  .samsung-hero-copy > span {
+    margin-top: 18px;
+    font-size: .92rem;
+  }
+
+  .samsung-hero-actions {
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 24px;
+  }
+
+  .samsung-hero-product {
+    height: 340px;
+  }
+
+  .samsung-hero-controls {
+    bottom: 16px;
+  }
+
+  .commerce-heading {
+    align-items: center;
+    text-align: center;
+  }
+
+  .collection-promo,
+  .heritage-store {
+    margin-right: 12px;
+    margin-left: 12px;
+    border-radius: 22px;
+  }
+}
