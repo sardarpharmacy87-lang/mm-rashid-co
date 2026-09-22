@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 const slides = [
   {
@@ -30,100 +31,199 @@ const slides = [
   },
 ];
 
+const slideVariants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? "8%" : "-8%",
+    opacity: 0,
+    scale: 0.985,
+  }),
+  center: {
+    x: "0%",
+    opacity: 1,
+    scale: 1,
+  },
+  exit: (direction: number) => ({
+    x: direction > 0 ? "-5%" : "5%",
+    opacity: 0,
+    scale: 1.01,
+  }),
+};
+
+const copyVariants = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.075,
+      delayChildren: 0.12,
+    },
+  },
+};
+
+const copyItemVariants = {
+  hidden: { opacity: 0, y: 22 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring" as const,
+      stiffness: 155,
+      damping: 22,
+      mass: 0.8,
+    },
+  },
+};
+
 export function HomeHeroSlider() {
   const [active, setActive] = useState(0);
+  const [direction, setDirection] = useState(1);
   const [paused, setPaused] = useState(false);
+  const reduceMotion = useReducedMotion();
+
+  const paginate = useCallback((step: number) => {
+    setDirection(step >= 0 ? 1 : -1);
+    setActive((current) => (current + step + slides.length) % slides.length);
+  }, []);
+
+  const goTo = useCallback((index: number) => {
+    setDirection(index >= active ? 1 : -1);
+    setActive((index + slides.length) % slides.length);
+  }, [active]);
 
   useEffect(() => {
-    if (paused) return;
+    if (paused || reduceMotion) return;
 
     const timer = window.setInterval(() => {
-      setActive((current) => (current + 1) % slides.length);
+      paginate(1);
     }, 6500);
 
     return () => window.clearInterval(timer);
-  }, [paused]);
+  }, [paused, reduceMotion, paginate]);
 
-  function goTo(index: number) {
-    setActive((index + slides.length) % slides.length);
-  }
+  const slide = slides[active];
 
   return (
     <section
-      className="samsung-hero"
+      className="samsung-hero motion-hero"
       aria-label="MM Rashid featured work"
       onPointerEnter={() => setPaused(true)}
       onPointerLeave={() => setPaused(false)}
     >
-      <div
-        className="samsung-hero-track"
-        style={{ transform: `translateX(-${active * 100}%)` }}
-      >
-        {slides.map((slide, index) => (
-          <article
+      <div className="motion-hero-stage">
+        <AnimatePresence initial={false} custom={direction} mode="popLayout">
+          <motion.article
             className={`samsung-hero-slide samsung-hero-${slide.tone}`}
-            aria-hidden={active !== index}
             key={slide.title}
+            custom={direction}
+            variants={slideVariants}
+            initial={reduceMotion ? false : "enter"}
+            animate="center"
+            exit={reduceMotion ? undefined : "exit"}
+            transition={{
+              x: { type: "spring", stiffness: 115, damping: 24, mass: 0.9 },
+              opacity: { duration: 0.38 },
+              scale: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
+            }}
+            drag={reduceMotion ? false : "x"}
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.16}
+            onDragEnd={(_, info) => {
+              const swipe = Math.abs(info.offset.x) * info.velocity.x;
+              if (swipe < -6500 || info.offset.x < -85) paginate(1);
+              if (swipe > 6500 || info.offset.x > 85) paginate(-1);
+            }}
           >
-            <div className="samsung-hero-copy">
-              <p>{slide.eyebrow}</p>
-              <h1>{slide.title}</h1>
-              <span>{slide.body}</span>
+            <motion.div
+              className="samsung-hero-copy"
+              variants={copyVariants}
+              initial={reduceMotion ? false : "hidden"}
+              animate="show"
+            >
+              <motion.p variants={copyItemVariants}>{slide.eyebrow}</motion.p>
+              <motion.h1 variants={copyItemVariants}>{slide.title}</motion.h1>
+              <motion.span variants={copyItemVariants}>{slide.body}</motion.span>
 
-              <div className="samsung-hero-actions">
-                <a className="samsung-text-action" href="#gallery">
+              <motion.div
+                className="samsung-hero-actions"
+                variants={copyItemVariants}
+              >
+                <motion.a
+                  className="samsung-text-action"
+                  href="#gallery"
+                  whileHover={reduceMotion ? undefined : { y: -2 }}
+                  whileTap={reduceMotion ? undefined : { scale: 0.98 }}
+                >
                   View work
-                </a>
-                <a className="samsung-primary-action" href="/sign-up">
-                  Send enquiry
-                </a>
-              </div>
-            </div>
+                </motion.a>
 
-            <div className="samsung-hero-product">
+                <motion.a
+                  className="samsung-primary-action"
+                  href="/sign-up"
+                  whileHover={reduceMotion ? undefined : { y: -3, scale: 1.025 }}
+                  whileTap={reduceMotion ? undefined : { scale: 0.97 }}
+                  transition={{ type: "spring", stiffness: 360, damping: 24 }}
+                >
+                  Send enquiry
+                </motion.a>
+              </motion.div>
+            </motion.div>
+
+            <motion.div
+              className="samsung-hero-product"
+              initial={reduceMotion ? false : { opacity: 0, scale: 0.88, y: 30 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{
+                type: "spring",
+                stiffness: 95,
+                damping: 20,
+                mass: 1,
+                delay: reduceMotion ? 0 : 0.08,
+              }}
+            >
               <Image
                 src={slide.image}
                 alt={slide.imageAlt}
                 fill
-                priority={index === 0}
+                priority={active === 0}
                 sizes="(max-width: 900px) 100vw, 58vw"
               />
-            </div>
-          </article>
-        ))}
+            </motion.div>
+          </motion.article>
+        </AnimatePresence>
       </div>
 
       <div className="samsung-hero-controls" aria-label="Hero slides">
-        <button
+        <motion.button
           type="button"
           className="samsung-arrow"
-          onClick={() => goTo(active - 1)}
+          onClick={() => paginate(-1)}
           aria-label="Previous slide"
+          whileTap={reduceMotion ? undefined : { scale: 0.9 }}
         >
           ←
-        </button>
+        </motion.button>
 
         <div className="samsung-dots">
-          {slides.map((slide, index) => (
+          {slides.map((item, index) => (
             <button
               type="button"
               className={index === active ? "is-active" : ""}
-              aria-label={`Show ${slide.title}`}
+              aria-label={`Show ${item.title}`}
               aria-current={index === active ? "true" : undefined}
               onClick={() => goTo(index)}
-              key={slide.title}
+              key={item.title}
             />
           ))}
         </div>
 
-        <button
+        <motion.button
           type="button"
           className="samsung-arrow"
-          onClick={() => goTo(active + 1)}
+          onClick={() => paginate(1)}
           aria-label="Next slide"
+          whileTap={reduceMotion ? undefined : { scale: 0.9 }}
         >
           →
-        </button>
+        </motion.button>
       </div>
     </section>
   );
