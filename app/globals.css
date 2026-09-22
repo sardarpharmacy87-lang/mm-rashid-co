@@ -3605,3 +3605,186 @@ h3 em {
     border-right: 1px solid var(--human-rule);
   }
 }
+
+
+/* =========================================================
+   FULL-SCREEN VIDEO HERO
+========================================================= */
+
+.video-hero {
+  position: relative;
+  display: flex;
+  min-height: 100svh;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 150px var(--page-padding) 88px;
+  background: #020b1d;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hero-background-video {
+  position: absolute;
+  z-index: -3;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: center;
+  background: #020b1d;
+}
+
+.hero-video-overlay {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(2, 11, 29, 0.9) 0%,
+      rgba(2, 11, 29, 0.72) 34%,
+      rgba(2, 11, 29, 0.34) 65%,
+      rgba(2, 11, 29, 0.18) 100%
+    ),
+    linear-gradient(
+      to top,
+      rgba(2, 11, 29, 0.66) 0%,
+      transparent 45%
+    );
+  pointer-events: none;
+}
+
+.video-hero::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background:
+    linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.028) 1px, transparent 1px);
+  background-size: 34px 34px;
+  content: "";
+  opacity: 0.52;
+  mask-image: linear-gradient(to right, black, transparent 72%);
+  pointer-events: none;
+}
+
+.video-hero .store-hero-copy {
+  position: relative;
+  z-index: 2;
+  max-width: 760px;
+}
+
+.video-hero .store-hero-intro {
+  max-width: 610px;
+}
+
+.hero-video-scroll {
+  position: absolute;
+  z-index: 3;
+  right: var(--page-padding);
+  bottom: 34px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: rgba(255,255,255,.72);
+  font-size: .6rem;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.hero-video-scroll i {
+  position: relative;
+  display: block;
+  width: 74px;
+  height: 1px;
+  overflow: hidden;
+  background: rgba(255,255,255,.22);
+}
+
+.hero-video-scroll i::after {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 38%;
+  background: var(--gold-500);
+  content: "";
+  animation: heroVideoScrollCue 2.3s ease-in-out infinite;
+}
+
+@keyframes heroVideoScrollCue {
+  0% {
+    transform: translateX(-120%);
+  }
+  55%,
+  100% {
+    transform: translateX(300%);
+  }
+}
+
+@media (max-width: 900px) {
+  .video-hero {
+    min-height: 100svh;
+    padding: 128px 22px 82px;
+  }
+
+  .hero-background-video {
+    object-position: center center;
+  }
+
+  .hero-video-overlay {
+    background:
+      linear-gradient(
+        to right,
+        rgba(2,11,29,.88),
+        rgba(2,11,29,.52)
+      ),
+      linear-gradient(
+        to top,
+        rgba(2,11,29,.8),
+        transparent 56%
+      );
+  }
+
+  .hero-video-scroll {
+    right: 22px;
+    bottom: 24px;
+  }
+}
+
+@media (max-width: 620px) {
+  .video-hero {
+    align-items: flex-end;
+    padding-bottom: 104px;
+  }
+
+  .video-hero .store-hero-copy {
+    width: 100%;
+  }
+
+  .video-hero .store-hero-intro {
+    font-size: .98rem;
+    line-height: 1.72;
+  }
+
+  .hero-video-scroll {
+    right: auto;
+    left: 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-background-video {
+    display: none;
+  }
+
+  .video-hero {
+    background:
+      linear-gradient(rgba(2,11,29,.7), rgba(2,11,29,.7)),
+      url("/images/workshop/stitching-video-poster.jpg") center / cover no-repeat;
+  }
+
+  .hero-video-scroll i::after {
+    animation: none;
+  }
+}
