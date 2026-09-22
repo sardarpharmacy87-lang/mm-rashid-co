@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { Brand } from "@/components/brand";
-import { InteractiveEmblem } from "@/components/interactive-emblem";
 import { RevealController } from "@/components/reveal-controller";
 import { SiteHeader } from "@/components/site-header";
 import { catalogue } from "@/lib/catalogue";
@@ -126,7 +125,25 @@ export default function HomePage() {
       <SiteHeader />
 
       <main>
-        <section className="store-hero" aria-labelledby="hero-title">
+        <section className="store-hero video-hero" aria-labelledby="hero-title">
+          <video
+            className="hero-background-video"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            poster="/images/workshop/stitching-video-poster.jpg"
+            aria-hidden="true"
+          >
+            <source
+              src="/videos/stitching/stitching-process.mp4"
+              type="video/mp4"
+            />
+          </video>
+
+          <div className="hero-video-overlay" aria-hidden="true" />
+
           <div className="store-hero-copy reveal">
             <p className="eyebrow">
               <span />
@@ -136,13 +153,12 @@ export default function HomePage() {
             <h1 id="hero-title">
               Ceremonial craft,
               <br />
-              <strong>made to distinguish.</strong>
+              <strong>made by hand.</strong>
             </h1>
 
             <p className="store-hero-intro">
               Goldwork, bullion embroidery, ceremonial regalia, badges,
-              crests and custom insignia made for institutions, uniform
-              makers and private commissions.
+              crests and custom insignia made in our Sialkot workshop.
             </p>
 
             <div className="store-hero-actions">
@@ -155,24 +171,21 @@ export default function HomePage() {
               </a>
 
               <a className="button button-outline-light" href="/sign-up">
-                Start a custom enquiry
+                Send an enquiry
               </a>
             </div>
 
             <div className="store-hero-features" aria-label="Company highlights">
               <span>Handmade</span>
-              <span>Custom orders</span>
+              <span>Made to order</span>
               <span>Worldwide enquiries</span>
             </div>
           </div>
 
-          <div className="store-hero-visual reveal delay-one">
-            <InteractiveEmblem />
-            <div className="store-hero-caption">
-              <span>MM Rashid &amp; Co.</span>
-              <strong>Goldwork · Bullion · Regalia</strong>
-            </div>
-          </div>
+          <a className="hero-video-scroll" href="#craft" aria-label="Explore our work">
+            <span>Explore our work</span>
+            <i aria-hidden="true" />
+          </a>
         </section>
 
         <section className="commerce-section category-section" id="craft">
