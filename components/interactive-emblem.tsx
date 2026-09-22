@@ -11,7 +11,7 @@ export function InteractiveEmblem() {
   ) {
     const emblem = emblemRef.current;
 
-    if (!emblem) {
+    if (!emblem || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       return;
     }
 
@@ -54,7 +54,7 @@ export function InteractiveEmblem() {
 
       <div ref={emblemRef} className="emblem-image">
         <Image
-          src="/mm-rashid-logo.jpg"
+          src="/mm-rashid-logo.png"
           alt="MM Rashid and Company official emblem"
           width={720}
           height={720}

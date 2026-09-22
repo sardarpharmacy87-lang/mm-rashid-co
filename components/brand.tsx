@@ -14,7 +14,7 @@ export function Brand({ footer = false }: BrandProps) {
     >
       <span className="brand-logo">
         <Image
-          src="/mm-rashid-logo.jpg"
+          src="/mm-rashid-logo.png"
           alt="MM Rashid and Company logo"
           width={58}
           height={58}

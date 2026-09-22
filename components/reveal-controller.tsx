@@ -32,11 +32,16 @@ export function RevealController() {
     );
 
     elements.forEach((element) => {
+      // Content stays readable without JavaScript. Animate only below the fold.
+      if (element.getBoundingClientRect().top >= window.innerHeight) {
+        element.classList.add("reveal-pending");
+      }
       observer.observe(element);
     });
 
     return () => {
       observer.disconnect();
+      elements.forEach((element) => element.classList.remove("reveal-pending"));
     };
   }, []);
 

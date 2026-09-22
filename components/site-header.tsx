@@ -18,7 +18,7 @@ export function SiteHeader() {
         <button
           className="menu-button"
           type="button"
-          aria-label="Open navigation menu"
+          aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
           aria-expanded={menuOpen}
           aria-controls="main-navigation"
           onClick={() => setMenuOpen((current) => !current)}
@@ -51,6 +51,10 @@ export function SiteHeader() {
 
           <a href="#process" onClick={closeMenu}>
             Process
+          </a>
+
+          <a href="#catalogue" onClick={closeMenu}>
+            Catalogue
           </a>
 
           <a href="/sign-in" onClick={closeMenu}>

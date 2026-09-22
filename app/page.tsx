@@ -1,7 +1,9 @@
 import Image from "next/image";
 import { Brand } from "@/components/brand";
+import { InteractiveEmblem } from "@/components/interactive-emblem";
 import { RevealController } from "@/components/reveal-controller";
 import { SiteHeader } from "@/components/site-header";
+import { catalogue } from "@/lib/catalogue";
 
 const craftItems = [
   {
@@ -147,26 +149,26 @@ export default function HomePage() {
           <div className="hero-grid-lines" aria-hidden="true" />
 
           <div className="hero-copy reveal">
-            <p className="eyebrow hero-kicker">
+            <p className="eyebrow">
               <span />
-              Sialkot · Pakistan · Since generations
+              Handcrafted symbols of distinction
             </p>
 
             <h1 id="hero-title">
-              Symbols of
-              <br /> distinction,
+              Excellence,
               <br />
-              <strong>made by hand.</strong>
+              <strong>stitched by hand.</strong>
             </h1>
 
             <p className="hero-intro">
-              Goldwork, bullion embroidery and ceremonial regalia for
-              institutions, uniform makers and private commissions worldwide.
+              From intricate bullion embroidery to ceremonial regalia,
+              every piece is individually crafted with skill, precision
+              and respect for tradition.
             </p>
 
             <div className="hero-actions">
-              <a className="button button-gold" href="#gallery">
-                View selected work
+              <a className="button button-gold" href="#craft">
+                Explore our craft
                 <span aria-hidden="true">↗</span>
               </a>
 
@@ -197,25 +199,7 @@ export default function HomePage() {
             </dl>
           </div>
 
-          <div className="hero-art reveal delay-one">
-            <div className="hero-art-frame">
-              <Image
-                src="/images/gallery/goldwork-leaf-detail.webp"
-                alt="Close-up of hand formed gold bullion embroidery"
-                fill
-                priority
-                sizes="(max-width: 900px) 100vw, 48vw"
-              />
-            </div>
-            <div className="hero-art-caption">
-              <span>01 / The artisan&apos;s hand</span>
-              <strong>Goldwork in close detail</strong>
-            </div>
-            <div className="hero-seal" aria-label="Made by hand in Sialkot">
-              <span>MMR</span>
-              <small>Made in Sialkot</small>
-            </div>
-          </div>
+          <InteractiveEmblem />
 
           <a
             className="scroll-cue"
@@ -227,132 +211,92 @@ export default function HomePage() {
           </a>
         </section>
 
-        <div className="atelier-ribbon" aria-label="Our specialities">
-          <span>Goldwork</span><i />
-          <span>Bullion embroidery</span><i />
-          <span>Ceremonial regalia</span><i />
-          <span>Custom insignia</span><i />
-          <span>Handmade in Sialkot</span>
-        </div>
-
         {/* =====================================================
-            HERITAGE SECTION
-        ===================================================== */}
+    HERITAGE SECTION
+===================================================== */}
 
-        <section
-          className="heritage section"
-          id="heritage"
-          aria-labelledby="heritage-title"
-        >
-          <div className="heritage-heading reveal">
-            <p className="eyebrow">
-              <span />
-              The house of MM Rashid &amp; Co.
-            </p>
+<section
+  className="heritage section"
+  id="heritage"
+  aria-labelledby="heritage-title"
+>
+  <div className="heritage-heading reveal">
+    <p className="eyebrow">
+      <span />
+      The heritage of MM Rashid &amp; Co.
+    </p>
 
-            <h2 id="heritage-title">
-              Where skilled hands
-              <br />
-              give metal <strong>a soul.</strong>
-            </h2>
-          </div>
+    <h2 id="heritage-title">
+      A tradition of craftsmanship
+      <br />
+      established in <strong>1922.</strong>
+    </h2>
+  </div>
 
-          <div className="heritage-body reveal delay-one">
-            <p className="dropcap">
-              From Commissioner Road in Sialkot, our artisans transform
-              bullion wire, purl, sequins and fine threads into work
-              designed to carry meaning for generations.
-            </p>
+  <div className="heritage-body reveal delay-one">
+    <h3>Heritage of Craftsmanship — Sialkot, Circa 1965</h3>
 
-            <p>
-              Each commission begins with proportion and symbolism.
-              Every raised line, polished edge and stitch is considered
-              because ceremonial work is not decoration alone. It
-              represents identity, history and honour made visible.
-            </p>
+    <p className="dropcap">
+      This original historical photograph, taken around 1965 at
+      Muhammad Pura, Commissioner Road, Sialkot, captures the early
+      workshop of MM Rashid &amp; Co., a family business established
+      in 1922.
+    </p>
 
-            <a className="text-link" href="#process">
-              See how we work
-              <span aria-hidden="true">→</span>
-            </a>
-          </div>
+    <p>
+      Muhammad Rashid, the founder of the company, is standing on the
+      left wearing a brown waistcoat. His father, Muhammad Hakim Deen,
+      is seated on the left in a grey coat. Muhammad Rashid&apos;s son,
+      Muhammad Rafique, can be seen among the seated craftsmen toward
+      the left, carefully working on hand embroidery.
+    </p>
 
-          <figure className="heritage-image reveal delay-two">
-            <Image
-              src="/images/heritage/mm-rashid-history.jpeg"
-              alt="Historic MM Rashid and Company embroidery workshop in Sialkot"
-              width={1200}
-              height={900}
-              sizes="(max-width: 900px) 100vw, 50vw"
-            />
+    <p>
+      The artisans are embroidering velvet slipper uppers using
+      traditional techniques passed down through generations. Behind
+      them are display boards featuring handcrafted blazer badges and
+      other examples of the workshop&apos;s embroidery.
+    </p>
 
-            <figcaption>
-              A tradition of skilled embroidery from Sialkot
-            </figcaption>
-          </figure>
+    <p>
+      More than a workshop scene, this photograph preserves an
+      important chapter in the company&apos;s history. It shows the
+      people, skills and family tradition that helped establish
+      MM Rashid &amp; Co. as a respected name in Sialkot&apos;s
+      embroidery industry.
+    </p>
 
-          <div className="gold-rule" aria-hidden="true" />
-        </section>
+    <a className="text-link" href="#process">
+      See how we work
+      <span aria-hidden="true">→</span>
+    </a>
+  </div>
 
-        {/* =====================================================
-            CRAFT SECTION
-        ===================================================== */}
+  <figure className="heritage-image reveal delay-two">
+    <Image
+      src="/images/heritage/mm-rashid-history.jpeg"
+      alt="Historical photograph of the MM Rashid and Company workshop in Sialkot around 1965, showing Muhammad Rashid, Muhammad Hakim Deen, Muhammad Rafique and artisans embroidering velvet slipper uppers"
+      width={1200}
+      height={900}
+      sizes="(max-width: 850px) 100vw, 86vw"
+    />
 
-        <section
-          className="craft section"
-          id="craft"
-          aria-labelledby="craft-title"
-        >
-          <div className="section-head reveal">
-            <div>
-              <p className="eyebrow">
-                <span />
-                Our specialities
-              </p>
+    <figcaption>
+      <strong>MM Rashid &amp; Co. workshop, circa 1965.</strong>
+      <span>
+        Muhammad Pura, Commissioner Road, Sialkot. Founder Muhammad
+        Rashid stands on the left, accompanied by his father,
+        Muhammad Hakim Deen, and his son, Muhammad Rafique.
+      </span>
+      <small>
+        Original historical photograph, digitally restored and
+        colourised.
+      </small>
+    </figcaption>
+  </figure>
 
-              <h2 id="craft-title">
-                Made for moments
-                <br />
-                that <strong>matter.</strong>
-              </h2>
-            </div>
-
-            <p>
-              Bespoke hand embroidery for ceremonial, military,
-              fraternal and institutional use.
-            </p>
-          </div>
-
-          <div className="craft-grid">
-            {craftItems.map((item, index) => (
-              <article
-                className={`craft-card reveal delay-${
-                  (index % 3) + 1
-                }`}
-                tabIndex={0}
-                key={item.title}
-              >
-                <div
-                  className="card-medallion"
-                  aria-hidden="true"
-                >
-                  {item.mark}
-                </div>
-
-                <h3>{item.title}</h3>
-
-                <p>{item.description}</p>
-
-                <span
-                  className="card-arrow"
-                  aria-hidden="true"
-                >
-                  ↗
-                </span>
-              </article>
-            ))}
-          </div>
-        </section>
+  <div className="gold-rule" aria-hidden="true" />
+</section>
 
         {/* =====================================================
             WORKSHOP VIDEO
@@ -400,6 +344,25 @@ export default function HomePage() {
               <span>Workshop film</span>
               <strong>Hand stitching in Sialkot</strong>
             </div>
+          </div>
+        </section>
+
+        <section className="craft section" id="craft" aria-labelledby="craft-title">
+          <div className="section-head reveal">
+            <div>
+              <p className="eyebrow"><span />Our craft</p>
+              <h2 id="craft-title">Made with care.<br /><strong>Made to distinguish.</strong></h2>
+            </div>
+            <p>Explore our hand embroidery and ceremonial work, made to your design and specifications.</p>
+          </div>
+          <div className="craft-grid">
+            {craftItems.map((item) => (
+              <article className="craft-card reveal" key={item.title}>
+                <span className="card-medallion" aria-hidden="true">{item.mark}</span>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </article>
+            ))}
           </div>
         </section>
 
@@ -455,6 +418,22 @@ export default function HomePage() {
                 </div>
               </article>
             ))}
+          </div>
+        </section>
+
+        <section className="catalogue section" id="catalogue" aria-labelledby="catalogue-title">
+          <div className="section-head reveal">
+            <div>
+              <p className="eyebrow"><span />The collection</p>
+              <h2 id="catalogue-title">Find your next<br /><strong>signature piece.</strong></h2>
+            </div>
+            <div>
+              <p>Browse our selected work or contact us for the catalogue and details of a custom commission.</p>
+              <a className="button button-gold" href={catalogue.published ? catalogue.path : "#contact"}>
+                {catalogue.published ? "View catalogue (PDF)" : "Request our catalogue"}
+                <span aria-hidden="true">↗</span>
+              </a>
+            </div>
           </div>
         </section>
 
