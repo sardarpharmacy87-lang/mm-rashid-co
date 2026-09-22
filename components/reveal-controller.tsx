@@ -10,7 +10,14 @@ export function RevealController() {
     const heritageImage = document.querySelector<HTMLElement>(".heritage-image");
     const workshopVideo = document.querySelector<HTMLElement>(".workshop-video");
     const contactGlow = document.querySelector<HTMLElement>(".contact-glow");
+    const magneticItems = Array.from(
+      document.querySelectorAll<HTMLElement>(".button-gold, .header-enquiry"),
+    );
+    const tiltItems = Array.from(
+      document.querySelectorAll<HTMLElement>(".gallery-card, .craft-card"),
+    );
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const finePointer = window.matchMedia("(pointer: fine)").matches;
 
     root.classList.add("motion-ready");
 
@@ -44,6 +51,13 @@ export function RevealController() {
       const updateScrollMotion = () => {
         frame = 0;
         const viewportHeight = window.innerHeight;
+        const maxScroll = Math.max(
+          1,
+          document.documentElement.scrollHeight - viewportHeight,
+        );
+        const pageProgress = Math.min(1, Math.max(0, window.scrollY / maxScroll));
+
+        root.style.setProperty("--page-progress", pageProgress.toString());
 
         if (heritageImage) {
           const rect = heritageImage.getBoundingClientRect();
@@ -61,7 +75,10 @@ export function RevealController() {
 
         if (contactGlow) {
           const rect = contactGlow.getBoundingClientRect();
-          const offset = Math.max(-35, Math.min(35, (viewportHeight - rect.top) * 0.035));
+          const offset = Math.max(
+            -35,
+            Math.min(35, (viewportHeight - rect.top) * 0.035),
+          );
           contactGlow.style.setProperty("--glow-shift", `${offset}px`);
         }
       };
@@ -85,7 +102,50 @@ export function RevealController() {
         hero?.style.setProperty("--hero-pointer-y", "0px");
       };
 
+      const magneticHandlers = magneticItems.map((item) => {
+        const move = (event: PointerEvent) => {
+          const rect = item.getBoundingClientRect();
+          const x = event.clientX - (rect.left + rect.width / 2);
+          const y = event.clientY - (rect.top + rect.height / 2);
+          item.style.setProperty("--magnetic-x", `${x * 0.12}px`);
+          item.style.setProperty("--magnetic-y", `${y * 0.12}px`);
+        };
+
+        const leave = () => {
+          item.style.setProperty("--magnetic-x", "0px");
+          item.style.setProperty("--magnetic-y", "0px");
+        };
+
+        item.addEventListener("pointermove", move);
+        item.addEventListener("pointerleave", leave);
+
+        return { item, move, leave };
+      });
+
+      const tiltHandlers = finePointer
+        ? tiltItems.map((item) => {
+            const move = (event: PointerEvent) => {
+              const rect = item.getBoundingClientRect();
+              const x = (event.clientX - rect.left) / rect.width - 0.5;
+              const y = (event.clientY - rect.top) / rect.height - 0.5;
+              item.style.setProperty("--tilt-x", `${x * 5}deg`);
+              item.style.setProperty("--tilt-y", `${y * -5}deg`);
+            };
+
+            const leave = () => {
+              item.style.setProperty("--tilt-x", "0deg");
+              item.style.setProperty("--tilt-y", "0deg");
+            };
+
+            item.addEventListener("pointermove", move);
+            item.addEventListener("pointerleave", leave);
+
+            return { item, move, leave };
+          })
+        : [];
+
       window.addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener("resize", onScroll, { passive: true });
       hero?.addEventListener("pointermove", onHeroMove);
       hero?.addEventListener("pointerleave", resetHero);
       updateScrollMotion();
@@ -93,8 +153,20 @@ export function RevealController() {
       return () => {
         observer.disconnect();
         window.removeEventListener("scroll", onScroll);
+        window.removeEventListener("resize", onScroll);
         hero?.removeEventListener("pointermove", onHeroMove);
         hero?.removeEventListener("pointerleave", resetHero);
+
+        magneticHandlers.forEach(({ item, move, leave }) => {
+          item.removeEventListener("pointermove", move);
+          item.removeEventListener("pointerleave", leave);
+        });
+
+        tiltHandlers.forEach(({ item, move, leave }) => {
+          item.removeEventListener("pointermove", move);
+          item.removeEventListener("pointerleave", leave);
+        });
+
         if (frame) window.cancelAnimationFrame(frame);
         elements.forEach((element) => element.classList.remove("reveal-pending"));
         root.classList.remove("motion-ready");
