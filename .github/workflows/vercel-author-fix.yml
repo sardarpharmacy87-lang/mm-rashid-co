@@ -1,0 +1,29 @@
+name: Publish current main with verified project author
+
+on:
+  push:
+    paths:
+      - ".github/workflows/vercel-author-fix.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  republish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out current main
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Republish as project owner
+        shell: bash
+        run: |
+          git config user.name "sardarpharmacy87-lang"
+          git config user.email "sardarpharmacy87@gmail.com"
+          rm -f .github/workflows/vercel-author-fix.yml
+          git add -A
+          git commit -m "Publish stitching reels to production"
+          git push origin HEAD:main
