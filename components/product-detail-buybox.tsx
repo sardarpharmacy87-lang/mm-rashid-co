@@ -72,11 +72,11 @@ export function ProductDetailBuybox({
             })
           }
         >
-          Add to quotation basket
+          Add to commission brief
         </button>
       </div>
 
-      <Link className="buybox-cart-link" href="/cart">Open quotation basket →</Link>
+      <Link className="buybox-cart-link" href="/cart">Open commission brief →</Link>
 
       <div className="buybox-notes">
         <span>✓ Custom artwork accepted</span>
