@@ -60,11 +60,35 @@ function parseVariants(value: string) {
     }>;
 }
 
+function storagePathFromUrl(url: string) {
+  const marker = "/storage/v1/object/public/product-images/";
+  const index = url.indexOf(marker);
+  if (index < 0) return null;
+  return decodeURIComponent(url.slice(index + marker.length).split("?")[0]);
+}
+
+async function removeManagedImages(urls: string[]) {
+  const paths = Array.from(
+    new Set(urls.map(storagePathFromUrl).filter((value): value is string => Boolean(value))),
+  );
+  if (!paths.length) return;
+
+  const supabase = await createClient();
+  await supabase.storage.from("product-images").remove(paths);
+}
+
 async function collectImages(formData: FormData, existing: string[]) {
   const supabase = await createClient();
-  const urls = existing.filter(Boolean);
+  const urls = Array.from(new Set(existing.filter(Boolean)));
+  const files = formData
+    .getAll("images")
+    .filter((entry): entry is File => entry instanceof File && entry.size > 0);
 
-  for (const entry of formData.getAll("images")) {
+  if (urls.length + files.length > 5) {
+    throw new Error("A product can have a maximum of five images in total.");
+  }
+
+  for (const entry of files) {
     if (!(entry instanceof File) || entry.size === 0) continue;
     if (entry.size > 5 * 1024 * 1024) throw new Error("Each image must be 5MB or smaller.");
     if (!["image/jpeg", "image/png", "image/webp"].includes(entry.type)) {
@@ -223,9 +247,16 @@ export async function updateProduct(formData: FormData) {
       .split("\n")
       .map((value) => value.trim())
       .filter(Boolean);
+    const supabase = await createClient();
+    const { data: currentProduct } = await supabase
+      .from("products")
+      .select("images")
+      .eq("id", productId)
+      .maybeSingle();
+
+    const previousImages = (currentProduct?.images ?? []) as string[];
     const images = await collectImages(formData, existingImages);
     const payload = productPayload(formData, images);
-    const supabase = await createClient();
 
     const { error } = await supabase.from("products").update(payload).eq("id", productId);
     if (error) {
@@ -242,6 +273,9 @@ export async function updateProduct(formData: FormData) {
         redirect("/admin/products/" + productId + "?error=" + encodeURIComponent(variantError.message));
       }
     }
+
+    const removedImages = previousImages.filter((url) => !images.includes(url));
+    await removeManagedImages(removedImages);
 
     revalidatePath("/");
     revalidatePath("/products");
@@ -261,9 +295,19 @@ export async function updateProduct(formData: FormData) {
 export async function deleteProduct(formData: FormData) {
   await requireAdmin();
   const productId = textValue(formData, "productId");
+  if (!productId) redirect("/admin/products?error=Product%20not%20found");
+
   const supabase = await createClient();
+  const { data: product } = await supabase
+    .from("products")
+    .select("images")
+    .eq("id", productId)
+    .maybeSingle();
+
   const { error } = await supabase.from("products").delete().eq("id", productId);
   if (error) redirect("/admin/products?error=" + encodeURIComponent(error.message));
+
+  await removeManagedImages(((product?.images ?? []) as string[]));
 
   revalidatePath("/");
   revalidatePath("/products");
