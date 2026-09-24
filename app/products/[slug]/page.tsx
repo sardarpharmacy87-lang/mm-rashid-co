@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description:
       product.short_description ??
       product.description ??
-      "Custom handcrafted ceremonial regalia by MM Rashid & Co.",
+      "Ceremonial regalia by MM Rashid & Co.",
   };
 }
 
@@ -144,7 +144,7 @@ export default async function ProductPage({ params }: PageProps) {
               <h2>Product details</h2>
               <p>
                 {product.description ??
-                  "This item is made to customer specification. Contact us with artwork, quantity and required finish."}
+                  "Made to customer specification. Send artwork, quantity and finish requirements with your enquiry."}
               </p>
             </div>
 
@@ -164,7 +164,7 @@ export default async function ProductPage({ params }: PageProps) {
         {related.length ? (
           <section className="store-section related-products">
             <div className="store-section-heading">
-              <div><p className="store-kicker">More products</p><h2>You may also like</h2></div>
+              <div><p className="store-kicker">More products</p><h2>Related pieces</h2></div>
               <Link href="/products">View all →</Link>
             </div>
             <div className="store-product-grid">

@@ -22,8 +22,8 @@ export function CommerceHeader() {
   return (
     <>
       <div className="bloom-ribbon">
-        <span>Handcrafted ceremonial regalia · Sialkot · Since 1922</span>
-        <Link href="/sign-in">Private customer portal ↗</Link>
+        <span>MM Rashid & Co. · Commissioner Road · Sialkot</span>
+        <Link href="/sign-in">Customer portal ↗</Link>
       </div>
 
       <header className={"store-header bloom-header " + (scrolled ? "is-scrolled" : "")}>
@@ -51,8 +51,8 @@ export function CommerceHeader() {
 
             <Link className="bloom-account" href="/sign-in">Account</Link>
 
-            <Link className="bloom-quote" href="/cart" aria-label={"Commission brief with " + cartCount + " items"}>
-              Commission
+            <Link className="bloom-quote" href="/cart" aria-label={"Enquiry list with " + cartCount + " items"}>
+              Enquiry
               <span>{cartCount}</span>
             </Link>
 

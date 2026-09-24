@@ -22,7 +22,7 @@ type CatalogueProduct = ProductCardData & {
 export const metadata = {
   title: "Products",
   description:
-    "Browse handcrafted ceremonial regalia, bullion embroidery, badges, caps, banners and custom accessories.",
+    "Browse ceremonial regalia, bullion embroidery, badges, caps and other made-to-order pieces.",
 };
 
 export default async function ProductsPage({ searchParams }: PageProps) {
@@ -103,11 +103,11 @@ export default async function ProductsPage({ searchParams }: PageProps) {
       <main className="catalogue-page">
         <div className="catalogue-hero">
           <div>
-            <p className="store-kicker">MM Rashid catalogue</p>
-            <h1>Products &amp; custom regalia</h1>
-            <p>Browse our work or send your own artwork for a custom quotation.</p>
+            <p className="store-kicker">MM Rashid &amp; Co.</p>
+            <h1>Products</h1>
+            <p>Browse current pieces by section. For made-to-order work, send artwork and quantity with your enquiry.</p>
           </div>
-          <Link className="store-primary-button" href="/customer/enquiries/new">Custom enquiry</Link>
+          <Link className="store-primary-button" href="/customer/enquiries/new">Send enquiry</Link>
         </div>
 
         {groups.length ? (
@@ -187,8 +187,8 @@ export default async function ProductsPage({ searchParams }: PageProps) {
 
                 {!allProducts.length ? (
                   <div className="catalogue-empty">
-                    <h2>Products coming soon</h2>
-                    <p>New items will appear here as they are added.</p>
+                    <h2>No products added yet</h2>
+                    <p>Products will appear here after they are added in the admin portal.</p>
                   </div>
                 ) : null}
               </div>
@@ -200,7 +200,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
               <div className="catalogue-empty">
                 <h2>No matching products</h2>
                 <p>Try another search or send us the product reference you need.</p>
-                <Link href="/customer/enquiries/new">Send custom enquiry</Link>
+                <Link href="/customer/enquiries/new">Send enquiry</Link>
               </div>
             )}
 

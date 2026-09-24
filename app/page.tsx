@@ -21,23 +21,23 @@ const groupVisuals: Record<string, string> = {};
 const processSteps = [
   {
     number: "01",
-    title: "Share the brief",
-    description: "Artwork, dimensions, quantity, colours and the finish you want us to achieve.",
+    title: "Send the artwork",
+    description: "Send artwork or a reference, along with size, quantity and colours.",
   },
   {
     number: "02",
-    title: "Refine the detail",
-    description: "We review construction, metallic thread, materials and any specialist requirements.",
+    title: "Confirm materials",
+    description: "We check construction, thread, materials and the required finish.",
   },
   {
     number: "03",
-    title: "Make it by hand",
-    description: "Our artisans build the piece with the same disciplined handwork the company is known for.",
+    title: "Production",
+    description: "The piece is made in the workshop to the confirmed specification.",
   },
   {
     number: "04",
-    title: "Inspect & dispatch",
-    description: "Every finished piece is checked carefully before secure packing and dispatch.",
+    title: "Final check",
+    description: "We inspect, pack and dispatch the finished order.",
   },
 ];
 
@@ -104,8 +104,8 @@ export default async function HomePage() {
               <span> a century of handwork.</span>
             </h1>
             <p className="bloom-hero-intro">
-              Ceremonial embroidery, bullion work and custom insignia made with
-              patience, precision and a deep respect for tradition.
+              Ceremonial embroidery, bullion work and insignia made in our
+              Sialkot workshop to supplied artwork and specification.
             </p>
 
             <div className="bloom-hero-actions">
@@ -116,8 +116,8 @@ export default async function HomePage() {
 
             <dl className="bloom-hero-facts">
               <div><dt>1922</dt><dd>Established</dd></div>
-              <div><dt>100+</dt><dd>Years of craft</dd></div>
-              <div><dt>Worldwide</dt><dd>Custom work</dd></div>
+              <div><dt>Sialkot</dt><dd>Workshop</dd></div>
+              <div><dt>Made to order</dt><dd>By specification</dd></div>
             </dl>
           </div>
 
@@ -145,10 +145,10 @@ export default async function HomePage() {
         <section className="luxury-film-section reveal" aria-labelledby="owner-interview-title">
           <div className="luxury-film-copy">
             <p className="bloom-eyebrow">Owner interview</p>
-            <h2 id="owner-interview-title">The story behind MM Rashid &amp; Co.</h2>
+            <h2 id="owner-interview-title">A conversation about the workshop.</h2>
             <p>
-              Hear directly from the company about its history, craftsmanship,
-              workshop tradition and the values carried forward in Sialkot.
+              The owner talks about the company, its history in Sialkot and the
+              work being made in the workshop today.
             </p>
           </div>
 
@@ -176,16 +176,16 @@ export default async function HomePage() {
           <p className="bloom-eyebrow">MM Rashid &amp; Co.</p>
           <div className="bloom-statement-grid">
             <h2>
-              Built slowly.
+              Ceremonial embroidery.
               <br />
-              <span>Remembered instantly.</span>
+              <span>Made to specification.</span>
             </h2>
             <div>
               <p>
-                From formal headwear and ceremonial pieces to bespoke insignia,
-                our work is developed around the identity it needs to carry.
+                We make headwear, bullion embroidery, insignia and ceremonial
+                pieces from supplied artwork, measurements and reference samples.
               </p>
-              <Link href="#heritage">Discover our story ↘</Link>
+              <Link href="#heritage">Our history ↘</Link>
             </div>
           </div>
         </section>
@@ -208,8 +208,8 @@ export default async function HomePage() {
           <section className="bloom-groups reveal" aria-label="Product groups">
             <div className="bloom-section-heading">
               <div>
-                <p className="bloom-eyebrow">Browse the work</p>
-                <h2>Choose a direction.</h2>
+                <p className="bloom-eyebrow">Products</p>
+                <h2>Browse by section.</h2>
               </div>
               <Link href="/products">View all products ↗</Link>
             </div>
@@ -263,16 +263,16 @@ export default async function HomePage() {
 
         <section className="bloom-commission reveal">
           <div>
-            <p className="bloom-eyebrow bloom-eyebrow-light">Custom commissions</p>
-            <h2>Bring us the brief. We&apos;ll build the detail.</h2>
+            <p className="bloom-eyebrow bloom-eyebrow-light">Made to order</p>
+            <h2>Send your artwork and requirements.</h2>
           </div>
           <div>
             <p>
-              Send artwork, measurements and quantity. We&apos;ll review the
-              construction and prepare the next step around your requirement.
+              Include quantity, dimensions, colours and delivery country. We will
+              review the details and reply with the next steps.
             </p>
             <Link className="store-primary-button" href="/customer/enquiries/new">
-              Start your enquiry <span>↗</span>
+              Send an enquiry <span>↗</span>
             </Link>
           </div>
         </section>
@@ -289,18 +289,16 @@ export default async function HomePage() {
           <div className="bloom-heritage-copy reveal delay-one">
             <p className="bloom-eyebrow">Our heritage</p>
             <h2 className="heritage-motion-title">
-              <span className="motion-line">Three generations of</span>
-              <span className="motion-line">specialist handwork.</span>
+              <span className="motion-line">Three generations in</span>
+              <span className="motion-line">the workshop.</span>
             </h2>
             <p>
-              The company began in Sialkot in 1922 and grew around the discipline
-              of making ceremonial work by hand. The archive photograph preserves
-              that workshop tradition and the people behind it.
+              MM Rashid &amp; Co. began in Sialkot in 1922. The archive photograph
+              records the workshop tradition that has continued through the family.
             </p>
             <p>
-              Today, the same emphasis on accuracy, material knowledge and careful
-              finishing continues for institutions, uniform businesses, fraternal
-              organisations and private customers worldwide.
+              Today the workshop still produces embroidery, bullion work and
+              ceremonial pieces to customer specification.
             </p>
             <Link href="#process">See how we work ↘</Link>
           </div>
@@ -310,11 +308,10 @@ export default async function HomePage() {
           <div className="bloom-section-heading reveal">
             <div>
               <p className="bloom-eyebrow">Inside the workshop</p>
-              <h2>Watch the work come together.</h2>
+              <h2>Stitching in progress.</h2>
             </div>
             <p>
-              A closer look at the hand processes, materials and concentration
-              behind the finished detail.
+              A short look at the hand stitching behind the finished pieces.
             </p>
           </div>
 
@@ -332,9 +329,9 @@ export default async function HomePage() {
         <section className="bloom-process" id="process">
           <div className="bloom-process-intro reveal">
             <p className="bloom-eyebrow">How we work</p>
-            <h2>A clear route from idea to finished piece.</h2>
+            <h2>From artwork to finished piece.</h2>
             <p>
-              Custom work stays simple when each decision is made in the right order.
+              For made-to-order work, we confirm the details before production begins.
             </p>
           </div>
 
@@ -354,26 +351,20 @@ export default async function HomePage() {
 
         <section className="bloom-contact" id="contact">
           <div className="bloom-contact-copy reveal">
-            <p className="bloom-eyebrow bloom-eyebrow-light">Commission enquiries</p>
-            <h2>Something worth making starts with a conversation.</h2>
+            <p className="bloom-eyebrow bloom-eyebrow-light">Contact</p>
+            <h2>MM Rashid &amp; Co., Sialkot.</h2>
           </div>
 
           <div className="bloom-contact-actions reveal delay-one">
             <p>
-              Tell us what you need, the quantity, delivery country and any artwork
-              or measurements you already have.
+              For quotations and order questions, contact the workshop by telephone
+              or use the customer enquiry form.
             </p>
             <a href="tel:+923343342223">+92 334 334 2223</a>
             <span>Commissioner Road · Sialkot 51310 · Pakistan</span>
           </div>
         </section>
 
-        <section className="bloom-trust-rail">
-          <article><span>01</span><strong>Custom production</strong><p>Built around your artwork and specification.</p></article>
-          <article><span>02</span><strong>Secure portal</strong><p>Track enquiries, quotations and orders.</p></article>
-          <article><span>03</span><strong>Worldwide enquiries</strong><p>Working with customers beyond Pakistan.</p></article>
-          <article><span>04</span><strong>Made in Sialkot</strong><p>More than a century of specialist craft.</p></article>
-        </section>
       </main>
 
       <script

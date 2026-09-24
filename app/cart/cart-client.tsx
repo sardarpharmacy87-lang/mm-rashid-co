@@ -13,8 +13,8 @@ export function CartClient() {
   if (!cart.length) {
     return (
       <div className="cart-empty">
-        <h1>Your commission brief is empty</h1>
-        <p>Choose the pieces you are interested in, then send them together as one custom commission enquiry.</p>
+        <h1>No pieces selected</h1>
+        <p>Add any products you want us to quote, then send the list with your details.</p>
         <Link className="store-primary-button" href="/products">Browse products</Link>
       </div>
     );
@@ -25,10 +25,10 @@ export function CartClient() {
       <section className="cart-items">
         <div className="cart-title-row">
           <div>
-            <p className="store-kicker">Commission brief</p>
-            <h1>Your selected pieces</h1>
+            <p className="store-kicker">Selected pieces</p>
+            <h1>Enquiry list</h1>
           </div>
-          <button type="button" onClick={clearCart}>Clear brief</button>
+          <button type="button" onClick={clearCart}>Clear list</button>
         </div>
 
         {cart.map((item) => (
@@ -64,10 +64,10 @@ export function CartClient() {
       </section>
 
       <aside className="cart-summary">
-        <h2>Send commission brief</h2>
+        <h2>Send enquiry</h2>
         <p>
-          Submit the full basket to MM Rashid &amp; Co. We will review quantity,
-          artwork, customization and delivery requirements before issuing a quotation.
+          We will review the quantities, artwork and delivery details before
+          preparing a quotation.
         </p>
 
         {error ? <p className="cart-error">{error}</p> : null}
@@ -83,13 +83,13 @@ export function CartClient() {
             <input name="requiredBy" type="date" />
           </label>
           <label>
-            Notes / customization
+            Notes
             <textarea name="customerNote" rows={4} placeholder="Colours, artwork, dimensions, event date..." />
           </label>
-          <button type="submit">Send commission enquiry</button>
+          <button type="submit">Send enquiry</button>
         </form>
 
-        <p className="cart-login-note">You will be asked to sign in if you are not already logged in.</p>
+        <p className="cart-login-note">Sign in is required before the enquiry is submitted.</p>
       </aside>
     </div>
   );

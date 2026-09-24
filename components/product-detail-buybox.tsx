@@ -72,16 +72,15 @@ export function ProductDetailBuybox({
             })
           }
         >
-          Add to commission brief
+          Add to enquiry list
         </button>
       </div>
 
-      <Link className="buybox-cart-link" href="/cart">Open commission brief →</Link>
+      <Link className="buybox-cart-link" href="/cart">Open enquiry list →</Link>
 
       <div className="buybox-notes">
-        <span>✓ Custom artwork accepted</span>
-        <span>✓ Worldwide enquiries</span>
-        <span>✓ Handcrafted in Sialkot</span>
+        <span>Artwork and reference files accepted</span>
+        <span>Made to specification</span>
       </div>
     </div>
   );

@@ -7,10 +7,10 @@ export function StoreFooter() {
       <div className="bloom-footer-top">
         <div className="bloom-footer-statement">
           <Brand footer />
-          <h2>Craft that carries identity.</h2>
+          <h2>MM Rashid &amp; Co.</h2>
           <p>
-            Goldwork, bullion embroidery, ceremonial regalia and custom insignia
-            handcrafted in Sialkot since 1922.
+            Ceremonial embroidery, bullion work and regalia made in Sialkot
+            since 1922.
           </p>
         </div>
 
@@ -26,8 +26,8 @@ export function StoreFooter() {
           <div>
             <strong>Customer</strong>
             <Link href="/sign-in">My account</Link>
-            <Link href="/cart">Commission brief</Link>
-            <Link href="/customer/enquiries/new">Custom enquiry</Link>
+            <Link href="/cart">Enquiry list</Link>
+            <Link href="/customer/enquiries/new">Send enquiry</Link>
           </div>
 
           <div>
@@ -42,7 +42,7 @@ export function StoreFooter() {
 
       <div className="bloom-footer-bottom">
         <span>© {new Date().getFullYear()} MM Rashid &amp; Co.</span>
-        <span>Handcrafted in Sialkot · Worldwide enquiries</span>
+        <span>Commissioner Road · Sialkot · Pakistan</span>
       </div>
     </footer>
   );

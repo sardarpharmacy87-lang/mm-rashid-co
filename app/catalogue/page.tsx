@@ -17,7 +17,7 @@ export default function CataloguePage() {
         <section className="catalogue-hero">
           <div><p className="bloom-eyebrow">MM Rashid &amp; Co.</p><h1>Catalogue</h1></div>
           <div>
-            <p>Browse the 17-page archive catalogue of embroidered badges, insignia, ceremonial emblems and specialist handwork.</p>
+            <p>Open the 17-page catalogue of embroidered badges, insignia and ceremonial work.</p>
             <div className="catalogue-actions">
               <a href={catalogue.path} target="_blank" rel="noreferrer">Open full catalogue ↗</a>
               <a href={catalogue.path} download>Download PDF</a>
