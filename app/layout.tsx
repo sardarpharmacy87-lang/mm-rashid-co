@@ -4,13 +4,42 @@ import "./globals.css";
 import "./commerce.css";
 import "./portal.css";
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://mm-rashid-co-l5hh.vercel.app";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
     default: "MM Rashid & Co. | Ceremonial Regalia & Bullion Embroidery",
     template: "%s | MM Rashid & Co.",
   },
   description:
-    "Handcrafted ceremonial regalia, goldwork, bullion embroidery, badges, aprons, banners, caps and custom insignia from Sialkot, Pakistan.",
+    "Handcrafted ceremonial regalia, goldwork, bullion embroidery, badges, banners, caps, headwear and custom insignia from Sialkot, Pakistan.",
+  keywords: [
+    "ceremonial regalia",
+    "bullion embroidery",
+    "goldwork embroidery",
+    "custom badges",
+    "ceremonial headwear",
+    "Sialkot embroidery",
+    "MM Rashid & Co",
+  ],
+  openGraph: {
+    type: "website",
+    url: siteUrl,
+    siteName: "MM Rashid & Co.",
+    title: "MM Rashid & Co. | Ceremonial Regalia & Bullion Embroidery",
+    description:
+      "Handcrafted ceremonial regalia, goldwork, bullion embroidery and custom insignia from Sialkot, Pakistan.",
+    images: [{ url: "/mm-rashid-logo.png", alt: "MM Rashid & Co. emblem" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "MM Rashid & Co.",
+    description:
+      "Handcrafted ceremonial regalia, bullion embroidery and custom insignia from Sialkot.",
+    images: ["/mm-rashid-logo.png"],
+  },
   icons: { icon: "/favicon.svg" },
 };
 
