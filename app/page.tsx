@@ -3,6 +3,7 @@ import { CommerceHeader } from "@/components/commerce-header";
 import { HomepageSlider, type HomepageSlide } from "@/components/homepage-slider";
 import { ProductCard, type ProductCardData } from "@/components/product-card";
 import { RevealController } from "@/components/reveal-controller";
+import { WorkshopReels } from "@/components/workshop-reels";
 import { StoreFooter } from "@/components/store-footer";
 import { createClient } from "@/lib/supabase/server";
 
@@ -316,13 +317,7 @@ export default async function HomePage() {
           </div>
 
           <div className="bloom-workshop-frame reveal">
-            <video controls playsInline preload="metadata" poster="/images/workshop/stitching-video-poster.jpg">
-              <source src="/videos/stitching/stitching-process.mp4" type="video/mp4" />
-            </video>
-            <div className="bloom-workshop-label">
-              <span>Workshop film</span>
-              <strong>Hand embroidery · Sialkot</strong>
-            </div>
+            <WorkshopReels />
           </div>
         </section>
 
