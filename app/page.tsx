@@ -172,13 +172,13 @@ export default async function HomePage() {
           </div>
         </section>
 
-        <section className="luxury-film-section reveal" aria-labelledby="atelier-film-title">
+        <section className="luxury-film-section reveal" aria-labelledby="owner-interview-title">
           <div className="luxury-film-copy">
-            <p className="bloom-eyebrow">Inside the atelier</p>
-            <h2 id="atelier-film-title">The film now has its own space.</h2>
+            <p className="bloom-eyebrow">Owner interview</p>
+            <h2 id="owner-interview-title">The story behind MM Rashid &amp; Co.</h2>
             <p>
-              A closer look at the hands, materials and concentration behind
-              MM Rashid &amp; Co. craftsmanship in Sialkot.
+              Hear directly from the company about its history, craftsmanship,
+              workshop tradition and the values carried forward in Sialkot.
             </p>
           </div>
 
@@ -189,19 +189,18 @@ export default async function HomePage() {
                 <span />
                 <span />
               </div>
-              <strong>ATELIER FILM · SIALKOT</strong>
-              <em>MM RASHID &amp; CO.</em>
+              <strong>OWNER INTERVIEW · MM RASHID &amp; CO.</strong>
+              <em>SIALKOT · PAKISTAN</em>
             </div>
-            <video
-              controls
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              poster="/images/workshop/stitching-video-poster.jpg"
-            >
-              <source src="/videos/mm-rashid-hero.mp4" type="video/mp4" />
-            </video>
+            <div className="luxury-youtube-frame">
+              <iframe
+                src="https://www.youtube-nocookie.com/embed/h9EH23XPLOk?rel=0"
+                title="MM Rashid & Co. owner interview"
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            </div>
           </div>
         </section>
 
