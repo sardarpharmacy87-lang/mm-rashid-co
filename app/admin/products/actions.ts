@@ -97,6 +97,7 @@ function productPayload(formData: FormData, images: string[]) {
     name,
     slug: slugify(requestedSlug || name),
     sku: textValue(formData, "sku") || null,
+    product_group_id: textValue(formData, "productGroupId") || null,
     short_description: textValue(formData, "shortDescription") || null,
     description: textValue(formData, "description") || null,
     primary_image: images[0] || null,
@@ -113,6 +114,55 @@ function productPayload(formData: FormData, images: string[]) {
     sort_order: Number(textValue(formData, "sortOrder")) || 0,
     updated_at: new Date().toISOString(),
   };
+}
+
+export async function createProductGroup(formData: FormData) {
+  await requireAdmin();
+
+  const name = textValue(formData, "groupName");
+  const slug = slugify(textValue(formData, "groupSlug") || name);
+  const sortOrder = Number(textValue(formData, "groupSortOrder")) || 0;
+
+  if (!name || !slug) {
+    redirect("/admin/products?error=" + encodeURIComponent("Name is required"));
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.from("product_groups").insert({
+    name,
+    slug,
+    sort_order: sortOrder,
+    active: true,
+    updated_at: new Date().toISOString(),
+  });
+
+  if (error) {
+    redirect("/admin/products?error=" + encodeURIComponent(error.message));
+  }
+
+  revalidatePath("/");
+  revalidatePath("/products");
+  revalidatePath("/admin/products");
+  redirect("/admin/products?message=" + encodeURIComponent(name + " added"));
+}
+
+export async function deleteProductGroup(formData: FormData) {
+  await requireAdmin();
+
+  const groupId = textValue(formData, "groupId");
+  if (!groupId) redirect("/admin/products?error=" + encodeURIComponent("Item not found"));
+
+  const supabase = await createClient();
+  const { error } = await supabase.from("product_groups").delete().eq("id", groupId);
+
+  if (error) {
+    redirect("/admin/products?error=" + encodeURIComponent(error.message));
+  }
+
+  revalidatePath("/");
+  revalidatePath("/products");
+  revalidatePath("/admin/products");
+  redirect("/admin/products?message=" + encodeURIComponent("Name removed"));
 }
 
 export async function createProduct(formData: FormData) {
