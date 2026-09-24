@@ -1,427 +1,181 @@
-import Image from "next/image";
-import { Brand } from "@/components/brand";
-import { RevealController } from "@/components/reveal-controller";
-import { SiteHeader } from "@/components/site-header";
-import { HomeHeroSlider } from "@/components/home-hero-slider";
-import { RegaliaShowcaseSlider } from "@/components/regalia-showcase-slider";
-import { catalogue } from "@/lib/catalogue";
+import Link from "next/link";
+import { CommerceHeader } from "@/components/commerce-header";
+import { ProductCard, type ProductCardData } from "@/components/product-card";
+import { StoreFooter } from "@/components/store-footer";
+import { createClient } from "@/lib/supabase/server";
 
-const categories = [
-  {
-    title: "Goldwork & Bullion",
-    description: "Raised metallic embroidery, purl, cord and ceremonial handwork.",
-    image: "/images/gallery/goldwork-leaf-detail.webp",
-  },
-  {
-    title: "Military & Ceremonial",
-    description: "Badges, banners, shoulder pieces and uniform embellishment.",
-    image: "/images/gallery/ceremonial-embroidered-banner.webp",
-  },
-  {
-    title: "Regalia & Fez Work",
-    description: "Custom fraternal regalia, fez embroidery and ceremonial emblems.",
-    image: "/images/gallery/custom-purple-fez-set.webp",
-  },
-];
+export default async function HomePage() {
+  const supabase = await createClient();
 
-const featuredWork = [
-  {
-    title: "Gold Bullion Naval Badge",
-    category: "Goldwork embroidery",
-    image: "/images/gallery/gold-bullion-naval-badge.webp",
-  },
-  {
-    title: "Bullion Shoulder Boards",
-    category: "Military insignia",
-    image: "/images/gallery/gold-bullion-shoulder-boards.webp",
-  },
-  {
-    title: "Silver Bullion Cap Visor",
-    category: "Ceremonial headwear",
-    image: "/images/gallery/silver-bullion-cap-visor.webp",
-  },
-  {
-    title: "Custom Maroon Fez",
-    category: "Fraternal regalia",
-    image: "/images/gallery/custom-maroon-fez.webp",
-  },
-];
+  const [categoriesResult, featuredResult, latestResult] = await Promise.all([
+    supabase
+      .from("categories")
+      .select("id, name, slug, description, image_url")
+      .eq("active", true)
+      .order("sort_order", { ascending: true })
+      .limit(8),
+    supabase
+      .from("products")
+      .select("id, name, slug, sku, short_description, primary_image, price_pkr, price_usd, previous_price_pkr, previous_price_usd, price_on_request, stock_status, categories(name, slug)")
+      .eq("active", true)
+      .eq("featured", true)
+      .order("sort_order", { ascending: true })
+      .limit(8),
+    supabase
+      .from("products")
+      .select("id, name, slug, sku, short_description, primary_image, price_pkr, price_usd, previous_price_pkr, previous_price_usd, price_on_request, stock_status, categories(name, slug)")
+      .eq("active", true)
+      .order("created_at", { ascending: false })
+      .limit(8),
+  ]);
 
-const collections = [
-  {
-    title: "Ceremonial Banners",
-    image: "/images/gallery/ceremonial-embroidered-banner.webp",
-  },
-  {
-    title: "Gold Bullion Badges",
-    image: "/images/gallery/gold-bullion-naval-badge.webp",
-  },
-  {
-    title: "Shoulder Boards",
-    image: "/images/gallery/gold-bullion-shoulder-boards.webp",
-  },
-  {
-    title: "Caps & Visors",
-    image: "/images/gallery/silver-bullion-cap-visor.webp",
-  },
-  {
-    title: "Custom Fez Work",
-    image: "/images/gallery/custom-purple-fez-set.webp",
-  },
-  {
-    title: "Crests & Emblems",
-    image: "/images/gallery/silver-bullion-ceremonial-emblem.webp",
-  },
-];
+  const categories = categoriesResult.data ?? [];
+  const featured = (featuredResult.data ?? []) as unknown as ProductCardData[];
+  const latest = (latestResult.data ?? []) as unknown as ProductCardData[];
 
-const reasons = [
-  {
-    number: "01",
-    title: "Made by hand",
-    description: "Experienced artisans build the detail, depth and finish by hand in Sialkot.",
-  },
-  {
-    number: "02",
-    title: "Custom to brief",
-    description: "Artwork, dimensions, materials and finishing can be developed around your requirement.",
-  },
-  {
-    number: "03",
-    title: "Worldwide enquiries",
-    description: "We work with international customers, institutions and uniform businesses.",
-  },
-  {
-    number: "04",
-    title: "Heritage since 1922",
-    description: "A family tradition of specialist embroidery and ceremonial craftsmanship.",
-  },
-];
-
-const faqs = [
-  {
-    question: "Can you make a custom design from our artwork?",
-    answer:
-      "Yes. Send your artwork, measurements, quantity and required finish through the enquiry form. We review the details before confirming production.",
-  },
-  {
-    question: "Do you accept international enquiries?",
-    answer:
-      "Yes. MM Rashid & Co. accepts enquiries from customers outside Pakistan. Include your delivery country when you send the brief.",
-  },
-  {
-    question: "Can I send reference images or video with an enquiry?",
-    answer:
-      "Yes. The customer enquiry system supports multiple reference images and video files so the production brief can be reviewed clearly.",
-  },
-  {
-    question: "How do I receive pricing for a custom item?",
-    answer:
-      "Create an enquiry with the design, quantity and specifications. A quotation can then be prepared for the requested work.",
-  },
-];
-
-export default function HomePage() {
   return (
-    <div className="page-shell commerce-home">
-      <RevealController />
-      <SiteHeader />
+    <div className="store-shell">
+      <CommerceHeader categories={categories.map(({ name, slug }) => ({ name, slug }))} />
 
       <main>
-        <HomeHeroSlider />
-        <RegaliaShowcaseSlider />
-
-        <section className="commerce-section category-section" id="craft">
-          <div className="commerce-heading reveal">
-            <div>
-              <p className="commerce-kicker">Explore our craft</p>
-              <h2>Signature categories</h2>
+        <section className="commerce-hero">
+          <div className="commerce-hero-copy">
+            <p className="store-kicker">MM Rashid &amp; Co. · Established 1922</p>
+            <h1>Handcrafted regalia, made around your identity.</h1>
+            <p>
+              Custom aprons, collars, bullion badges, ceremonial headwear, banners and
+              accessories made in Sialkot for customers worldwide.
+            </p>
+            <div className="commerce-hero-actions">
+              <Link className="store-primary-button" href="/products">Shop collection</Link>
+              <Link className="store-secondary-button" href="/customer/enquiries/new">Send custom artwork</Link>
             </div>
-            <a className="commerce-view-all" href="#collections">
-              View all collections <span aria-hidden="true">→</span>
-            </a>
-          </div>
-
-          <div className="category-grid">
-            {categories.map((item, index) => (
-              <a
-                className={`category-tile reveal delay-${index + 1}`}
-                href="#contact"
-                key={item.title}
-              >
-                <div className="category-tile-image">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    sizes="(max-width: 760px) 100vw, 33vw"
-                  />
-                </div>
-                <div className="category-tile-copy">
-                  <h3>{item.title}</h3>
-                  <p>{item.description}</p>
-                  <span>Explore category →</span>
-                </div>
-              </a>
-            ))}
-          </div>
-        </section>
-
-        <section className="commerce-section featured-section" id="gallery">
-          <div className="commerce-heading reveal">
-            <div>
-              <p className="commerce-kicker">Selected work</p>
-              <h2>Featured commissions</h2>
+            <div className="hero-trust">
+              <span><strong>100+</strong> years of craft</span>
+              <span><strong>Custom</strong> production</span>
+              <span><strong>Worldwide</strong> enquiries</span>
             </div>
-            <a className="commerce-view-all" href="#collections">
-              Browse collection <span aria-hidden="true">→</span>
-            </a>
           </div>
 
-          <div className="product-grid">
-            {featuredWork.map((item, index) => (
-              <article
-                className={`product-card reveal delay-${(index % 4) + 1}`}
-                key={item.title}
-              >
-                <a className="product-image" href="#contact" aria-label={item.title}>
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    sizes="(max-width: 620px) 100vw, (max-width: 1000px) 50vw, 25vw"
-                  />
-                  <span className="product-badge">Made to order</span>
-                </a>
-
-                <div className="product-copy">
-                  <p>{item.category}</p>
-                  <h3>{item.title}</h3>
-                  <span className="product-price-label">Custom quotation</span>
-                  <a className="product-link" href="/sign-up">
-                    Request quote
-                  </a>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="collection-promo reveal" aria-label="Custom ceremonial work">
-          <div className="collection-promo-image">
-            <Image
-              src="/images/gallery/ceremonial-gold-cords-and-tassels.png"
-              alt="Ceremonial gold cords and tassels made by hand"
-              fill
-              sizes="(max-width: 900px) 100vw, 50vw"
+          <div className="commerce-hero-visual">
+            <div className="hero-product-ring" />
+            <img
+              src="/images/showcase/fraternal-apron.webp"
+              alt="Custom ceremonial apron by MM Rashid and Company"
             />
-          </div>
-
-          <div className="collection-promo-copy">
-            <p className="commerce-kicker">Custom ceremonial work</p>
-            <h2>Details that carry identity, rank and tradition.</h2>
-            <p>
-              From institutional insignia to ceremonial accessories, each
-              commission can be developed around your artwork, dimensions and
-              required finish.
-            </p>
-            <a className="button button-gold" href="/sign-up">
-              Discuss your project <span aria-hidden="true">↗</span>
-            </a>
+            <div className="hero-floating-card">
+              <small>Featured craft</small>
+              <strong>Fraternal ceremonial regalia</strong>
+              <Link href="/products/fraternal-ceremonial-apron">View product →</Link>
+            </div>
           </div>
         </section>
 
-        <section className="commerce-section collection-section" id="collections">
-          <div className="commerce-heading reveal">
+        <section className="store-section category-shop" aria-labelledby="shop-categories">
+          <div className="store-section-heading">
             <div>
-              <p className="commerce-kicker">Our collection</p>
-              <h2>Browse by speciality</h2>
+              <p className="store-kicker">Browse our craft</p>
+              <h2 id="shop-categories">Shop by category</h2>
             </div>
-            <a
-              className="commerce-view-all"
-              href={catalogue.published ? catalogue.path : "#contact"}
-            >
-              {catalogue.published ? "Open PDF catalogue" : "Request catalogue"}
-              <span aria-hidden="true">→</span>
-            </a>
+            <Link href="/products">View all products →</Link>
           </div>
 
-          <div className="collection-grid">
-            {collections.map((item, index) => (
-              <a
-                className={`collection-card reveal delay-${(index % 3) + 1}`}
-                href="#contact"
-                key={item.title}
+          <div className="shop-category-grid">
+            {categories.map((category) => (
+              <Link
+                className="shop-category-card"
+                href={"/products?category=" + encodeURIComponent(category.slug)}
+                key={category.id}
               >
-                <div className="collection-card-image">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    sizes="(max-width: 620px) 100vw, (max-width: 980px) 50vw, 33vw"
-                  />
+                <div className="shop-category-image">
+                  {category.image_url ? <img src={category.image_url} alt="" loading="lazy" /> : null}
                 </div>
-                <div className="collection-card-title">
-                  <h3>{item.title}</h3>
-                  <span aria-hidden="true">↗</span>
+                <div>
+                  <h3>{category.name}</h3>
+                  <p>{category.description}</p>
+                  <span>Explore collection →</span>
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
         </section>
 
-        <section className="heritage-store" id="heritage">
-          <div className="heritage-store-image reveal">
-            <Image
-              src="/images/heritage/mm-rashid-history.jpeg"
-              alt="Historic MM Rashid and Company embroidery workshop in Sialkot"
-              fill
-              sizes="(max-width: 900px) 100vw, 52vw"
-            />
-          </div>
-
-          <div className="heritage-store-copy reveal delay-one">
-            <p className="commerce-kicker">Our heritage</p>
-            <h2>A family craft established in 1922.</h2>
-            <p>
-              MM Rashid &amp; Co. grew from a Sialkot workshop where skilled
-              hands transformed metal thread, purl, sequins and fine materials
-              into ceremonial work made to carry meaning for generations.
-            </p>
-            <p>
-              Today the same focus on hand craftsmanship continues across
-              badges, crests, regalia, headwear and commissioned embroidery.
-            </p>
-            <a className="commerce-view-all heritage-link" href="#workshop">
-              See inside the workshop <span aria-hidden="true">→</span>
-            </a>
-          </div>
-        </section>
-
-        <section className="workshop-store commerce-section" id="workshop">
-          <div className="commerce-heading reveal">
+        <section className="store-section product-shop" id="featured">
+          <div className="store-section-heading">
             <div>
-              <p className="commerce-kicker">Inside our workshop</p>
-              <h2>Made by skilled hands.</h2>
+              <p className="store-kicker">Selected work</p>
+              <h2>Featured products</h2>
             </div>
-            <p className="commerce-heading-copy">
-              See the process behind the bullion work, raised detail and
-              ceremonial finishing.
-            </p>
+            <Link href="/products">Browse full catalogue →</Link>
           </div>
 
-          <div className="workshop-store-video reveal delay-one">
-            <video
-              controls
-              playsInline
-              preload="metadata"
-              poster="/images/workshop/stitching-video-poster.jpg"
-            >
-              <source
-                src="/videos/stitching/stitching-process.mp4"
-                type="video/mp4"
-              />
-              Your browser does not support HTML video.
-            </video>
+          <div className="store-product-grid">
+            {featured.map((product) => <ProductCard key={product.id} product={product} />)}
           </div>
         </section>
 
-        <section className="commerce-section reasons-section">
-          <div className="commerce-heading reveal">
+        <section className="custom-order-strip">
+          <div>
+            <p className="store-kicker store-kicker-light">Need your own design?</p>
+            <h2>Send artwork, measurements and quantity. We build the detail.</h2>
+          </div>
+          <Link href="/customer/enquiries/new">Start custom enquiry →</Link>
+        </section>
+
+        <section className="store-section product-shop">
+          <div className="store-section-heading">
             <div>
-              <p className="commerce-kicker">Why MM Rashid &amp; Co.</p>
-              <h2>Built around the brief.</h2>
+              <p className="store-kicker">Recently added</p>
+              <h2>More from the workshop</h2>
+            </div>
+            <Link href="/products?sort=newest">See newest →</Link>
+          </div>
+          <div className="store-product-grid">
+            {latest.map((product) => <ProductCard key={product.id} product={product} />)}
+          </div>
+        </section>
+
+        <section className="store-heritage" id="heritage">
+          <div className="store-heritage-image">
+            <img src="/images/heritage/mm-rashid-history.jpeg" alt="MM Rashid and Company historic workshop" />
+          </div>
+          <div className="store-heritage-copy">
+            <p className="store-kicker">Our heritage</p>
+            <h2>A Sialkot family craft established in 1922.</h2>
+            <p>
+              For more than a century, skilled hands have transformed metallic thread,
+              purl, cord, sequins and fine textiles into ceremonial work made to carry
+              identity, rank and tradition.
+            </p>
+            <p>
+              Today MM Rashid &amp; Co. continues that specialist work for lodges,
+              institutions, uniform businesses and private customers around the world.
+            </p>
+            <Link href="/customer/enquiries/new">Discuss a commission →</Link>
+          </div>
+        </section>
+
+        <section className="store-workshop" id="workshop">
+          <div className="store-section-heading">
+            <div>
+              <p className="store-kicker">Inside the workshop</p>
+              <h2>See how the detail is made.</h2>
             </div>
           </div>
-
-          <div className="reason-grid">
-            {reasons.map((item, index) => (
-              <article
-                className={`reason-card reveal delay-${(index % 4) + 1}`}
-                key={item.number}
-              >
-                <span>{item.number}</span>
-                <h3>{item.title}</h3>
-                <p>{item.description}</p>
-              </article>
-            ))}
-          </div>
+          <video controls playsInline preload="metadata" poster="/images/workshop/stitching-video-poster.jpg">
+            <source src="/videos/stitching/stitching-process.mp4" type="video/mp4" />
+          </video>
         </section>
 
-        <section className="commerce-section faq-section">
-          <div className="faq-intro reveal">
-            <p className="commerce-kicker">FAQ</p>
-            <h2>Frequently asked questions</h2>
-            <p>
-              For specifications, artwork review or a quotation, send a custom
-              enquiry and include as much detail as possible.
-            </p>
-          </div>
-
-          <div className="faq-list reveal delay-one">
-            {faqs.map((item) => (
-              <details key={item.question}>
-                <summary>{item.question}</summary>
-                <p>{item.answer}</p>
-              </details>
-            ))}
-          </div>
-        </section>
-
-        <section className="contact-store" id="contact">
-          <div className="contact-store-copy reveal">
-            <p className="commerce-kicker commerce-kicker-light">
-              Custom orders &amp; commissions
-            </p>
-            <h2>Send us your design. We&apos;ll build the detail.</h2>
-            <p>
-              Include artwork, dimensions, quantity, finish and delivery
-              country for a clearer quotation.
-            </p>
-          </div>
-
-          <div className="contact-store-actions reveal delay-one">
-            <a className="button button-gold" href="/sign-up">
-              Start an enquiry <span aria-hidden="true">↗</span>
-            </a>
-            <a className="button button-outline-light" href="tel:+923343342223">
-              Call +92 334 334 2223
-            </a>
-            <small>Commissioner Road · Sialkot 51310 · Pakistan</small>
-          </div>
+        <section className="store-benefits">
+          <article><strong>Custom production</strong><p>Artwork, colours, dimensions and finishing developed to your brief.</p></article>
+          <article><strong>Secure customer portal</strong><p>Track enquiries, quotations and order progress from one account.</p></article>
+          <article><strong>International enquiries</strong><p>Built for customers, institutions and businesses worldwide.</p></article>
+          <article><strong>Made in Sialkot</strong><p>Specialist embroidery craftsmanship with more than a century of heritage.</p></article>
         </section>
       </main>
 
-      <footer className="store-footer">
-        <div className="store-footer-brand">
-          <Brand footer />
-          <p>
-            Goldwork, bullion embroidery and ceremonial regalia made by hand
-            in Sialkot.
-          </p>
-        </div>
-
-        <div className="store-footer-column">
-          <strong>Explore</strong>
-          <a href="#craft">Categories</a>
-          <a href="#gallery">Featured work</a>
-          <a href="#collections">Collections</a>
-          <a href="#heritage">Heritage</a>
-        </div>
-
-        <div className="store-footer-column">
-          <strong>Customer</strong>
-          <a href="/sign-in">Account</a>
-          <a href="/sign-up">Start an enquiry</a>
-          <a href={catalogue.published ? catalogue.path : "#contact"}>
-            Catalogue
-          </a>
-        </div>
-
-        <div className="store-footer-bottom">
-          <span>© {new Date().getFullYear()} MM Rashid &amp; Co.</span>
-          <span>Handcrafted in Sialkot, Pakistan</span>
-        </div>
-      </footer>
+      <StoreFooter />
     </div>
   );
 }
