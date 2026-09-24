@@ -50,8 +50,8 @@ export function CommerceHeader() {
 
             <Link className="bloom-account" href="/sign-in">Account</Link>
 
-            <Link className="bloom-quote" href="/cart" aria-label={"Quotation basket with " + cartCount + " items"}>
-              Quote
+            <Link className="bloom-quote" href="/cart" aria-label={"Commission brief with " + cartCount + " items"}>
+              Commission
               <span>{cartCount}</span>
             </Link>
 
