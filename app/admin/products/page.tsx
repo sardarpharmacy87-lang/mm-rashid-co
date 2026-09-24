@@ -47,15 +47,15 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
 
       <section className="summary-grid">
         <article><strong>{products.length}</strong><span>Products</span></article>
-        <article><strong>{groups.length}</strong><span>Product groups</span></article>
+        <article><strong>{groups.length}</strong><span>Sections</span></article>
         <article><strong>{products.filter((item) => item.active).length}</strong><span>Live</span></article>
       </section>
 
       <section className="portal-section">
         <div className="portal-section-head">
           <div>
-            <h2>Product groups</h2>
-            <p>Customers will see only these names, for example Fez, Caps or Jackets.</p>
+            <h2>Product sections</h2>
+            <p>Create only the names customers should see, for example Fez, Caps or Jackets.</p>
           </div>
         </div>
 
@@ -134,7 +134,6 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
           </div>
 
           <div className="admin-check-row">
-            <label><input name="featured" type="checkbox" /> Featured product</label>
             <label><input name="active" type="checkbox" defaultChecked /> Active / visible</label>
           </div>
 
@@ -145,6 +144,7 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
       <section className="portal-section">
         <div className="portal-section-head"><h2>Current products</h2></div>
 
+        {products.length ? (
         <div className="portal-table-wrap">
           <table className="portal-table">
             <thead>
@@ -177,6 +177,12 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
             </tbody>
           </table>
         </div>
+        ) : (
+          <div className="portal-empty admin-products-empty">
+            <strong>No products added yet.</strong>
+            <p>Your real products will appear here after you add them above.</p>
+          </div>
+        )}
       </section>
     </main>
   );
