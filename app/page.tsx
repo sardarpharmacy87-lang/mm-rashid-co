@@ -115,18 +115,6 @@ export default async function HomePage() {
 
       <main className="bloom-home">
         <section className="bloom-hero">
-          <div className="luxury-hero-film" aria-hidden="true">
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              poster="/images/workshop/stitching-video-poster.jpg"
-            >
-              <source src="/videos/mm-rashid-hero.mp4" type="video/mp4" />
-            </video>
-          </div>
           <div className="bloom-hero-grid" aria-hidden="true" />
 
           <div className="bloom-hero-copy reveal">
@@ -181,6 +169,39 @@ export default async function HomePage() {
           <div className="bloom-scroll-cue" aria-hidden="true">
             <span />
             Scroll to explore
+          </div>
+        </section>
+
+        <section className="luxury-film-section reveal" aria-labelledby="atelier-film-title">
+          <div className="luxury-film-copy">
+            <p className="bloom-eyebrow">Inside the atelier</p>
+            <h2 id="atelier-film-title">The film now has its own space.</h2>
+            <p>
+              A closer look at the hands, materials and concentration behind
+              MM Rashid &amp; Co. craftsmanship in Sialkot.
+            </p>
+          </div>
+
+          <div className="luxury-film-window">
+            <div className="luxury-film-window-bar">
+              <div aria-hidden="true">
+                <span />
+                <span />
+                <span />
+              </div>
+              <strong>ATELIER FILM · SIALKOT</strong>
+              <em>MM RASHID &amp; CO.</em>
+            </div>
+            <video
+              controls
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              poster="/images/workshop/stitching-video-poster.jpg"
+            >
+              <source src="/videos/mm-rashid-hero.mp4" type="video/mp4" />
+            </video>
           </div>
         </section>
 
