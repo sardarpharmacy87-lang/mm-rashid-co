@@ -9,7 +9,8 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <header className="portal-header">
         <Link className="portal-logo" href="/">MM RASHID &amp; CO.</Link>
         <nav aria-label="Administration">
-          <Link href="/admin">Admin dashboard</Link>
+          <Link href="/admin">Dashboard</Link>
+          <Link href="/admin/products">Products</Link>
           <Link href="/customer">Customer view</Link>
           <Link href="/">Website</Link>
           <form action={signOut}><button type="submit">Sign out</button></form>
