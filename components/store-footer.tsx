@@ -26,7 +26,7 @@ export function StoreFooter() {
           <div>
             <strong>Customer</strong>
             <Link href="/sign-in">My account</Link>
-            <Link href="/cart">Quotation basket</Link>
+            <Link href="/cart">Commission brief</Link>
             <Link href="/customer/enquiries/new">Custom enquiry</Link>
           </div>
 
