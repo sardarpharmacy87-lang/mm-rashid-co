@@ -21,11 +21,11 @@ export default async function AdminDashboard({ searchParams }: PageProps) {
 
   return (
     <main className="portal-main">
-      <div className="portal-title-row"><div><p className="portal-kicker">Administration</p><h1>Enquiries and orders</h1><p>Set prices, create quotations and keep customers informed.</p></div></div>
+      <div className="portal-title-row"><div><p className="portal-kicker">Administration</p><h1>Enquiries and orders</h1><p>Review enquiries, create quotations and keep customers informed.</p></div></div>
       {feedback.error ? <p className="form-alert form-alert-error">{feedback.error}</p> : null}
       {feedback.message ? <p className="form-alert form-alert-success">{feedback.message}</p> : null}
 
-      <section className="summary-grid"><article><strong>{customers.length}</strong><span>Customers</span></article><article><strong>{enquiries.filter((item) => ["submitted", "under_review"].includes(item.status)).length}</strong><span>Awaiting price</span></article><article><strong>{orders.filter((item) => !["delivered", "cancelled"].includes(item.status)).length}</strong><span>Active orders</span></article></section>
+      <section className="summary-grid"><article><strong>{customers.length}</strong><span>Customers</span></article><article><strong>{enquiries.filter((item) => ["submitted", "under_review"].includes(item.status)).length}</strong><span>Awaiting review</span></article><article><strong>{orders.filter((item) => !["delivered", "cancelled"].includes(item.status)).length}</strong><span>Active orders</span></article></section>
 
       <section className="portal-section">
         <div className="portal-section-head"><h2>Customer enquiries</h2></div>
