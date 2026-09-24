@@ -19,7 +19,12 @@ export default async function CustomerLayout({ children }: { children: React.Rea
         <nav aria-label="Customer portal">
           <Link href="/customer">Dashboard</Link>
           <Link href="/customer/enquiries/new">New enquiry</Link>
-          {profile?.role === "admin" ? <Link href="/admin">Admin</Link> : null}
+          {profile?.role === "admin" ? (
+            <>
+              <Link href="/admin">Admin</Link>
+              <Link href="/admin/products">Products</Link>
+            </>
+          ) : null}
           <Link href="/">Website</Link>
           <form action={signOut}><button type="submit">Sign out</button></form>
         </nav>
