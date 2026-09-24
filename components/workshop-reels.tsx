@@ -1,5 +1,7 @@
 "use client";
 
+// Short workshop sequence
+
 import { useCallback, useEffect, useRef, useState } from "react";
 
 type WorkshopReel = {
