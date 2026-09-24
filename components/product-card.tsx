@@ -16,7 +16,6 @@ export type ProductCardData = {
   previous_price_usd?: number | null;
   price_on_request: boolean;
   stock_status: string;
-  categories?: { name: string; slug: string } | null;
 };
 
 export function ProductCard({ product }: { product: ProductCardData }) {
@@ -56,7 +55,6 @@ export function ProductCard({ product }: { product: ProductCardData }) {
       </Link>
 
       <div className="store-product-content">
-        <p className="product-category-name">{product.categories?.name ?? "MM Rashid & Co."}</p>
         <Link href={"/products/" + product.slug}>
           <h3>{product.name}</h3>
         </Link>

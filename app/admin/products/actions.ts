@@ -81,6 +81,7 @@ async function collectImages(formData: FormData, existing: string[]) {
     const extension =
       entry.type === "image/png" ? "png" : entry.type === "image/webp" ? "webp" : "jpg";
     const path = "catalogue/" + Date.now() + "-" + crypto.randomUUID() + "." + extension;
+
     const { error } = await supabase.storage.from("product-images").upload(path, entry, {
       cacheControl: "31536000",
       contentType: entry.type,
@@ -98,8 +99,8 @@ async function collectImages(formData: FormData, existing: string[]) {
 function productPayload(formData: FormData, images: string[]) {
   const name = textValue(formData, "name");
   const requestedSlug = textValue(formData, "slug");
+
   return {
-    category_id: textValue(formData, "categoryId") || null,
     name,
     slug: slugify(requestedSlug || name),
     sku: textValue(formData, "sku") || null,
@@ -119,28 +120,6 @@ function productPayload(formData: FormData, images: string[]) {
     sort_order: Number(textValue(formData, "sortOrder")) || 0,
     updated_at: new Date().toISOString(),
   };
-}
-
-export async function createCategory(formData: FormData) {
-  await requireAdmin();
-  const name = textValue(formData, "name");
-  if (!name) redirect("/admin/products?error=" + encodeURIComponent("Category name is required"));
-
-  const supabase = await createClient();
-  const { error } = await supabase.from("categories").insert({
-    name,
-    slug: slugify(textValue(formData, "slug") || name),
-    description: textValue(formData, "description") || null,
-    image_url: textValue(formData, "imageUrl") || null,
-    sort_order: Number(textValue(formData, "sortOrder")) || 0,
-    active: true,
-  });
-  if (error) redirect("/admin/products?error=" + encodeURIComponent(error.message));
-
-  revalidatePath("/");
-  revalidatePath("/products");
-  revalidatePath("/admin/products");
-  redirect("/admin/products?message=" + encodeURIComponent("Category added"));
 }
 
 export async function createProduct(formData: FormData) {

@@ -13,20 +13,22 @@ export default async function EditProductPage({ params, searchParams }: PageProp
   const feedback = await searchParams;
   const supabase = await createClient();
 
-  const [productResult, categoriesResult, variantsResult] = await Promise.all([
+  const [productResult, variantsResult] = await Promise.all([
     supabase.from("products").select("*").eq("id", id).single(),
-    supabase.from("categories").select("id, name").order("sort_order", { ascending: true }),
     supabase.from("product_variants").select("*").eq("product_id", id).order("sort_order", { ascending: true }),
   ]);
 
   const product = productResult.data;
   if (!product) notFound();
-  const categories = categoriesResult.data ?? [];
   const variants = variantsResult.data ?? [];
 
-  const specs = product.specifications && typeof product.specifications === "object"
-    ? Object.entries(product.specifications as Record<string, unknown>).map(([key, value]) => key + ": " + String(value)).join("\n")
-    : "";
+  const specs =
+    product.specifications && typeof product.specifications === "object"
+      ? Object.entries(product.specifications as Record<string, unknown>)
+          .map(([key, value]) => key + ": " + String(value))
+          .join("\n")
+      : "";
+
   const variantText = variants
     .map((variant) => variant.label + "|" + (variant.price_pkr ?? "") + "|" + (variant.price_usd ?? ""))
     .join("\n");
@@ -34,8 +36,13 @@ export default async function EditProductPage({ params, searchParams }: PageProp
   return (
     <main className="portal-main portal-narrow">
       <Link className="back-link" href="/admin/products">← Products</Link>
+
       <div className="portal-title-row">
-        <div><p className="portal-kicker">Edit product</p><h1>{product.name}</h1><p>{product.sku ?? product.slug}</p></div>
+        <div>
+          <p className="portal-kicker">Edit product</p>
+          <h1>{product.name}</h1>
+          <p>{product.sku ?? product.slug}</p>
+        </div>
         <Link className="portal-button" href={"/products/" + product.slug}>View product</Link>
       </div>
 
@@ -44,17 +51,17 @@ export default async function EditProductPage({ params, searchParams }: PageProp
 
       <form action={updateProduct} className="portal-form portal-card commerce-admin-form">
         <input type="hidden" name="productId" value={product.id} />
+
         <div className="form-grid">
           <label>Product name<input name="name" required defaultValue={product.name} /></label>
           <label>SKU<input name="sku" defaultValue={product.sku ?? ""} /></label>
-          <label>Category<select name="categoryId" defaultValue={product.category_id ?? ""}><option value="">Uncategorized</option>{categories.map((category) => <option value={category.id} key={category.id}>{category.name}</option>)}</select></label>
           <label>Slug<input name="slug" defaultValue={product.slug} /></label>
+          <label>Sort order<input name="sortOrder" type="number" defaultValue={product.sort_order ?? 0} /></label>
           <label>PKR price<input name="pricePkr" type="number" min="0" step="0.01" defaultValue={product.price_pkr ?? ""} /></label>
           <label>USD price<input name="priceUsd" type="number" min="0" step="0.01" defaultValue={product.price_usd ?? ""} /></label>
           <label>Previous PKR price<input name="previousPricePkr" type="number" min="0" step="0.01" defaultValue={product.previous_price_pkr ?? ""} /></label>
           <label>Previous USD price<input name="previousPriceUsd" type="number" min="0" step="0.01" defaultValue={product.previous_price_usd ?? ""} /></label>
           <label>Stock status<select name="stockStatus" defaultValue={product.stock_status}><option value="made_to_order">Made to order</option><option value="in_stock">In stock</option><option value="out_of_stock">Out of stock</option></select></label>
-          <label>Sort order<input name="sortOrder" type="number" defaultValue={product.sort_order ?? 0} /></label>
           <label className="form-span-two">Short description<input name="shortDescription" defaultValue={product.short_description ?? ""} /></label>
           <label className="form-span-two">Full description<textarea name="description" rows={5} defaultValue={product.description ?? ""} /></label>
           <label className="form-span-two">Upload more images (maximum five total)<input name="images" type="file" accept="image/jpeg,image/png,image/webp" multiple /></label>

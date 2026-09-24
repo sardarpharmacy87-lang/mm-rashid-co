@@ -4,10 +4,11 @@ import { createClient } from "@/lib/supabase/server";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://mm-rashid-co-l5hh.vercel.app";
   const supabase = await createClient();
-  const [{ data: products = [] }, { data: categories = [] }] = await Promise.all([
-    supabase.from("products").select("slug, updated_at").eq("active", true),
-    supabase.from("categories").select("slug, updated_at").eq("active", true),
-  ]);
+
+  const { data: products = [] } = await supabase
+    .from("products")
+    .select("slug, updated_at")
+    .eq("active", true);
 
   return [
     { url: baseUrl, changeFrequency: "weekly", priority: 1 },
@@ -17,12 +18,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: product.updated_at ? new Date(product.updated_at) : undefined,
       changeFrequency: "weekly" as const,
       priority: 0.8,
-    })),
-    ...categories.map((category) => ({
-      url: baseUrl + "/products?category=" + encodeURIComponent(category.slug),
-      lastModified: category.updated_at ? new Date(category.updated_at) : undefined,
-      changeFrequency: "weekly" as const,
-      priority: 0.7,
     })),
   ];
 }
