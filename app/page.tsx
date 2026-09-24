@@ -3,6 +3,7 @@ import { Brand } from "@/components/brand";
 import { RevealController } from "@/components/reveal-controller";
 import { SiteHeader } from "@/components/site-header";
 import { HomeHeroSlider } from "@/components/home-hero-slider";
+import { RegaliaShowcaseSlider } from "@/components/regalia-showcase-slider";
 import { catalogue } from "@/lib/catalogue";
 
 const categories = [
@@ -127,6 +128,7 @@ export default function HomePage() {
 
       <main>
         <HomeHeroSlider />
+        <RegaliaShowcaseSlider />
 
         <section className="commerce-section category-section" id="craft">
           <div className="commerce-heading reveal">
