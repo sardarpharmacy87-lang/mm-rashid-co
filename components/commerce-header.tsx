@@ -5,9 +5,7 @@ import { useState } from "react";
 import { Brand } from "@/components/brand";
 import { useCommerce } from "@/components/commerce-provider";
 
-type CategoryNav = { name: string; slug: string };
-
-export function CommerceHeader({ categories }: { categories: CategoryNav[] }) {
+export function CommerceHeader() {
   const { currency, setCurrency, cartCount } = useCommerce();
   const [open, setOpen] = useState(false);
 
@@ -28,7 +26,7 @@ export function CommerceHeader({ categories }: { categories: CategoryNav[] }) {
               type="search"
               name="q"
               aria-label="Search products"
-              placeholder="Search aprons, badges, caps, banners..."
+              placeholder="Search products..."
             />
             <button type="submit">Search</button>
           </form>
@@ -75,18 +73,11 @@ export function CommerceHeader({ categories }: { categories: CategoryNav[] }) {
           </div>
         </div>
 
-        <nav className={"store-category-nav " + (open ? "is-open" : "")} aria-label="Product categories">
-          <Link href="/products" onClick={() => setOpen(false)}>Shop all</Link>
-          {categories.slice(0, 7).map((category) => (
-            <Link
-              key={category.slug}
-              href={"/products?category=" + encodeURIComponent(category.slug)}
-              onClick={() => setOpen(false)}
-            >
-              {category.name}
-            </Link>
-          ))}
+        <nav className={"store-main-nav " + (open ? "is-open" : "")} aria-label="Main navigation">
+          <Link href="/products" onClick={() => setOpen(false)}>Products</Link>
           <Link href="/#heritage" onClick={() => setOpen(false)}>Our history</Link>
+          <Link href="/#workshop" onClick={() => setOpen(false)}>Workshop</Link>
+          <Link href="/sign-in" onClick={() => setOpen(false)}>My account</Link>
           <Link className="nav-quote-link" href="/customer/enquiries/new" onClick={() => setOpen(false)}>
             Custom enquiry
           </Link>
