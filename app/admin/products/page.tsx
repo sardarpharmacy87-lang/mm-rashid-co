@@ -1,9 +1,22 @@
 import Link from "next/link";
-import { createProduct, deleteProduct } from "@/app/admin/products/actions";
+import {
+  createProduct,
+  createProductGroup,
+  deleteProduct,
+  deleteProductGroup,
+} from "@/app/admin/products/actions";
 import { createClient } from "@/lib/supabase/server";
 
 type PageProps = {
   searchParams: Promise<{ error?: string; message?: string }>;
+};
+
+type ProductGroup = {
+  id: string;
+  name: string;
+  slug: string;
+  sort_order: number;
+  active: boolean;
 };
 
 type AdminProduct = {
@@ -15,18 +28,28 @@ type AdminProduct = {
   stock_status: string;
   active: boolean;
   featured: boolean;
+  product_group_id: string | null;
+  product_groups?: { name: string } | null;
 };
 
 export default async function AdminProductsPage({ searchParams }: PageProps) {
   const feedback = await searchParams;
   const supabase = await createClient();
 
-  const result = await supabase
-    .from("products")
-    .select("id, name, slug, sku, primary_image, stock_status, active, featured")
-    .order("sort_order", { ascending: true });
+  const [productsResult, groupsResult] = await Promise.all([
+    supabase
+      .from("products")
+      .select("id, name, slug, sku, primary_image, stock_status, active, featured, product_group_id, product_groups(name)")
+      .order("sort_order", { ascending: true }),
+    supabase
+      .from("product_groups")
+      .select("id, name, slug, sort_order, active")
+      .order("sort_order", { ascending: true })
+      .order("name", { ascending: true }),
+  ]);
 
-  const products = (result.data ?? []) as AdminProduct[];
+  const products = (productsResult.data ?? []) as AdminProduct[];
+  const groups = (groupsResult.data ?? []) as ProductGroup[];
 
   return (
     <main className="portal-main">
@@ -34,7 +57,7 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
         <div>
           <p className="portal-kicker">Product administration</p>
           <h1>Products</h1>
-          <p>Add products, options, stock status, specifications and images. Prices are not used on the website.</p>
+          <p>Create the names you want customers to browse, then place each product under one of them.</p>
         </div>
         <Link className="portal-button" href="/">View website</Link>
       </div>
@@ -44,15 +67,58 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
 
       <section className="summary-grid">
         <article><strong>{products.length}</strong><span>Products</span></article>
-        <article><strong>{products.filter((item) => item.featured).length}</strong><span>Featured</span></article>
+        <article><strong>{groups.length}</strong><span>Product groups</span></article>
         <article><strong>{products.filter((item) => item.active).length}</strong><span>Live</span></article>
       </section>
 
       <section className="portal-section">
         <div className="portal-section-head">
           <div>
+            <h2>Product groups</h2>
+            <p>Customers will see only these names, for example Fez, Caps or Jackets.</p>
+          </div>
+        </div>
+
+        <form action={createProductGroup} className="portal-form portal-card commerce-admin-form">
+          <div className="form-grid">
+            <label>Name<input name="groupName" required placeholder="Fez" /></label>
+            <label>Slug<input name="groupSlug" placeholder="auto-created if blank" /></label>
+            <label>Order<input name="groupSortOrder" type="number" defaultValue="0" /></label>
+          </div>
+          <button className="portal-button" type="submit">Add name</button>
+        </form>
+
+        {groups.length ? (
+          <div className="portal-table-wrap">
+            <table className="portal-table">
+              <thead>
+                <tr><th>Name</th><th>Link</th><th>Order</th><th /></tr>
+              </thead>
+              <tbody>
+                {groups.map((group) => (
+                  <tr key={group.id}>
+                    <td><strong>{group.name}</strong></td>
+                    <td><Link href={"/products?group=" + group.slug}>/{group.slug}</Link></td>
+                    <td>{group.sort_order}</td>
+                    <td className="admin-row-actions">
+                      <form action={deleteProductGroup}>
+                        <input type="hidden" name="groupId" value={group.id} />
+                        <button type="submit">Delete</button>
+                      </form>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : null}
+      </section>
+
+      <section className="portal-section">
+        <div className="portal-section-head">
+          <div>
             <h2>Add product</h2>
-            <p>No brand, category, subcategory or price fields.</p>
+            <p>Choose where it should appear, then add its product details and images.</p>
           </div>
         </div>
 
@@ -60,6 +126,15 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
           <div className="form-grid">
             <label>Product name<input name="name" required /></label>
             <label>SKU<input name="sku" placeholder="MMR-..." /></label>
+            <label>
+              Show under
+              <select name="productGroupId" defaultValue="">
+                <option value="">Choose a name</option>
+                {groups.map((group) => (
+                  <option value={group.id} key={group.id}>{group.name}</option>
+                ))}
+              </select>
+            </label>
             <label>Slug<input name="slug" placeholder="auto-created if blank" /></label>
             <label>Sort order<input name="sortOrder" type="number" defaultValue="0" /></label>
             <label>
@@ -93,7 +168,7 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
         <div className="portal-table-wrap">
           <table className="portal-table">
             <thead>
-              <tr><th>Product</th><th>Stock</th><th>Visibility</th><th /></tr>
+              <tr><th>Product</th><th>Under</th><th>Stock</th><th>Visibility</th><th /></tr>
             </thead>
             <tbody>
               {products.map((product) => (
@@ -107,6 +182,7 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
                       </div>
                     </div>
                   </td>
+                  <td>{product.product_groups?.name ?? "—"}</td>
                   <td>{product.stock_status.split("_").join(" ")}</td>
                   <td>{product.active ? "Live" : "Hidden"}{product.featured ? " · Featured" : ""}</td>
                   <td className="admin-row-actions">
