@@ -57,6 +57,24 @@ export default async function HomePage() {
 
   const groups = (groupsResult.data ?? []) as ProductGroup[];
   const products = (productsResult.data ?? []) as HomeProduct[];
+  const siteUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://mm-rashid-co-l5hh.vercel.app";
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "MM Rashid & Co.",
+    url: siteUrl,
+    logo: siteUrl + "/mm-rashid-logo.png",
+    foundingDate: "1922",
+    telephone: "+92 334 334 2223",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Commissioner Road",
+      addressLocality: "Sialkot",
+      postalCode: "51310",
+      addressCountry: "PK",
+    },
+  };
 
   return (
     <div className="store-shell">
@@ -222,6 +240,10 @@ export default async function HomePage() {
         </section>
       </main>
 
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
       <StoreFooter />
     </div>
   );
