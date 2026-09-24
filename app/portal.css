@@ -331,3 +331,126 @@
 .admin-products-empty p {
   margin: 0;
 }
+
+/* PREMIUM ENQUIRY EXPERIENCE */
+.commission-enquiry-page {
+  width: min(calc(100% - 40px), 1180px);
+  max-width: none;
+}
+.commission-enquiry-intro {
+  display: grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: clamp(36px,6vw,90px);
+  align-items: end;
+  margin-bottom: 34px;
+  padding: clamp(34px,5vw,62px);
+  color: #fff;
+  background:
+    radial-gradient(circle at 88% 14%,rgba(234,182,44,.14),transparent 26%),
+    linear-gradient(125deg,#04122d,#0a2b62);
+  border-bottom: 3px solid var(--portal-gold);
+}
+.commission-enquiry-intro .portal-kicker {
+  color: #e6ca80;
+}
+.commission-enquiry-intro h1 {
+  max-width: 720px;
+  margin: 0;
+  color: #fff;
+  font-family: Georgia,"Times New Roman",serif;
+  font-size: clamp(3.4rem,6vw,6.5rem);
+  font-weight: 500;
+  letter-spacing: -.055em;
+  line-height: .92;
+}
+.commission-enquiry-intro > div:first-child > p:last-child {
+  max-width: 650px;
+  margin: 22px 0 0;
+  color: rgba(255,255,255,.66);
+  line-height: 1.8;
+}
+.commission-enquiry-note {
+  padding: 24px;
+  border: 1px solid rgba(255,255,255,.15);
+  background: rgba(255,255,255,.055);
+}
+.commission-enquiry-note > span {
+  display: block;
+  color: #e6ca80;
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: .14em;
+}
+.commission-enquiry-note > strong {
+  display: block;
+  margin-top: 20px;
+  color: #fff;
+  font-family: Georgia,serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+.commission-enquiry-note > p {
+  margin: 10px 0 0;
+  color: rgba(255,255,255,.58);
+  font-size: 13px;
+  line-height: 1.65;
+}
+.commission-checklist {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 1px;
+  margin-bottom: 32px;
+  border: 1px solid var(--portal-line);
+  background: var(--portal-line);
+}
+.commission-checklist article {
+  min-height: 185px;
+  padding: 24px;
+  background: #fff;
+}
+.commission-checklist article > span {
+  color: #9d7410;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .12em;
+}
+.commission-checklist article > strong {
+  display: block;
+  margin-top: 28px;
+  color: var(--portal-navy);
+  font-family: Georgia,serif;
+  font-size: 1.05rem;
+}
+.commission-checklist article > p {
+  margin: 8px 0 0;
+  color: var(--portal-muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.commission-enquiry-page > .portal-form {
+  padding: clamp(28px,4vw,44px);
+  border-top: 3px solid var(--portal-gold);
+  box-shadow: 0 24px 70px rgba(7,26,71,.08);
+}
+@media (max-width: 900px) {
+  .commission-enquiry-intro {
+    grid-template-columns: 1fr;
+  }
+  .commission-checklist {
+    grid-template-columns: repeat(2,1fr);
+  }
+}
+@media (max-width: 600px) {
+  .commission-enquiry-page {
+    width: min(calc(100% - 24px),1180px);
+  }
+  .commission-enquiry-intro {
+    padding: 28px 22px;
+  }
+  .commission-checklist {
+    grid-template-columns: 1fr;
+  }
+  .commission-checklist article {
+    min-height: auto;
+  }
+}

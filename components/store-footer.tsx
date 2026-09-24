@@ -18,9 +18,10 @@ export function StoreFooter() {
           <div>
             <strong>Explore</strong>
             <Link href="/products">Products</Link>
+            <Link href="/capabilities">Capabilities</Link>
+            <Link href="/catalogue">Catalogue</Link>
             <Link href="/#heritage">Our history</Link>
             <Link href="/#workshop">Workshop</Link>
-            <Link href="/#process">How we work</Link>
           </div>
 
           <div>

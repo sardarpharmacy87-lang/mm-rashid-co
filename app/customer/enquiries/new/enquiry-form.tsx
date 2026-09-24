@@ -63,15 +63,15 @@ export function EnquiryForm() {
       {error ? <p className="form-alert form-alert-error">{error}</p> : null}
       <label>Enquiry title<input name="title" placeholder="Example: Gold bullion cap badges" required /></label>
       <div className="form-grid">
-        <label>Category<select name="category" defaultValue="goldwork" required><option value="goldwork">Goldwork &amp; bullion</option><option value="military">Military &amp; ceremonial</option><option value="regalia">Regalia embroidery</option><option value="crest">Custom crests</option><option value="cap-visor">Caps &amp; visors</option><option value="fez">Custom fez work</option><option value="other">Other</option></select></label>
+        <label>Work type<select name="category" defaultValue="goldwork" required><option value="goldwork">Goldwork &amp; bullion</option><option value="military">Military &amp; ceremonial</option><option value="regalia">Regalia embroidery</option><option value="crest">Custom crests</option><option value="cap-visor">Caps &amp; visors</option><option value="fez">Custom fez work</option><option value="other">Other</option></select></label>
         <label>Quantity<input name="quantity" type="number" min="1" defaultValue="1" required /></label>
         <label>Delivery country<input name="deliveryCountry" required /></label>
         <label>Required by <span className="optional">optional</span><input name="requiredBy" type="date" /></label>
       </div>
-      <label>Complete requirements<textarea name="description" rows={8} minLength={20} placeholder="Describe size, colours, materials, measurements, intended use and any special finish." required /></label>
+      <label>Requirements<textarea name="description" rows={8} minLength={20} placeholder="Size, colours, materials, measurements, finish and any construction details." required /></label>
 
       <label className="attachment-picker">
-        Reference images and videos <span className="optional">optional, maximum 10 files</span>
+        Artwork, reference images and videos <span className="optional">optional, maximum 10 files</span>
         <input
           name="attachments"
           type="file"
