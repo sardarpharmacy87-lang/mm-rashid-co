@@ -172,38 +172,6 @@ export default async function HomePage() {
           </div>
         </section>
 
-        <section className="luxury-film-section reveal" aria-labelledby="owner-interview-title">
-          <div className="luxury-film-copy">
-            <p className="bloom-eyebrow">Owner interview</p>
-            <h2 id="owner-interview-title">The story behind MM Rashid &amp; Co.</h2>
-            <p>
-              Hear directly from the company about its history, craftsmanship,
-              workshop tradition and the values carried forward in Sialkot.
-            </p>
-          </div>
-
-          <div className="luxury-film-window">
-            <div className="luxury-film-window-bar">
-              <div aria-hidden="true">
-                <span />
-                <span />
-                <span />
-              </div>
-              <strong>OWNER INTERVIEW · MM RASHID &amp; CO.</strong>
-              <em>SIALKOT · PAKISTAN</em>
-            </div>
-            <div className="luxury-youtube-frame">
-              <iframe
-                src="https://www.youtube-nocookie.com/embed/h9EH23XPLOk?rel=0"
-                title="MM Rashid & Co. owner interview"
-                loading="lazy"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-              />
-            </div>
-          </div>
-        </section>
-
         <section className="bloom-statement reveal">
           <p className="bloom-eyebrow">MM Rashid &amp; Co.</p>
           <div className="bloom-statement-grid">
