@@ -13,8 +13,8 @@ export function CartClient() {
   if (!cart.length) {
     return (
       <div className="cart-empty">
-        <h1>Your quotation basket is empty</h1>
-        <p>Add products from the catalogue, then submit them together for a quotation.</p>
+        <h1>Your commission brief is empty</h1>
+        <p>Choose the pieces you are interested in, then send them together as one custom commission enquiry.</p>
         <Link className="store-primary-button" href="/products">Browse products</Link>
       </div>
     );
@@ -25,10 +25,10 @@ export function CartClient() {
       <section className="cart-items">
         <div className="cart-title-row">
           <div>
-            <p className="store-kicker">Quotation basket</p>
-            <h1>Your selected products</h1>
+            <p className="store-kicker">Commission brief</p>
+            <h1>Your selected pieces</h1>
           </div>
-          <button type="button" onClick={clearCart}>Clear basket</button>
+          <button type="button" onClick={clearCart}>Clear brief</button>
         </div>
 
         {cart.map((item) => (
@@ -64,7 +64,7 @@ export function CartClient() {
       </section>
 
       <aside className="cart-summary">
-        <h2>Request quotation</h2>
+        <h2>Send commission brief</h2>
         <p>
           Submit the full basket to MM Rashid &amp; Co. We will review quantity,
           artwork, customization and delivery requirements before issuing a quotation.
@@ -86,7 +86,7 @@ export function CartClient() {
             Notes / customization
             <textarea name="customerNote" rows={4} placeholder="Colours, artwork, dimensions, event date..." />
           </label>
-          <button type="submit">Submit quotation request</button>
+          <button type="submit">Send commission enquiry</button>
         </form>
 
         <p className="cart-login-note">You will be asked to sign in if you are not already logged in.</p>
