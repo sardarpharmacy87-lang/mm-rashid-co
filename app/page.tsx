@@ -128,6 +128,12 @@ export default async function HomePage() {
               <span>02</span>
               <strong>Custom regalia</strong>
             </div>
+
+            <div className="luxury-seal" aria-label="Established 1922 in Sialkot">
+              <span>EST.</span>
+              <strong>1922</strong>
+              <em>SIALKOT</em>
+            </div>
           </div>
 
           <div className="bloom-scroll-cue" aria-hidden="true">
@@ -153,6 +159,14 @@ export default async function HomePage() {
             </div>
           </div>
         </section>
+
+        <div className="luxury-marquee" aria-hidden="true">
+          <span>GOLDWORK</span><i>◆</i>
+          <span>BULLION</span><i>◆</i>
+          <span>CEREMONIAL</span><i>◆</i>
+          <span>BESPOKE</span><i>◆</i>
+          <span>HANDCRAFTED IN SIALKOT</span>
+        </div>
 
         {groups.length ? (
           <section className="bloom-groups reveal" aria-label="Product groups">
