@@ -7,35 +7,28 @@ import { createClient } from "@/lib/supabase/server";
 export default async function HomePage() {
   const supabase = await createClient();
 
-  const [categoriesResult, featuredResult, latestResult] = await Promise.all([
-    supabase
-      .from("categories")
-      .select("id, name, slug, description, image_url")
-      .eq("active", true)
-      .order("sort_order", { ascending: true })
-      .limit(8),
+  const [featuredResult, latestResult] = await Promise.all([
     supabase
       .from("products")
-      .select("id, name, slug, sku, short_description, primary_image, price_pkr, price_usd, previous_price_pkr, previous_price_usd, price_on_request, stock_status, categories(name, slug)")
+      .select("id, name, slug, sku, short_description, primary_image, price_pkr, price_usd, previous_price_pkr, previous_price_usd, price_on_request, stock_status")
       .eq("active", true)
       .eq("featured", true)
       .order("sort_order", { ascending: true })
       .limit(8),
     supabase
       .from("products")
-      .select("id, name, slug, sku, short_description, primary_image, price_pkr, price_usd, previous_price_pkr, previous_price_usd, price_on_request, stock_status, categories(name, slug)")
+      .select("id, name, slug, sku, short_description, primary_image, price_pkr, price_usd, previous_price_pkr, previous_price_usd, price_on_request, stock_status")
       .eq("active", true)
       .order("created_at", { ascending: false })
       .limit(8),
   ]);
 
-  const categories = categoriesResult.data ?? [];
-  const featured = (featuredResult.data ?? []) as unknown as ProductCardData[];
-  const latest = (latestResult.data ?? []) as unknown as ProductCardData[];
+  const featured = (featuredResult.data ?? []) as ProductCardData[];
+  const latest = (latestResult.data ?? []) as ProductCardData[];
 
   return (
     <div className="store-shell">
-      <CommerceHeader categories={categories.map(({ name, slug }) => ({ name, slug }))} />
+      <CommerceHeader />
 
       <main>
         <section className="commerce-hero">
@@ -43,11 +36,11 @@ export default async function HomePage() {
             <p className="store-kicker">MM Rashid &amp; Co. · Established 1922</p>
             <h1>Handcrafted regalia, made around your identity.</h1>
             <p>
-              Custom aprons, collars, bullion badges, ceremonial headwear, banners and
-              accessories made in Sialkot for customers worldwide.
+              Custom ceremonial embroidery, bullion work, headwear, banners,
+              badges and accessories made in Sialkot for customers worldwide.
             </p>
             <div className="commerce-hero-actions">
-              <Link className="store-primary-button" href="/products">Shop collection</Link>
+              <Link className="store-primary-button" href="/products">View products</Link>
               <Link className="store-secondary-button" href="/customer/enquiries/new">Send custom artwork</Link>
             </div>
             <div className="hero-trust">
@@ -61,42 +54,13 @@ export default async function HomePage() {
             <div className="hero-product-ring" />
             <img
               src="/images/showcase/fraternal-apron.webp"
-              alt="Custom ceremonial apron by MM Rashid and Company"
+              alt="Custom ceremonial work by MM Rashid and Company"
             />
             <div className="hero-floating-card">
               <small>Featured craft</small>
-              <strong>Fraternal ceremonial regalia</strong>
-              <Link href="/products/fraternal-ceremonial-apron">View product →</Link>
+              <strong>Handcrafted ceremonial regalia</strong>
+              <Link href="/products">View products →</Link>
             </div>
-          </div>
-        </section>
-
-        <section className="store-section category-shop" aria-labelledby="shop-categories">
-          <div className="store-section-heading">
-            <div>
-              <p className="store-kicker">Browse our craft</p>
-              <h2 id="shop-categories">Shop by category</h2>
-            </div>
-            <Link href="/products">View all products →</Link>
-          </div>
-
-          <div className="shop-category-grid">
-            {categories.map((category) => (
-              <Link
-                className="shop-category-card"
-                href={"/products?category=" + encodeURIComponent(category.slug)}
-                key={category.id}
-              >
-                <div className="shop-category-image">
-                  {category.image_url ? <img src={category.image_url} alt="" loading="lazy" /> : null}
-                </div>
-                <div>
-                  <h3>{category.name}</h3>
-                  <p>{category.description}</p>
-                  <span>Explore collection →</span>
-                </div>
-              </Link>
-            ))}
           </div>
         </section>
 
@@ -106,7 +70,7 @@ export default async function HomePage() {
               <p className="store-kicker">Selected work</p>
               <h2>Featured products</h2>
             </div>
-            <Link href="/products">Browse full catalogue →</Link>
+            <Link href="/products">Browse all products →</Link>
           </div>
 
           <div className="store-product-grid">
@@ -148,8 +112,8 @@ export default async function HomePage() {
               identity, rank and tradition.
             </p>
             <p>
-              Today MM Rashid &amp; Co. continues that specialist work for lodges,
-              institutions, uniform businesses and private customers around the world.
+              Today MM Rashid &amp; Co. continues that specialist work for institutions,
+              uniform businesses and private customers around the world.
             </p>
             <Link href="/customer/enquiries/new">Discuss a commission →</Link>
           </div>
