@@ -13,14 +13,21 @@ export default async function EditProductPage({ params, searchParams }: PageProp
   const feedback = await searchParams;
   const supabase = await createClient();
 
-  const [productResult, variantsResult] = await Promise.all([
+  const [productResult, variantsResult, groupsResult] = await Promise.all([
     supabase.from("products").select("*").eq("id", id).single(),
     supabase.from("product_variants").select("*").eq("product_id", id).order("sort_order", { ascending: true }),
+    supabase
+      .from("product_groups")
+      .select("id, name")
+      .eq("active", true)
+      .order("sort_order", { ascending: true })
+      .order("name", { ascending: true }),
   ]);
 
   const product = productResult.data;
   if (!product) notFound();
   const variants = variantsResult.data ?? [];
+  const groups = groupsResult.data ?? [];
 
   const specs =
     product.specifications && typeof product.specifications === "object"
@@ -53,6 +60,15 @@ export default async function EditProductPage({ params, searchParams }: PageProp
         <div className="form-grid">
           <label>Product name<input name="name" required defaultValue={product.name} /></label>
           <label>SKU<input name="sku" defaultValue={product.sku ?? ""} /></label>
+          <label>
+            Show under
+            <select name="productGroupId" defaultValue={product.product_group_id ?? ""}>
+              <option value="">Choose a name</option>
+              {groups.map((group) => (
+                <option value={group.id} key={group.id}>{group.name}</option>
+              ))}
+            </select>
+          </label>
           <label>Slug<input name="slug" defaultValue={product.slug} /></label>
           <label>Sort order<input name="sortOrder" type="number" defaultValue={product.sort_order ?? 0} /></label>
           <label>Stock status<select name="stockStatus" defaultValue={product.stock_status}><option value="made_to_order">Made to order</option><option value="in_stock">In stock</option><option value="out_of_stock">Out of stock</option></select></label>
