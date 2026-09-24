@@ -29,7 +29,6 @@ type AdminProduct = {
   active: boolean;
   featured: boolean;
   product_group_id: string | null;
-  product_groups?: { name: string } | null;
 };
 
 export default async function AdminProductsPage({ searchParams }: PageProps) {
@@ -39,7 +38,7 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
   const [productsResult, groupsResult] = await Promise.all([
     supabase
       .from("products")
-      .select("id, name, slug, sku, primary_image, stock_status, active, featured, product_group_id, product_groups(name)")
+      .select("id, name, slug, sku, primary_image, stock_status, active, featured, product_group_id")
       .order("sort_order", { ascending: true }),
     supabase
       .from("product_groups")
@@ -50,6 +49,7 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
 
   const products = (productsResult.data ?? []) as AdminProduct[];
   const groups = (groupsResult.data ?? []) as ProductGroup[];
+  const groupNameById = new Map(groups.map((group) => [group.id, group.name]));
 
   return (
     <main className="portal-main">
@@ -182,7 +182,7 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
                       </div>
                     </div>
                   </td>
-                  <td>{product.product_groups?.name ?? "—"}</td>
+                  <td>{product.product_group_id ? groupNameById.get(product.product_group_id) ?? "—" : "—"}</td>
                   <td>{product.stock_status.split("_").join(" ")}</td>
                   <td>{product.active ? "Live" : "Hidden"}{product.featured ? " · Featured" : ""}</td>
                   <td className="admin-row-actions">
