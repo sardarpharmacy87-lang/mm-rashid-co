@@ -11,26 +11,6 @@ type PageProps = {
   searchParams: Promise<{ error?: string; message?: string }>;
 };
 
-type ProductGroup = {
-  id: string;
-  name: string;
-  slug: string;
-  sort_order: number;
-  active: boolean;
-};
-
-type AdminProduct = {
-  id: string;
-  name: string;
-  slug: string;
-  sku: string | null;
-  primary_image: string | null;
-  stock_status: string;
-  active: boolean;
-  featured: boolean;
-  product_group_id: string | null;
-};
-
 export default async function AdminProductsPage({ searchParams }: PageProps) {
   const feedback = await searchParams;
   const supabase = await createClient();
@@ -47,8 +27,8 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
       .order("name", { ascending: true }),
   ]);
 
-  const products = (productsResult.data ?? []) as AdminProduct[];
-  const groups = (groupsResult.data ?? []) as ProductGroup[];
+  const products = (productsResult.data ?? []) as any[];
+  const groups = (groupsResult.data ?? []) as any[];
   const groupNameById = new Map(groups.map((group) => [group.id, group.name]));
 
   return (
