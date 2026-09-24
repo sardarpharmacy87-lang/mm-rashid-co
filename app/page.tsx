@@ -4,27 +4,36 @@ import { ProductCard, type ProductCardData } from "@/components/product-card";
 import { StoreFooter } from "@/components/store-footer";
 import { createClient } from "@/lib/supabase/server";
 
+type ProductGroup = {
+  id: string;
+  name: string;
+  slug: string;
+};
+
+type HomeProduct = ProductCardData & {
+  product_group_id: string | null;
+};
+
 export default async function HomePage() {
   const supabase = await createClient();
 
-  const [featuredResult, latestResult] = await Promise.all([
+  const [groupsResult, productsResult] = await Promise.all([
     supabase
-      .from("products")
-      .select("id, name, slug, sku, short_description, primary_image, stock_status")
+      .from("product_groups")
+      .select("id, name, slug")
       .eq("active", true)
-      .eq("featured", true)
       .order("sort_order", { ascending: true })
-      .limit(8),
+      .order("name", { ascending: true }),
     supabase
       .from("products")
-      .select("id, name, slug, sku, short_description, primary_image, stock_status")
+      .select("id, name, slug, sku, short_description, primary_image, stock_status, product_group_id")
       .eq("active", true)
-      .order("created_at", { ascending: false })
-      .limit(8),
+      .order("sort_order", { ascending: true })
+      .order("name", { ascending: true }),
   ]);
 
-  const featured = (featuredResult.data ?? []) as ProductCardData[];
-  const latest = (latestResult.data ?? []) as ProductCardData[];
+  const groups = (groupsResult.data ?? []) as ProductGroup[];
+  const products = (productsResult.data ?? []) as HomeProduct[];
 
   return (
     <div className="store-shell">
@@ -58,19 +67,32 @@ export default async function HomePage() {
           </div>
         </section>
 
-        <section className="store-section product-shop" id="featured">
-          <div className="store-section-heading">
-            <div>
-              <p className="store-kicker">Selected work</p>
-              <h2>Featured products</h2>
-            </div>
-            <Link href="/products">Browse all products →</Link>
-          </div>
+        {groups.length ? (
+          <nav className="product-group-nav home-product-group-nav" aria-label="Browse products">
+            {groups.map((group) => (
+              <Link href={"/products?group=" + group.slug} key={group.id}>{group.name}</Link>
+            ))}
+          </nav>
+        ) : null}
 
-          <div className="store-product-grid">
-            {featured.map((product) => <ProductCard key={product.id} product={product} />)}
-          </div>
-        </section>
+        {groups.map((group) => {
+          const groupProducts = products.filter((product) => product.product_group_id === group.id);
+          if (!groupProducts.length) return null;
+
+          return (
+            <section className="store-section product-shop home-product-group" key={group.id}>
+              <div className="store-section-heading">
+                <div><h2>{group.name}</h2></div>
+                <Link href={"/products?group=" + group.slug}>View all →</Link>
+              </div>
+              <div className="store-product-grid">
+                {groupProducts.slice(0, 8).map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            </section>
+          );
+        })}
 
         <section className="custom-order-strip">
           <div>
@@ -78,19 +100,6 @@ export default async function HomePage() {
             <h2>Send artwork, measurements and quantity. We build the detail.</h2>
           </div>
           <Link href="/customer/enquiries/new">Start custom enquiry →</Link>
-        </section>
-
-        <section className="store-section product-shop">
-          <div className="store-section-heading">
-            <div>
-              <p className="store-kicker">Recently added</p>
-              <h2>More from the workshop</h2>
-            </div>
-            <Link href="/products?sort=newest">See newest →</Link>
-          </div>
-          <div className="store-product-grid">
-            {latest.map((product) => <ProductCard key={product.id} product={product} />)}
-          </div>
         </section>
 
         <section className="store-heritage" id="heritage">
