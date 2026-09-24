@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CommerceHeader } from "@/components/commerce-header";
 import { ProductDetailBuybox } from "@/components/product-detail-buybox";
+import { ProductGallery } from "@/components/product-gallery";
 import { ProductCard, type ProductCardData } from "@/components/product-card";
 import { StoreFooter } from "@/components/store-footer";
 import { createClient } from "@/lib/supabase/server";
@@ -110,24 +111,7 @@ export default async function ProductPage({ params }: PageProps) {
         </nav>
 
         <section className="product-detail-grid">
-          <div className="product-gallery">
-            <div className="product-main-image">
-              {images[0] ? (
-                <img src={images[0]} alt={product.name} />
-              ) : (
-                <div className="store-image-placeholder">MM RASHID & CO.</div>
-              )}
-            </div>
-            {images.length > 1 ? (
-              <div className="product-thumbnails">
-                {images.map((image, index) => (
-                  <a href={image} key={image} target="_blank" rel="noreferrer">
-                    <img src={image} alt={product.name + " view " + (index + 1)} />
-                  </a>
-                ))}
-              </div>
-            ) : null}
-          </div>
+          <ProductGallery images={images} productName={product.name} />
 
           <div className="product-detail-copy">
             <p className="product-detail-category">{group?.name ?? "MM Rashid & Co."}</p>
