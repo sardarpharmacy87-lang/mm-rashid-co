@@ -60,6 +60,9 @@ export function CommerceHeader() {
           <Link href="/products" onClick={() => setOpen(false)}>Products</Link>
           <Link href="/#heritage" onClick={() => setOpen(false)}>Our history</Link>
           <Link href="/#workshop" onClick={() => setOpen(false)}>Workshop</Link>
+          <Link href="/#gallery" onClick={() => setOpen(false)}>Gallery</Link>
+          <Link href="/#process" onClick={() => setOpen(false)}>How we work</Link>
+          <Link href="/#contact" onClick={() => setOpen(false)}>Contact</Link>
           <Link href="/sign-in" onClick={() => setOpen(false)}>My account</Link>
           <Link className="nav-quote-link" href="/customer/enquiries/new" onClick={() => setOpen(false)}>
             Custom enquiry
