@@ -1,53 +1,67 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Brand } from "@/components/brand";
 import { useCommerce } from "@/components/commerce-provider";
 
 export function CommerceHeader() {
   const { cartCount } = useCommerce();
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const update = () => setScrolled(window.scrollY > 18);
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, []);
+
+  const close = () => setOpen(false);
 
   return (
     <>
-      <div className="store-announcement">
-        <span>Handcrafted ceremonial regalia since 1922</span>
-        <span className="store-announcement-center">Worldwide custom enquiries · Made in Sialkot</span>
-        <Link href="/customer/enquiries/new">Request a quotation</Link>
+      <div className="bloom-ribbon">
+        <span>Handcrafted ceremonial regalia · Sialkot · Since 1922</span>
+        <Link href="/sign-in">Private customer portal ↗</Link>
       </div>
 
-      <header className="store-header">
-        <div className="store-header-main">
+      <header className={"store-header bloom-header " + (scrolled ? "is-scrolled" : "")}>
+        <div className="bloom-header-inner">
           <Brand />
 
-          <form className="store-search" action="/products" method="get">
-            <input
-              type="search"
-              name="q"
-              aria-label="Search products"
-              placeholder="Search products..."
-            />
-            <button type="submit">Search</button>
-          </form>
+          <nav
+            id="bloom-main-navigation"
+            className={"bloom-main-nav " + (open ? "is-open" : "")}
+            aria-label="Main navigation"
+          >
+            <Link href="/products" onClick={close}>Products</Link>
+            <Link href="/#heritage" onClick={close}>Our history</Link>
+            <Link href="/#workshop" onClick={close}>Workshop</Link>
+            <Link href="/#process" onClick={close}>How we work</Link>
+            <Link href="/#contact" onClick={close}>Contact</Link>
+          </nav>
 
-          <div className="store-tools">
-            <Link className="store-tool-link" href="/sign-in">
-              <span>Account</span>
-              <strong>Sign in</strong>
-            </Link>
+          <div className="bloom-header-actions">
+            <form className="bloom-search" action="/products" method="get">
+              <input type="search" name="q" aria-label="Search products" placeholder="Search" />
+              <button type="submit" aria-label="Search products">↗</button>
+            </form>
 
-            <Link className="store-cart-link" href="/cart" aria-label={"Quotation basket with " + cartCount + " items"}>
-              <span className="store-cart-icon">Quote</span>
-              <strong>{cartCount}</strong>
+            <Link className="bloom-account" href="/sign-in">Account</Link>
+
+            <Link className="bloom-quote" href="/cart" aria-label={"Quotation basket with " + cartCount + " items"}>
+              Quote
+              <span>{cartCount}</span>
             </Link>
 
             <button
-              className="store-menu-button"
+              className="store-menu-button bloom-menu-button"
               type="button"
               onClick={() => setOpen((value) => !value)}
-              aria-label="Toggle navigation"
+              aria-label={open ? "Close navigation" : "Open navigation"}
               aria-expanded={open}
+              aria-controls="bloom-main-navigation"
             >
               <span />
               <span />
@@ -55,18 +69,6 @@ export function CommerceHeader() {
             </button>
           </div>
         </div>
-
-        <nav className={"store-main-nav " + (open ? "is-open" : "")} aria-label="Main navigation">
-          <Link href="/products" onClick={() => setOpen(false)}>Products</Link>
-          <Link href="/#heritage" onClick={() => setOpen(false)}>Our history</Link>
-          <Link href="/#workshop" onClick={() => setOpen(false)}>Workshop</Link>
-          <Link href="/#process" onClick={() => setOpen(false)}>How we work</Link>
-          <Link href="/#contact" onClick={() => setOpen(false)}>Contact</Link>
-          <Link href="/sign-in" onClick={() => setOpen(false)}>My account</Link>
-          <Link className="nav-quote-link" href="/customer/enquiries/new" onClick={() => setOpen(false)}>
-            Custom enquiry
-          </Link>
-        </nav>
       </header>
     </>
   );
