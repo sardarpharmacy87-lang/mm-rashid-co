@@ -16,8 +16,6 @@ type HomeProduct = ProductCardData & {
 };
 
 const groupVisuals: Record<string, string> = {
-  fez: "/images/gallery/custom-maroon-fez.webp",
-  caps: "/images/gallery/silver-bullion-cap-visor.webp",
   jackets: "/images/workshop/hand-stitching.jpeg",
 };
 
@@ -245,13 +243,15 @@ export default async function HomePage() {
                   href={"/products?group=" + group.slug}
                   key={group.id}
                 >
-                  <div className="luxury-group-media" aria-hidden="true">
-                    <img
-                      src={groupVisuals[group.slug] ?? "/images/gallery/goldwork-leaf-detail.webp"}
-                      alt=""
-                      loading="lazy"
-                    />
-                  </div>
+                  {groupVisuals[group.slug] ? (
+                    <div className="luxury-group-media" aria-hidden="true">
+                      <img
+                        src={groupVisuals[group.slug]}
+                        alt=""
+                        loading="lazy"
+                      />
+                    </div>
+                  ) : null}
                   <span>{String(index + 1).padStart(2, "0")}</span>
                   <strong>{group.name}</strong>
                   <i aria-hidden="true">↗</i>
