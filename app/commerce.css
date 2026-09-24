@@ -4255,3 +4255,104 @@ html {
     right: 26px;
   }
 }
+
+/* FINAL SLIDER FRAME CORRECTION */
+.homepage-slider {
+  padding: clamp(54px,5.5vw,84px) clamp(26px,8vw,140px) clamp(74px,6vw,98px);
+}
+
+.homepage-slider-track {
+  width: min(1060px, 100%);
+  aspect-ratio: 16 / 9;
+  min-height: 0;
+  max-height: none;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid rgba(151,112,40,.26);
+  border-radius: 26px;
+  background: transparent;
+  box-shadow:
+    0 26px 60px rgba(6,20,45,.09),
+    0 0 0 5px rgba(255,255,255,.34);
+}
+
+.homepage-slider-track::after {
+  inset: 10px;
+  border-radius: 18px;
+  border-color: rgba(201,162,74,.14);
+}
+
+.homepage-slider-slide {
+  inset: 18px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 16px;
+  background: transparent !important;
+}
+
+.homepage-slider-slide img {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  padding: clamp(18px,2.2vw,34px);
+  box-sizing: border-box;
+  object-fit: contain !important;
+  object-position: center center !important;
+  border-radius: 12px;
+  background: transparent !important;
+}
+
+.homepage-slider-arrow.prev {
+  left: max(22px, calc((100% - 1060px) / 2 - 68px));
+}
+.homepage-slider-arrow.next {
+  right: max(22px, calc((100% - 1060px) / 2 - 68px));
+}
+
+.homepage-slider-counter {
+  top: clamp(66px,6vw,92px);
+  right: max(34px, calc((100% - 1060px) / 2 + 18px));
+}
+
+@media (max-width: 1200px) {
+  .homepage-slider {
+    padding-inline: clamp(20px,6vw,72px);
+  }
+  .homepage-slider-arrow.prev { left: 18px; }
+  .homepage-slider-arrow.next { right: 18px; }
+  .homepage-slider-counter {
+    right: clamp(28px,7vw,82px);
+  }
+}
+
+@media (max-width: 760px) {
+  .homepage-slider {
+    padding: 42px 12px 70px;
+  }
+  .homepage-slider-track {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: 18px;
+  }
+  .homepage-slider-track::after {
+    inset: 7px;
+    border-radius: 12px;
+  }
+  .homepage-slider-slide {
+    inset: 10px;
+    border-radius: 11px;
+  }
+  .homepage-slider-slide img {
+    padding: 12px;
+    border-radius: 8px;
+  }
+  .homepage-slider-arrow.prev { left: 16px; }
+  .homepage-slider-arrow.next { right: 16px; }
+  .homepage-slider-counter {
+    top: 52px;
+    right: 22px;
+  }
+}
