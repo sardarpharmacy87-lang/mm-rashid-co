@@ -15,7 +15,7 @@ export default async function EnquiryDetailsPage({ params, searchParams }: PageP
   const { id } = await params;
   const feedback = await searchParams;
   const supabase = await createClient();
-  const [{ data: enquiry }, { data: quotation }, { data: files }] = await Promise.all([
+  const [{ data: enquiry }, { data: quotation }, { data: files }, { data: items }] = await Promise.all([
     supabase.from("enquiries").select("*").eq("id", id).single(),
     supabase.from("quotations").select("*").eq("enquiry_id", id).maybeSingle(),
     supabase.from("enquiry_files").select("id, file_name, file_type, mime_type, size_bytes").eq("enquiry_id", id).order("created_at"),
