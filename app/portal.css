@@ -315,3 +315,19 @@
   .auth-links { align-items: flex-start; flex-direction: column; }
   .attachment-grid { grid-template-columns: 1fr; }
 }
+
+
+.admin-products-empty {
+  display: grid;
+  gap: 7px;
+  padding: 34px 20px;
+  background: #fffdf8;
+}
+.admin-products-empty strong {
+  color: var(--portal-navy);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 22px;
+}
+.admin-products-empty p {
+  margin: 0;
+}
