@@ -76,12 +76,13 @@ export async function createSlides(formData: FormData) {
     const { error } = await supabase.from("homepage_slides").insert(rows);
     if (error) throw new Error(error.message);
 
-    revalidatePath("/");
-    revalidatePath("/admin/slides");
-    redirect("/admin/slides?message=" + encodeURIComponent(rows.length + " slide(s) added"));
   } catch (error) {
     redirect("/admin/slides?error=" + encodeURIComponent(error instanceof Error ? error.message : "Unable to add slides"));
   }
+
+  revalidatePath("/");
+  revalidatePath("/admin/slides");
+  redirect("/admin/slides?message=" + encodeURIComponent(rows.length + " slide(s) added"));
 }
 
 export async function updateSlide(formData: FormData) {
