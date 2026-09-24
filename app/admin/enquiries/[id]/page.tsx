@@ -17,22 +17,45 @@ export default async function AdminEnquiryPage({ params, searchParams }: PagePro
   const { data: enquiry } = await supabase.from("enquiries").select("*").eq("id", id).single();
   if (!enquiry) notFound();
 
-  const [{ data: customer }, { data: quotation }, { data: files }] = await Promise.all([
+  const [{ data: customer }, { data: quotation }, { data: files }, { data: items }] = await Promise.all([
     supabase.from("profiles").select("*").eq("id", enquiry.customer_id).single(),
     supabase.from("quotations").select("*").eq("enquiry_id", id).maybeSingle(),
     supabase.from("enquiry_files").select("id, file_name, file_type, mime_type, size_bytes").eq("enquiry_id", id).order("created_at"),
+    supabase.from("enquiry_items").select("id, product_name, variant_label, quantity, unit_price_pkr, unit_price_usd").eq("enquiry_id", id).order("created_at"),
   ]);
 
   return (
     <main className="portal-main portal-narrow">
       <Link className="back-link" href="/admin">← Admin dashboard</Link>
-      <div className="portal-title-row"><div><p className="portal-kicker">{enquiry.enquiry_number}</p><h1>{enquiry.title}</h1><p>Submitted {formatDate(enquiry.created_at)}</p></div><span className={`status status-${enquiry.status}`}>{statusLabel(enquiry.status)}</span></div>
+      <div className="portal-title-row"><div><p className="portal-kicker">{enquiry.enquiry_number}</p><h1>{enquiry.title}</h1><p>Submitted {formatDate(enquiry.created_at)}</p></div><span className={"status status-" + enquiry.status}>{statusLabel(enquiry.status)}</span></div>
       {feedback.error ? <p className="form-alert form-alert-error">{feedback.error}</p> : null}
       {feedback.message ? <p className="form-alert form-alert-success">{feedback.message}</p> : null}
 
       <section className="portal-card detail-grid">
         <div><small>Customer</small><strong>{customer?.full_name}</strong></div><div><small>Company</small><strong>{customer?.company_name}</strong></div><div><small>Email</small><strong>{customer?.email}</strong></div><div><small>WhatsApp</small><strong>{customer?.whatsapp}</strong></div><div><small>Location</small><strong>{customer?.city}, {customer?.country}</strong></div><div><small>Quantity</small><strong>{enquiry.quantity}</strong></div><div className="detail-full"><small>Delivery address</small><p>{customer?.address}, {customer?.postal_code}</p></div><div className="detail-full"><small>Requirements</small><p>{enquiry.description}</p></div>
       </section>
+
+      {items?.length ? (
+        <section className="portal-section">
+          <div className="portal-section-head"><div><h2>Products in quotation basket</h2><p>These items were selected directly from the website catalogue.</p></div></div>
+          <div className="portal-table-wrap">
+            <table className="portal-table">
+              <thead><tr><th>Product</th><th>Option</th><th>Qty</th><th>PKR rate</th><th>USD rate</th></tr></thead>
+              <tbody>
+                {items.map((item) => (
+                  <tr key={item.id}>
+                    <td>{item.product_name}</td>
+                    <td>{item.variant_label ?? "—"}</td>
+                    <td>{item.quantity}</td>
+                    <td>{item.unit_price_pkr ?? "Quote"}</td>
+                    <td>{item.unit_price_usd ?? "Quote"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      ) : null}
 
       <section className="portal-section">
         <div className="portal-section-head"><div><h2>Customer reference files</h2><p>Private images and videos attached to this enquiry.</p></div></div>
