@@ -5,11 +5,19 @@ import { StoreFooter } from "@/components/store-footer";
 import { createClient } from "@/lib/supabase/server";
 
 type PageProps = {
-  searchParams: Promise<{ q?: string; sort?: string; page?: string }>;
+  searchParams: Promise<{ q?: string; sort?: string; page?: string; group?: string }>;
+};
+
+type ProductGroup = {
+  id: string;
+  name: string;
+  slug: string;
 };
 
 type CatalogueProduct = ProductCardData & {
   created_at?: string | null;
+  product_group_id?: string | null;
+  product_groups?: { name: string; slug: string } | null;
 };
 
 export const metadata = {
@@ -24,19 +32,35 @@ export default async function ProductsPage({ searchParams }: PageProps) {
   const page = Math.max(1, Number(filters.page) || 1);
   const pageSize = 24;
 
-  const { data } = await supabase
-    .from("products")
-    .select("id, name, slug, sku, short_description, primary_image, stock_status, created_at")
-    .eq("active", true)
-    .order("sort_order", { ascending: true })
-    .order("name", { ascending: true });
+  const [productsResult, groupsResult] = await Promise.all([
+    supabase
+      .from("products")
+      .select("id, name, slug, sku, short_description, primary_image, stock_status, created_at, product_group_id, product_groups(name,slug)")
+      .eq("active", true)
+      .order("sort_order", { ascending: true })
+      .order("name", { ascending: true }),
+    supabase
+      .from("product_groups")
+      .select("id, name, slug")
+      .eq("active", true)
+      .order("sort_order", { ascending: true })
+      .order("name", { ascending: true }),
+  ]);
 
-  const allProducts = (data ?? []) as CatalogueProduct[];
+  const allProducts = (productsResult.data ?? []) as CatalogueProduct[];
+  const groups = (groupsResult.data ?? []) as ProductGroup[];
+  const selectedGroup = groups.find((item) => item.slug === filters.group) ?? null;
   const safeSearch = (filters.q ?? "").trim().toLowerCase();
 
   let filtered = allProducts.filter((product) => {
+    if (selectedGroup && product.product_group_id !== selectedGroup.id) return false;
     if (!safeSearch) return true;
-    const haystack = [product.name, product.sku, product.short_description]
+    const haystack = [
+      product.name,
+      product.sku,
+      product.short_description,
+      product.product_groups?.name,
+    ]
       .filter(Boolean)
       .join(" ")
       .toLowerCase();
@@ -51,6 +75,13 @@ export default async function ProductsPage({ searchParams }: PageProps) {
     filtered = [...filtered].sort((a, b) => a.name.localeCompare(b.name));
   }
 
+  const groupedHomeView = !selectedGroup && !safeSearch && !filters.sort;
+  const groupedProducts = groups.map((group) => ({
+    ...group,
+    products: allProducts.filter((product) => product.product_group_id === group.id),
+  }));
+  const ungrouped = allProducts.filter((product) => !product.product_group_id);
+
   const pageCount = Math.max(1, Math.ceil(filtered.length / pageSize));
   const safePage = Math.min(page, pageCount);
   const from = (safePage - 1) * pageSize;
@@ -60,6 +91,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
     const params = new URLSearchParams();
     if (filters.q) params.set("q", filters.q);
     if (filters.sort) params.set("sort", filters.sort);
+    if (filters.group) params.set("group", filters.group);
     params.set("page", String(nextPage));
     return "/products?" + params.toString();
   };
@@ -73,14 +105,30 @@ export default async function ProductsPage({ searchParams }: PageProps) {
           <div>
             <p className="store-kicker">MM Rashid catalogue</p>
             <h1>Products &amp; custom regalia</h1>
-            <p>Browse all products or send your own artwork for a custom quotation.</p>
+            <p>Browse our work or send your own artwork for a custom quotation.</p>
           </div>
           <Link className="store-primary-button" href="/customer/enquiries/new">Custom enquiry</Link>
         </div>
 
+        {groups.length ? (
+          <nav className="product-group-nav" aria-label="Browse products">
+            <Link className={!selectedGroup ? "is-active" : ""} href="/products">All</Link>
+            {groups.map((group) => (
+              <Link
+                className={selectedGroup?.id === group.id ? "is-active" : ""}
+                href={"/products?group=" + group.slug}
+                key={group.id}
+              >
+                {group.name}
+              </Link>
+            ))}
+          </nav>
+        ) : null}
+
         <div className="catalogue-layout catalogue-layout-simple">
           <section className="catalogue-results">
             <form className="catalogue-toolbar catalogue-toolbar-simple" action="/products" method="get">
+              {selectedGroup ? <input type="hidden" name="group" value={selectedGroup.slug} /> : null}
               <input
                 type="search"
                 name="q"
@@ -96,12 +144,55 @@ export default async function ProductsPage({ searchParams }: PageProps) {
               <button type="submit">Apply</button>
             </form>
 
-            <div className="catalogue-count">
-              <span>{filtered.length} products</span>
-              {safeSearch ? <span>Search: “{filters.q}”</span> : null}
-            </div>
+            {selectedGroup ? (
+              <div className="product-group-heading">
+                <h2>{selectedGroup.name}</h2>
+                <span>{filtered.length} products</span>
+              </div>
+            ) : safeSearch ? (
+              <div className="catalogue-count">
+                <span>{filtered.length} products</span>
+                <span>Search: “{filters.q}”</span>
+              </div>
+            ) : null}
 
-            {products.length ? (
+            {groupedHomeView ? (
+              <div className="product-group-list">
+                {groupedProducts.map((group) => (
+                  <section className="product-group-block" id={group.slug} key={group.id}>
+                    <div className="product-group-heading">
+                      <h2>{group.name}</h2>
+                      {group.products.length ? (
+                        <Link href={"/products?group=" + group.slug}>View all →</Link>
+                      ) : null}
+                    </div>
+                    {group.products.length ? (
+                      <div className="store-product-grid catalogue-product-grid">
+                        {group.products.map((product) => (
+                          <ProductCard key={product.id} product={product} />
+                        ))}
+                      </div>
+                    ) : null}
+                  </section>
+                ))}
+
+                {ungrouped.length ? (
+                  <section className="product-group-block">
+                    <div className="product-group-heading"><h2>More</h2></div>
+                    <div className="store-product-grid catalogue-product-grid">
+                      {ungrouped.map((product) => <ProductCard key={product.id} product={product} />)}
+                    </div>
+                  </section>
+                ) : null}
+
+                {!allProducts.length ? (
+                  <div className="catalogue-empty">
+                    <h2>Products coming soon</h2>
+                    <p>New items will appear here as they are added.</p>
+                  </div>
+                ) : null}
+              </div>
+            ) : products.length ? (
               <div className="store-product-grid catalogue-product-grid">
                 {products.map((product) => <ProductCard key={product.id} product={product} />)}
               </div>
@@ -113,7 +204,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
               </div>
             )}
 
-            {pageCount > 1 ? (
+            {!groupedHomeView && pageCount > 1 ? (
               <nav className="catalogue-pagination" aria-label="Product pages">
                 {safePage > 1 ? <Link href={makePageHref(safePage - 1)}>← Previous</Link> : <span />}
                 <strong>Page {safePage} of {pageCount}</strong>
