@@ -54,7 +54,6 @@ export default async function HomePage() {
             <div className="hero-product-ring" />
             <div className="hero-logo-stage" aria-label="MM Rashid and Company logo">
               <img src="/mm-rashid-logo.png" alt="MM Rashid and Company logo" />
-              <span className="hero-logo-mm" aria-hidden="true">MM</span>
             </div>
           </div>
         </section>
