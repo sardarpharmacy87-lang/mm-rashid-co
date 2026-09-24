@@ -4,7 +4,7 @@ import { Brand } from "@/components/brand";
 export function StoreFooter() {
   return (
     <footer className="commerce-footer">
-      <div className="commerce-footer-main">
+      <div className="commerce-footer-main commerce-footer-simple">
         <div className="commerce-footer-brand">
           <Brand footer />
           <p>
@@ -14,15 +14,8 @@ export function StoreFooter() {
         </div>
 
         <div>
-          <strong>Shop</strong>
-          <Link href="/products">All products</Link>
-          <Link href="/products?category=aprons-sashes">Aprons &amp; sashes</Link>
-          <Link href="/products?category=caps-fez-visors">Caps &amp; fez</Link>
-          <Link href="/products?category=badges-emblems">Badges &amp; emblems</Link>
-        </div>
-
-        <div>
           <strong>Customer</strong>
+          <Link href="/products">Products</Link>
           <Link href="/sign-in">My account</Link>
           <Link href="/cart">Quotation basket</Link>
           <Link href="/customer/enquiries/new">Custom enquiry</Link>
