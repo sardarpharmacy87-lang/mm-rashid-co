@@ -55,7 +55,7 @@ export function ProductCard({ product }: { product: ProductCardData }) {
               })
             }
           >
-            Add to quotation
+            Request this piece
           </button>
         </div>
       </div>
