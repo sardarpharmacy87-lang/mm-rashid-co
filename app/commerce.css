@@ -721,24 +721,229 @@
 }
 
 
-/* Keep the original emblem artwork and remove only the punctuation from M.M. */
+@media (max-width: 900px) {
+  .hero-logo-stage { width: min(72vw, 520px); }
+}
+
+
+/* PREMIUM LUXURY STOREFRONT 2026 */
+.store-shell {
+  background:
+    radial-gradient(circle at 10% 0%, rgba(210,160,52,.08), transparent 30%),
+    linear-gradient(180deg,#fbfaf7 0%,#ffffff 34%,#f8f6f0 100%);
+}
+
+.store-announcement {
+  color: #f7e6ad;
+  background:
+    linear-gradient(90deg, rgba(214,165,57,.10), transparent 24%, transparent 76%, rgba(214,165,57,.10)),
+    #03132d;
+  border-bottom: 1px solid rgba(232,188,85,.25);
+}
+
+.store-header {
+  color: #fff;
+  background:
+    radial-gradient(circle at 12% 15%, rgba(220,171,55,.12), transparent 18%),
+    linear-gradient(115deg, rgba(4,20,48,.985), rgba(7,34,76,.97));
+  border-bottom: 1px solid rgba(226,181,69,.26);
+  box-shadow: 0 18px 50px rgba(0,9,28,.22);
+}
+
+.store-shell .brand-copy strong {
+  color: #f5d478;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: .06em;
+}
+.store-shell .brand-copy small { color: rgba(255,255,255,.62); }
+
+.store-header .brand-logo {
+  width: 58px;
+  height: 58px;
+  flex-basis: 58px;
+  filter: drop-shadow(0 7px 14px rgba(0,0,0,.28));
+}
+
+.store-search {
+  border: 1px solid rgba(230,192,98,.28);
+  background: rgba(255,255,255,.075);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+}
+.store-search input { color: #fff; }
+.store-search input::placeholder { color: rgba(255,255,255,.48); }
+.store-search button {
+  color: #081a37;
+  background: linear-gradient(135deg,#f6d97f,#c9972f);
+}
+
+.store-tool-link span { color: rgba(255,255,255,.54); }
+.store-tool-link strong { color: #fff; }
+.store-cart-icon {
+  color: #07172f;
+  background: linear-gradient(135deg,#f7df91,#c79228);
+  box-shadow: 0 6px 18px rgba(196,145,38,.25);
+}
+.store-cart-link strong { background: #b67f1d; }
+
+.store-main-nav {
+  background:
+    linear-gradient(90deg, rgba(213,164,52,.08), transparent 22%, transparent 78%, rgba(213,164,52,.08)),
+    #061a3a;
+  border-top: 1px solid rgba(255,255,255,.05);
+  border-bottom: 1px solid rgba(215,168,61,.24);
+}
+.store-main-nav a {
+  border-right-color: rgba(237,199,108,.12);
+  letter-spacing: .045em;
+}
+.store-main-nav a:hover {
+  color: #f6d678;
+  background: rgba(255,255,255,.055);
+}
+.store-main-nav .nav-quote-link {
+  color: #07182f;
+  background: linear-gradient(135deg,#f7df91,#c79228);
+}
+
+.commerce-hero {
+  position: relative;
+  isolation: isolate;
+  min-height: 700px;
+  color: #fff;
+  background:
+    radial-gradient(circle at 82% 24%, rgba(36,94,180,.30), transparent 23%),
+    radial-gradient(circle at 68% 78%, rgba(197,145,38,.20), transparent 27%),
+    linear-gradient(118deg,#020c1f 0%,#061b3d 46%,#0a2a58 72%,#06172f 100%);
+  border-bottom: 1px solid rgba(203,155,52,.34);
+}
+.commerce-hero::before,
+.commerce-hero::after {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  content: "";
+  pointer-events: none;
+}
+.commerce-hero::before {
+  opacity: .46;
+  background-image:
+    repeating-linear-gradient(115deg, rgba(255,255,255,.018) 0 1px, transparent 1px 7px),
+    repeating-linear-gradient(25deg, rgba(235,192,88,.012) 0 1px, transparent 1px 9px);
+  mix-blend-mode: screen;
+}
+.commerce-hero::after {
+  opacity: .75;
+  background:
+    radial-gradient(ellipse at 9% 92%, transparent 0 34%, rgba(208,160,50,.12) 35%, transparent 36%),
+    radial-gradient(ellipse at 100% 6%, transparent 0 38%, rgba(222,178,72,.11) 39%, transparent 40%),
+    linear-gradient(90deg,rgba(0,0,0,.15),transparent 38%,transparent 68%,rgba(0,0,0,.2));
+}
+
+.commerce-hero-copy {
+  position: relative;
+  z-index: 2;
+}
+.commerce-hero-copy::before {
+  display: block;
+  width: 74px;
+  height: 1px;
+  margin-bottom: 22px;
+  background: linear-gradient(90deg,#f4d77d,rgba(244,215,125,0));
+  content: "";
+}
+.commerce-hero .store-kicker { color: #f0c85c; }
+.commerce-hero h1 {
+  color: #fff;
+  text-shadow: 0 10px 35px rgba(0,0,0,.28);
+}
+.commerce-hero-copy > p:not(.store-kicker) { color: rgba(255,255,255,.73); }
+.store-primary-button {
+  color: #07182f;
+  border-color: #e6bb55;
+  background: linear-gradient(135deg,#f8df8d,#c89227);
+  box-shadow: 0 12px 30px rgba(188,132,27,.18);
+}
+.store-secondary-button {
+  color: #f6d77b;
+  border-color: rgba(239,199,102,.48);
+  background: rgba(255,255,255,.055);
+  backdrop-filter: blur(8px);
+}
+.hero-trust span { color: rgba(255,255,255,.55); }
+.hero-trust strong { color: #f6d77b; }
+
+.commerce-hero-visual {
+  min-height: 700px;
+  background:
+    radial-gradient(circle at 50% 48%, rgba(255,255,255,.075), transparent 28%),
+    radial-gradient(circle at 50% 50%, rgba(225,175,60,.15), transparent 49%);
+}
+.commerce-hero-visual::before {
+  width: min(620px,76%);
+  border: 1px solid rgba(240,201,102,.22);
+  background: radial-gradient(circle,rgba(255,255,255,.07),rgba(255,255,255,0) 66%);
+  box-shadow:
+    0 0 0 34px rgba(217,168,55,.045),
+    0 0 0 68px rgba(255,255,255,.018);
+}
+.hero-product-ring {
+  width: min(545px,72%);
+  border-color: rgba(239,197,93,.36);
+  box-shadow: inset 0 0 55px rgba(228,179,63,.06);
+}
+.hero-logo-stage {
+  width: min(80%, 590px);
+  filter: drop-shadow(0 30px 44px rgba(0,0,0,.36));
+}
+.hero-logo-stage > img {
+  filter:
+    drop-shadow(0 22px 32px rgba(0,0,0,.28))
+    drop-shadow(0 0 18px rgba(230,180,57,.14));
+}
+
+/* The supplied emblem reads MM RASHID. Hide only the two legacy punctuation dots. */
 .hero-logo-stage::before,
 .hero-logo-stage::after {
   position: absolute;
-  z-index: 3;
-  top: 50.7%;
-  width: 2.15%;
+  z-index: 4;
+  width: 2.45%;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: #09234f;
+  background: #f8f7f1;
   content: "";
-  transform: translate(-50%, -50%);
   pointer-events: none;
 }
+.hero-logo-stage::before {
+  top: 17.4%;
+  left: 27.1%;
+}
+.hero-logo-stage::after {
+  top: 14.1%;
+  left: 32.5%;
+}
 
-.hero-logo-stage::before { left: 49.35%; }
-.hero-logo-stage::after { left: 60.15%; }
+.store-section-heading h2,
+.store-heritage-copy h2 {
+  color: #071f46;
+}
+.custom-order-strip {
+  background:
+    radial-gradient(circle at 12% 30%, rgba(230,183,66,.11), transparent 24%),
+    linear-gradient(115deg,#03142f,#0a2b5b);
+  border-top: 1px solid rgba(236,194,91,.2);
+  border-bottom: 1px solid rgba(236,194,91,.2);
+}
+.custom-order-strip h2 { color: #fff; }
+.custom-order-strip > a {
+  color: #07182f;
+  background: linear-gradient(135deg,#f7df91,#c79228);
+  border-color: #e9c15d;
+}
 
 @media (max-width: 900px) {
-  .hero-logo-stage { width: min(72vw, 520px); }
+  .store-header-main { background: transparent; }
+  .commerce-hero { min-height: auto; }
+  .commerce-hero-visual { min-height: 480px; }
+  .hero-logo-stage { width: min(76vw, 520px); }
 }
