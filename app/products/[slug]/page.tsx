@@ -13,7 +13,7 @@ async function getProduct(slug: string) {
   const supabase = await createClient();
   const { data } = await supabase
     .from("products")
-    .select("*, categories(name, slug)")
+    .select("*")
     .eq("slug", slug)
     .eq("active", true)
     .single();
@@ -23,10 +23,13 @@ async function getProduct(slug: string) {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const product = await getProduct(slug);
-  if (!product) return { title: "Product not found | MM Rashid & Co." };
+  if (!product) return { title: "Product not found" };
   return {
-    title: product.name + " | MM Rashid & Co.",
-    description: product.short_description ?? product.description ?? "Custom handcrafted ceremonial regalia by MM Rashid & Co.",
+    title: product.name,
+    description:
+      product.short_description ??
+      product.description ??
+      "Custom handcrafted ceremonial regalia by MM Rashid & Co.",
   };
 }
 
@@ -36,8 +39,7 @@ export default async function ProductPage({ params }: PageProps) {
   const product = await getProduct(slug);
   if (!product) notFound();
 
-  const [categoriesResult, variantsResult, relatedResult] = await Promise.all([
-    supabase.from("categories").select("name, slug").eq("active", true).order("sort_order", { ascending: true }),
+  const [variantsResult, relatedResult] = await Promise.all([
     supabase
       .from("product_variants")
       .select("id, label, price_pkr, price_usd")
@@ -46,20 +48,22 @@ export default async function ProductPage({ params }: PageProps) {
       .order("sort_order", { ascending: true }),
     supabase
       .from("products")
-      .select("id, name, slug, sku, short_description, primary_image, price_pkr, price_usd, previous_price_pkr, previous_price_usd, price_on_request, stock_status, categories(name, slug)")
+      .select("id, name, slug, sku, short_description, primary_image, price_pkr, price_usd, previous_price_pkr, previous_price_usd, price_on_request, stock_status")
       .eq("active", true)
-      .eq("category_id", product.category_id)
       .neq("id", product.id)
+      .order("sort_order", { ascending: true })
       .limit(4),
   ]);
 
-  const categories = categoriesResult.data ?? [];
   const variants = variantsResult.data ?? [];
-  const related = (relatedResult.data ?? []) as unknown as ProductCardData[];
-  const images = Array.from(new Set([product.primary_image, ...(product.images ?? [])].filter(Boolean))) as string[];
-  const specifications = product.specifications && typeof product.specifications === "object"
-    ? Object.entries(product.specifications as Record<string, unknown>)
-    : [];
+  const related = (relatedResult.data ?? []) as ProductCardData[];
+  const images = Array.from(
+    new Set([product.primary_image, ...(product.images ?? [])].filter(Boolean)),
+  ) as string[];
+  const specifications =
+    product.specifications && typeof product.specifications === "object"
+      ? Object.entries(product.specifications as Record<string, unknown>)
+      : [];
 
   const productSchema = {
     "@context": "https://schema.org",
@@ -73,22 +77,23 @@ export default async function ProductPage({ params }: PageProps) {
 
   return (
     <div className="store-shell">
-      <CommerceHeader categories={categories} />
+      <CommerceHeader />
 
       <main className="product-detail-page">
         <nav className="store-breadcrumbs" aria-label="Breadcrumb">
           <Link href="/">Home</Link><span>›</span>
           <Link href="/products">Products</Link><span>›</span>
-          {product.categories?.slug ? (
-            <><Link href={"/products?category=" + product.categories.slug}>{product.categories.name}</Link><span>›</span></>
-          ) : null}
           <strong>{product.name}</strong>
         </nav>
 
         <section className="product-detail-grid">
           <div className="product-gallery">
             <div className="product-main-image">
-              {images[0] ? <img src={images[0]} alt={product.name} /> : <div className="store-image-placeholder">MM RASHID & CO.</div>}
+              {images[0] ? (
+                <img src={images[0]} alt={product.name} />
+              ) : (
+                <div className="store-image-placeholder">MM RASHID & CO.</div>
+              )}
             </div>
             {images.length > 1 ? (
               <div className="product-thumbnails">
@@ -102,14 +107,19 @@ export default async function ProductPage({ params }: PageProps) {
           </div>
 
           <div className="product-detail-copy">
-            <p className="product-detail-category">{product.categories?.name ?? "MM Rashid & Co."}</p>
+            <p className="product-detail-category">MM Rashid &amp; Co.</p>
             <h1>{product.name}</h1>
             <div className="product-meta-line">
               {product.sku ? <span>SKU: {product.sku}</span> : null}
               <span className={"stock-text stock-" + product.stock_status}>
-                {product.stock_status === "in_stock" ? "In stock" : product.stock_status === "out_of_stock" ? "Out of stock" : "Made to order"}
+                {product.stock_status === "in_stock"
+                  ? "In stock"
+                  : product.stock_status === "out_of_stock"
+                    ? "Out of stock"
+                    : "Made to order"}
               </span>
             </div>
+
             {product.short_description ? <p className="product-lead">{product.short_description}</p> : null}
 
             <ProductDetailBuybox
@@ -128,7 +138,10 @@ export default async function ProductPage({ params }: PageProps) {
 
             <div className="product-description">
               <h2>Product details</h2>
-              <p>{product.description ?? "This item is made to customer specification. Contact us with artwork, quantity and required finish."}</p>
+              <p>
+                {product.description ??
+                  "This item is made to customer specification. Contact us with artwork, quantity and required finish."}
+              </p>
             </div>
 
             {specifications.length ? (
@@ -147,7 +160,7 @@ export default async function ProductPage({ params }: PageProps) {
         {related.length ? (
           <section className="store-section related-products">
             <div className="store-section-heading">
-              <div><p className="store-kicker">You may also like</p><h2>Related products</h2></div>
+              <div><p className="store-kicker">More products</p><h2>You may also like</h2></div>
               <Link href="/products">View all →</Link>
             </div>
             <div className="store-product-grid">
