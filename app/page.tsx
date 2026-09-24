@@ -191,11 +191,17 @@ export default async function HomePage() {
         </section>
 
         <div className="luxury-marquee" aria-hidden="true">
-          <span>GOLDWORK</span><i>◆</i>
-          <span>BULLION</span><i>◆</i>
-          <span>CEREMONIAL</span><i>◆</i>
-          <span>BESPOKE</span><i>◆</i>
-          <span>HANDCRAFTED IN SIALKOT</span>
+          <div className="luxury-marquee-track">
+            {[0, 1].map((copy) => (
+              <div className="luxury-marquee-set" key={copy}>
+                <span>GOLDWORK</span><i>◆</i>
+                <span>BULLION</span><i>◆</i>
+                <span>CEREMONIAL</span><i>◆</i>
+                <span>BESPOKE</span><i>◆</i>
+                <span>HANDCRAFTED IN SIALKOT</span><i>◆</i>
+              </div>
+            ))}
+          </div>
         </div>
 
         {groups.length ? (
@@ -282,7 +288,10 @@ export default async function HomePage() {
 
           <div className="bloom-heritage-copy reveal delay-one">
             <p className="bloom-eyebrow">Our heritage</p>
-            <h2>Three generations of specialist handwork.</h2>
+            <h2 className="heritage-motion-title">
+              <span className="motion-line">Three generations of</span>
+              <span className="motion-line">specialist handwork.</span>
+            </h2>
             <p>
               The company began in Sialkot in 1922 and grew around the discipline
               of making ceremonial work by hand. The archive photograph preserves

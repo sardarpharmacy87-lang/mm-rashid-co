@@ -123,6 +123,99 @@ export function RevealController() {
           );
         });
 
+
+        const hero = document.querySelector<HTMLElement>(".bloom-hero");
+        const emblemStage = document.querySelector<HTMLElement>(".bloom-emblem-stage");
+
+        if (hero && emblemStage && window.matchMedia("(pointer: fine)").matches) {
+          const tilt = (event: PointerEvent) => {
+            const rect = hero.getBoundingClientRect();
+            const x = (event.clientX - rect.left) / rect.width - 0.5;
+            const y = (event.clientY - rect.top) / rect.height - 0.5;
+
+            Motion.animate(
+              emblemStage,
+              {
+                rotateX: y * -4.5,
+                rotateY: x * 5.5,
+                x: x * 8,
+                y: y * 6,
+              },
+              {
+                type: "spring",
+                stiffness: 115,
+                damping: 19,
+                mass: 0.62,
+              },
+            );
+          };
+
+          const resetTilt = () => {
+            Motion.animate(
+              emblemStage,
+              { rotateX: 0, rotateY: 0, x: 0, y: 0 },
+              { type: "spring", stiffness: 120, damping: 20 },
+            );
+          };
+
+          hero.addEventListener("pointermove", tilt);
+          hero.addEventListener("pointerleave", resetTilt);
+          cleanups.push(() => {
+            hero.removeEventListener("pointermove", tilt);
+            hero.removeEventListener("pointerleave", resetTilt);
+          });
+        }
+
+        const heritageTitle = document.querySelector<HTMLElement>(".heritage-motion-title");
+        if (heritageTitle) {
+          const lines = Array.from(
+            heritageTitle.querySelectorAll<HTMLElement>(".motion-line"),
+          );
+
+          lines.forEach((line) => {
+            line.style.opacity = "0";
+            line.style.transform = "translateY(38px)";
+            line.style.filter = "blur(4px)";
+          });
+
+          cleanups.push(
+            Motion.inView(
+              heritageTitle,
+              () => {
+                Motion.animate(
+                  lines,
+                  {
+                    opacity: [0, 1],
+                    y: [38, 0],
+                    filter: ["blur(4px)", "blur(0px)"],
+                  },
+                  {
+                    delay: Motion.stagger(0.13),
+                    duration: 0.78,
+                    ease: [0.22, 1, 0.36, 1],
+                  },
+                );
+              },
+              { amount: 0.35 },
+            ),
+          );
+        }
+
+        const processList = document.querySelector<HTMLElement>(".bloom-process-list");
+        if (processList) {
+          cleanups.push(
+            Motion.scroll(
+              (progress: number) => {
+                processList.style.setProperty("--process-progress", progress.toString());
+              },
+              {
+                target: processList,
+                offset: ["start 78%", "end 38%"],
+              },
+            ),
+          );
+        }
+
         const magneticItems = Array.from(
           document.querySelectorAll<HTMLElement>(
             ".store-primary-button, .bloom-quote, .bloom-group-card",
