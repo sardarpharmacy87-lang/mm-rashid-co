@@ -4549,3 +4549,85 @@ html {
     transform: scaleY(1);
   }
 }
+
+/* MATCH WORKSHOP VIDEO FRAME TO INTERVIEW */
+.bloom-workshop {
+  display: grid;
+  grid-template-columns: .72fr 1.28fr;
+  gap: clamp(44px,7vw,110px);
+  align-items: center;
+  padding: clamp(76px,9vw,135px) clamp(22px,6.4vw,110px);
+}
+
+.bloom-workshop .bloom-section-heading {
+  display: block;
+  margin: 0;
+}
+
+.bloom-workshop .bloom-section-heading > div {
+  display: block;
+}
+
+.bloom-workshop .bloom-section-heading > p {
+  max-width: 500px;
+  justify-self: auto;
+  margin: 24px 0 0;
+}
+
+.bloom-workshop-frame {
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid rgba(157,113,24,.3);
+  border-radius: 22px;
+  background: #020b1b;
+  box-shadow:
+    0 42px 95px rgba(7,26,53,.16),
+    0 0 0 6px rgba(255,255,255,.58),
+    0 0 0 7px rgba(151,109,24,.1);
+}
+
+.bloom-workshop-frame video {
+  display: block;
+  width: 100%;
+  max-height: 610px;
+  aspect-ratio: 16 / 9;
+  background: #020b1b;
+  object-fit: cover;
+}
+
+.bloom-workshop-label {
+  min-height: 48px;
+  padding: 0 17px;
+  border-top: 1px solid rgba(230,194,103,.16);
+  background:
+    linear-gradient(90deg,rgba(205,157,52,.08),transparent 32%,transparent 68%,rgba(205,157,52,.08)),
+    #06152e;
+}
+
+.bloom-workshop-label span {
+  color: #ead08b;
+}
+
+@media (max-width: 900px) {
+  .bloom-workshop {
+    grid-template-columns: 1fr;
+    gap: 36px;
+    padding: 70px 22px;
+  }
+}
+
+@media (max-width: 560px) {
+  .bloom-workshop-frame {
+    border-radius: 16px;
+    box-shadow:
+      0 24px 58px rgba(7,26,53,.14),
+      0 0 0 4px rgba(255,255,255,.58),
+      0 0 0 5px rgba(151,109,24,.1);
+  }
+
+  .bloom-workshop-label {
+    min-height: 42px;
+    padding-inline: 12px;
+  }
+}
