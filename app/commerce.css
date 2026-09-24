@@ -973,3 +973,106 @@
     left: 26.55%;
   }
 }
+
+
+/* PRODUCT GROUP BROWSING */
+.product-group-nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 18px clamp(20px, 4vw, 72px);
+  background:
+    linear-gradient(90deg, rgba(202,151,42,.06), transparent 24%, transparent 76%, rgba(202,151,42,.06)),
+    #fff;
+  border-bottom: 1px solid #e8e2d4;
+  scrollbar-width: none;
+}
+.product-group-nav::-webkit-scrollbar { display: none; }
+.product-group-nav a {
+  flex: 0 0 auto;
+  min-width: 96px;
+  padding: 12px 18px;
+  color: #0b2856;
+  border: 1px solid #d9cfb8;
+  border-radius: 999px;
+  background: #fff;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: .95rem;
+  font-weight: 700;
+  text-align: center;
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.product-group-nav a:hover {
+  transform: translateY(-1px);
+  border-color: #c99a34;
+  box-shadow: 0 8px 22px rgba(7,29,67,.08);
+}
+.product-group-nav a.is-active {
+  color: #07182f;
+  border-color: #e0b854;
+  background: linear-gradient(135deg,#f8e2a0,#d0a13c);
+  box-shadow: 0 8px 24px rgba(183,132,29,.16);
+}
+.home-product-group-nav {
+  justify-content: center;
+  padding-top: 24px;
+  padding-bottom: 24px;
+  background: #faf8f2;
+}
+.product-group-list {
+  display: flex;
+  flex-direction: column;
+  gap: 58px;
+}
+.product-group-block {
+  padding-top: 8px;
+}
+.product-group-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #e6dfcf;
+}
+.product-group-heading h2 {
+  margin: 0;
+  color: #071f46;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2rem, 3.4vw, 3.35rem);
+  font-weight: 500;
+  letter-spacing: -.035em;
+}
+.product-group-heading a,
+.product-group-heading span {
+  color: #8d6a20;
+  font-size: .74rem;
+  font-weight: 800;
+}
+.home-product-group .store-section-heading {
+  border-bottom: 1px solid #e6dfcf;
+  padding-bottom: 16px;
+}
+.home-product-group:nth-of-type(even) {
+  background: linear-gradient(180deg,#fff,#fbfaf6);
+}
+
+@media (max-width: 700px) {
+  .product-group-nav {
+    justify-content: flex-start;
+    padding: 14px 16px;
+  }
+  .product-group-nav a {
+    min-width: 82px;
+    padding: 10px 15px;
+    font-size: .86rem;
+  }
+  .product-group-list { gap: 42px; }
+  .product-group-heading {
+    align-items: center;
+    margin-bottom: 18px;
+  }
+  .product-group-heading h2 { font-size: 2rem; }
+}
