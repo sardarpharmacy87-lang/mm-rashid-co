@@ -13,7 +13,7 @@ async function getProduct(slug: string) {
   const supabase = await createClient();
   const { data } = await supabase
     .from("products")
-    .select("*")
+    .select("*, product_groups(id,name,slug)")
     .eq("slug", slug)
     .eq("active", true)
     .single();
@@ -46,13 +46,22 @@ export default async function ProductPage({ params }: PageProps) {
       .eq("product_id", product.id)
       .eq("active", true)
       .order("sort_order", { ascending: true }),
-    supabase
-      .from("products")
-      .select("id, name, slug, sku, short_description, primary_image, stock_status")
-      .eq("active", true)
-      .neq("id", product.id)
-      .order("sort_order", { ascending: true })
-      .limit(4),
+    product.product_group_id
+      ? supabase
+          .from("products")
+          .select("id, name, slug, sku, short_description, primary_image, stock_status")
+          .eq("active", true)
+          .eq("product_group_id", product.product_group_id)
+          .neq("id", product.id)
+          .order("sort_order", { ascending: true })
+          .limit(4)
+      : supabase
+          .from("products")
+          .select("id, name, slug, sku, short_description, primary_image, stock_status")
+          .eq("active", true)
+          .neq("id", product.id)
+          .order("sort_order", { ascending: true })
+          .limit(4),
   ]);
 
   const variants = variantsResult.data ?? [];
@@ -83,6 +92,12 @@ export default async function ProductPage({ params }: PageProps) {
         <nav className="store-breadcrumbs" aria-label="Breadcrumb">
           <Link href="/">Home</Link><span>›</span>
           <Link href="/products">Products</Link><span>›</span>
+          {product.product_groups ? (
+            <>
+              <Link href={"/products?group=" + product.product_groups.slug}>{product.product_groups.name}</Link>
+              <span>›</span>
+            </>
+          ) : null}
           <strong>{product.name}</strong>
         </nav>
 
@@ -107,7 +122,7 @@ export default async function ProductPage({ params }: PageProps) {
           </div>
 
           <div className="product-detail-copy">
-            <p className="product-detail-category">MM Rashid &amp; Co.</p>
+            <p className="product-detail-category">{product.product_groups?.name ?? "MM Rashid & Co."}</p>
             <h1>{product.name}</h1>
             <div className="product-meta-line">
               {product.sku ? <span>SKU: {product.sku}</span> : null}
