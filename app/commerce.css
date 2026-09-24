@@ -4356,3 +4356,18 @@ html {
     right: 22px;
   }
 }
+
+/* FINAL COMMISSION CTA VISIBILITY */
+.bloom-commission .store-primary-button {
+  color: #06142d !important;
+  border-color: #d0aa54 !important;
+  background: linear-gradient(135deg,#ead49d 0%,#d0aa54 52%,#bd913b 100%) !important;
+  box-shadow:
+    0 14px 34px rgba(2,11,29,.24),
+    inset 0 1px 0 rgba(255,255,255,.36) !important;
+}
+.bloom-commission .store-primary-button:hover {
+  color: #fff !important;
+  border-color: #06142d !important;
+  background: #06142d !important;
+}

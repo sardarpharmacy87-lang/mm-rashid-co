@@ -112,9 +112,6 @@ export default async function HomePage() {
               <Link className="store-primary-button" href="/products">
                 Explore products <span>↗</span>
               </Link>
-              <Link className="bloom-text-link" href="/customer/enquiries/new">
-                Start a custom enquiry
-              </Link>
             </div>
 
             <dl className="bloom-hero-facts">
@@ -285,7 +282,7 @@ export default async function HomePage() {
 
           <div className="bloom-heritage-copy reveal delay-one">
             <p className="bloom-eyebrow">Our heritage</p>
-            <h2>Four generations of specialist handwork.</h2>
+            <h2>Three generations of specialist handwork.</h2>
             <p>
               The company began in Sialkot in 1922 and grew around the discipline
               of making ceremonial work by hand. The archive photograph preserves
@@ -357,9 +354,6 @@ export default async function HomePage() {
               Tell us what you need, the quantity, delivery country and any artwork
               or measurements you already have.
             </p>
-            <Link className="store-primary-button" href="/customer/enquiries/new">
-              Start custom enquiry <span>↗</span>
-            </Link>
             <a href="tel:+923343342223">+92 334 334 2223</a>
             <span>Commissioner Road · Sialkot 51310 · Pakistan</span>
           </div>
