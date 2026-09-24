@@ -17,7 +17,6 @@ type ProductGroup = {
 type CatalogueProduct = ProductCardData & {
   created_at?: string | null;
   product_group_id?: string | null;
-  product_groups?: { name: string; slug: string } | null;
 };
 
 export const metadata = {
@@ -35,7 +34,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
   const [productsResult, groupsResult] = await Promise.all([
     supabase
       .from("products")
-      .select("id, name, slug, sku, short_description, primary_image, stock_status, created_at, product_group_id, product_groups(name,slug)")
+      .select("id, name, slug, sku, short_description, primary_image, stock_status, created_at, product_group_id")
       .eq("active", true)
       .order("sort_order", { ascending: true })
       .order("name", { ascending: true }),
@@ -50,6 +49,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
   const allProducts = (productsResult.data ?? []) as CatalogueProduct[];
   const groups = (groupsResult.data ?? []) as ProductGroup[];
   const selectedGroup = groups.find((item) => item.slug === filters.group) ?? null;
+  const groupNameById = new Map(groups.map((group) => [group.id, group.name]));
   const safeSearch = (filters.q ?? "").trim().toLowerCase();
 
   let filtered = allProducts.filter((product) => {
@@ -59,7 +59,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
       product.name,
       product.sku,
       product.short_description,
-      product.product_groups?.name,
+      product.product_group_id ? groupNameById.get(product.product_group_id) : null,
     ]
       .filter(Boolean)
       .join(" ")
