@@ -6,7 +6,7 @@ import { Brand } from "@/components/brand";
 import { useCommerce } from "@/components/commerce-provider";
 
 export function CommerceHeader() {
-  const { currency, setCurrency, cartCount } = useCommerce();
+  const { cartCount } = useCommerce();
   const [open, setOpen] = useState(false);
 
   return (
@@ -32,30 +32,13 @@ export function CommerceHeader() {
           </form>
 
           <div className="store-tools">
-            <div className="currency-switch" aria-label="Currency">
-              <button
-                type="button"
-                className={currency === "PKR" ? "is-active" : ""}
-                onClick={() => setCurrency("PKR")}
-              >
-                PKR
-              </button>
-              <button
-                type="button"
-                className={currency === "USD" ? "is-active" : ""}
-                onClick={() => setCurrency("USD")}
-              >
-                USD
-              </button>
-            </div>
-
             <Link className="store-tool-link" href="/sign-in">
               <span>Account</span>
               <strong>Sign in</strong>
             </Link>
 
-            <Link className="store-cart-link" href="/cart" aria-label={"Cart with " + cartCount + " items"}>
-              <span className="store-cart-icon">Bag</span>
+            <Link className="store-cart-link" href="/cart" aria-label={"Quotation basket with " + cartCount + " items"}>
+              <span className="store-cart-icon">Quote</span>
               <strong>{cartCount}</strong>
             </Link>
 

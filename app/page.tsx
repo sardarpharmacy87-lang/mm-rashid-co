@@ -10,14 +10,14 @@ export default async function HomePage() {
   const [featuredResult, latestResult] = await Promise.all([
     supabase
       .from("products")
-      .select("id, name, slug, sku, short_description, primary_image, price_pkr, price_usd, previous_price_pkr, previous_price_usd, price_on_request, stock_status")
+      .select("id, name, slug, sku, short_description, primary_image, stock_status")
       .eq("active", true)
       .eq("featured", true)
       .order("sort_order", { ascending: true })
       .limit(8),
     supabase
       .from("products")
-      .select("id, name, slug, sku, short_description, primary_image, price_pkr, price_usd, previous_price_pkr, previous_price_usd, price_on_request, stock_status")
+      .select("id, name, slug, sku, short_description, primary_image, stock_status")
       .eq("active", true)
       .order("created_at", { ascending: false })
       .limit(8),
@@ -52,14 +52,9 @@ export default async function HomePage() {
 
           <div className="commerce-hero-visual">
             <div className="hero-product-ring" />
-            <img
-              src="/images/showcase/fraternal-apron.webp"
-              alt="Custom ceremonial work by MM Rashid and Company"
-            />
-            <div className="hero-floating-card">
-              <small>Featured craft</small>
-              <strong>Handcrafted ceremonial regalia</strong>
-              <Link href="/products">View products →</Link>
+            <div className="hero-logo-stage" aria-label="MM Rashid and Company logo">
+              <img src="/mm-rashid-logo.png" alt="MM Rashid and Company logo" />
+              <span className="hero-logo-mm" aria-hidden="true">MM</span>
             </div>
           </div>
         </section>

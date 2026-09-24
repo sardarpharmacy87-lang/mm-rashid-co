@@ -26,9 +26,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
 
   const { data } = await supabase
     .from("products")
-    .select(
-      "id, name, slug, sku, short_description, primary_image, price_pkr, price_usd, previous_price_pkr, previous_price_usd, price_on_request, stock_status, created_at",
-    )
+    .select("id, name, slug, sku, short_description, primary_image, stock_status, created_at")
     .eq("active", true)
     .order("sort_order", { ascending: true })
     .order("name", { ascending: true });

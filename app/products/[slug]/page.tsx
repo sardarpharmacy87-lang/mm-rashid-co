@@ -42,13 +42,13 @@ export default async function ProductPage({ params }: PageProps) {
   const [variantsResult, relatedResult] = await Promise.all([
     supabase
       .from("product_variants")
-      .select("id, label, price_pkr, price_usd")
+      .select("id, label")
       .eq("product_id", product.id)
       .eq("active", true)
       .order("sort_order", { ascending: true }),
     supabase
       .from("products")
-      .select("id, name, slug, sku, short_description, primary_image, price_pkr, price_usd, previous_price_pkr, previous_price_usd, price_on_request, stock_status")
+      .select("id, name, slug, sku, short_description, primary_image, stock_status")
       .eq("active", true)
       .neq("id", product.id)
       .order("sort_order", { ascending: true })
@@ -128,9 +128,6 @@ export default async function ProductPage({ params }: PageProps) {
                 slug: product.slug,
                 name: product.name,
                 primary_image: product.primary_image,
-                price_pkr: product.price_pkr,
-                price_usd: product.price_usd,
-                price_on_request: product.price_on_request,
                 stock_status: product.stock_status,
               }}
               variants={variants}

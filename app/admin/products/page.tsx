@@ -12,9 +12,6 @@ type AdminProduct = {
   slug: string;
   sku: string | null;
   primary_image: string | null;
-  price_pkr: number | null;
-  price_usd: number | null;
-  price_on_request: boolean;
   stock_status: string;
   active: boolean;
   featured: boolean;
@@ -26,7 +23,7 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
 
   const result = await supabase
     .from("products")
-    .select("id, name, slug, sku, primary_image, price_pkr, price_usd, price_on_request, stock_status, active, featured")
+    .select("id, name, slug, sku, primary_image, stock_status, active, featured")
     .order("sort_order", { ascending: true });
 
   const products = (result.data ?? []) as AdminProduct[];
@@ -37,7 +34,7 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
         <div>
           <p className="portal-kicker">Product administration</p>
           <h1>Products</h1>
-          <p>Add products, prices, options, stock status, specifications and images.</p>
+          <p>Add products, options, stock status, specifications and images. Prices are not used on the website.</p>
         </div>
         <Link className="portal-button" href="/">View website</Link>
       </div>
@@ -55,7 +52,7 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
         <div className="portal-section-head">
           <div>
             <h2>Add product</h2>
-            <p>No brand, category or subcategory fields.</p>
+            <p>No brand, category, subcategory or price fields.</p>
           </div>
         </div>
 
@@ -65,10 +62,6 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
             <label>SKU<input name="sku" placeholder="MMR-..." /></label>
             <label>Slug<input name="slug" placeholder="auto-created if blank" /></label>
             <label>Sort order<input name="sortOrder" type="number" defaultValue="0" /></label>
-            <label>PKR price<input name="pricePkr" type="number" min="0" step="0.01" /></label>
-            <label>USD price<input name="priceUsd" type="number" min="0" step="0.01" /></label>
-            <label>Previous PKR price<input name="previousPricePkr" type="number" min="0" step="0.01" /></label>
-            <label>Previous USD price<input name="previousPriceUsd" type="number" min="0" step="0.01" /></label>
             <label>
               Stock status
               <select name="stockStatus" defaultValue="made_to_order">
@@ -82,11 +75,10 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
             <label className="form-span-two">Product images (1-5)<input name="images" type="file" accept="image/jpeg,image/png,image/webp" multiple /></label>
             <label className="form-span-two">Existing image URLs<textarea name="imageUrls" rows={3} /></label>
             <label className="form-span-two">Specifications<textarea name="specifications" rows={5} placeholder={"Material: Velvet\nFinish: Gold bullion"} /></label>
-            <label className="form-span-two">Options / sizes — Label|PKR|USD<textarea name="variants" rows={5} placeholder={"Small|15000|55\nLarge|19000|68"} /></label>
+            <label className="form-span-two">Options / sizes — one per line<textarea name="variants" rows={5} placeholder={"Small\nLarge\nCustom size"} /></label>
           </div>
 
           <div className="admin-check-row">
-            <label><input name="priceOnRequest" type="checkbox" defaultChecked /> Price on request</label>
             <label><input name="featured" type="checkbox" /> Featured product</label>
             <label><input name="active" type="checkbox" defaultChecked /> Active / visible</label>
           </div>
@@ -101,7 +93,7 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
         <div className="portal-table-wrap">
           <table className="portal-table">
             <thead>
-              <tr><th>Product</th><th>Pricing</th><th>Stock</th><th>Visibility</th><th /></tr>
+              <tr><th>Product</th><th>Stock</th><th>Visibility</th><th /></tr>
             </thead>
             <tbody>
               {products.map((product) => (
@@ -114,11 +106,6 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
                         <small>{product.sku || product.slug}</small>
                       </div>
                     </div>
-                  </td>
-                  <td>
-                    {product.price_on_request
-                      ? "On request"
-                      : "PKR " + (product.price_pkr ?? "—") + " / USD " + (product.price_usd ?? "—")}
                   </td>
                   <td>{product.stock_status.split("_").join(" ")}</td>
                   <td>{product.active ? "Live" : "Hidden"}{product.featured ? " · Featured" : ""}</td>

@@ -2,13 +2,11 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { formatStorePrice, useCommerce } from "@/components/commerce-provider";
+import { useCommerce } from "@/components/commerce-provider";
 
 type Variant = {
   id: string;
   label: string;
-  price_pkr: number | null;
-  price_usd: number | null;
 };
 
 type Product = {
@@ -16,9 +14,6 @@ type Product = {
   slug: string;
   name: string;
   primary_image: string | null;
-  price_pkr: number | null;
-  price_usd: number | null;
-  price_on_request: boolean;
   stock_status: string;
 };
 
@@ -29,18 +24,13 @@ export function ProductDetailBuybox({
   product: Product;
   variants: Variant[];
 }) {
-  const { currency, addToCart } = useCommerce();
+  const { addToCart } = useCommerce();
   const [variantId, setVariantId] = useState(variants[0]?.id ?? "");
   const [quantity, setQuantity] = useState(1);
   const selected = useMemo(
     () => variants.find((variant) => variant.id === variantId) ?? null,
     [variantId, variants],
   );
-
-  const pkr = selected?.price_pkr ?? product.price_pkr;
-  const usd = selected?.price_usd ?? product.price_usd;
-  const price = currency === "PKR" ? pkr : usd;
-  const label = formatStorePrice(price, currency);
 
   return (
     <div className="product-buybox">
@@ -54,17 +44,6 @@ export function ProductDetailBuybox({
           </select>
         </label>
       ) : null}
-
-      <div className="detail-price">
-        {product.price_on_request || !label ? (
-          <>
-            <strong>Price on request</strong>
-            <small>Final price depends on artwork, material, size and quantity.</small>
-          </>
-        ) : (
-          <strong>{label}</strong>
-        )}
-      </div>
 
       <div className="quantity-row">
         <label>
@@ -90,12 +69,10 @@ export function ProductDetailBuybox({
               quantity,
               variantId: selected?.id ?? null,
               variantLabel: selected?.label ?? null,
-              pricePkr: pkr,
-              priceUsd: usd,
             })
           }
         >
-          {product.price_on_request ? "Add to quotation basket" : "Add to cart"}
+          Add to quotation basket
         </button>
       </div>
 

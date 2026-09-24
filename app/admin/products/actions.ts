@@ -9,12 +9,6 @@ function textValue(formData: FormData, key: string) {
   return String(formData.get(key) ?? "").trim();
 }
 
-function nullableNumber(value: string) {
-  if (!value) return null;
-  const parsed = Number(value);
-  return Number.isFinite(parsed) && parsed >= 0 ? parsed : null;
-}
-
 function slugify(input: string) {
   return input
     .toLowerCase()
@@ -47,21 +41,20 @@ function parseVariants(value: string) {
     .map((line) => line.trim())
     .filter(Boolean)
     .map((line, index) => {
-      const [labelRaw, pkrRaw = "", usdRaw = ""] = line.split("|");
-      const label = (labelRaw ?? "").trim();
+      const label = line.split("|")[0].trim();
       if (!label) return null;
       return {
         label,
-        price_pkr: nullableNumber(pkrRaw.trim()),
-        price_usd: nullableNumber(usdRaw.trim()),
+        price_pkr: null,
+        price_usd: null,
         sort_order: index,
         active: true,
       };
     })
     .filter(Boolean) as Array<{
       label: string;
-      price_pkr: number | null;
-      price_usd: number | null;
+      price_pkr: null;
+      price_usd: null;
       sort_order: number;
       active: boolean;
     }>;
@@ -109,11 +102,11 @@ function productPayload(formData: FormData, images: string[]) {
     primary_image: images[0] || null,
     images,
     specifications: parseSpecifications(textValue(formData, "specifications")),
-    price_pkr: nullableNumber(textValue(formData, "pricePkr")),
-    price_usd: nullableNumber(textValue(formData, "priceUsd")),
-    previous_price_pkr: nullableNumber(textValue(formData, "previousPricePkr")),
-    previous_price_usd: nullableNumber(textValue(formData, "previousPriceUsd")),
-    price_on_request: formData.get("priceOnRequest") === "on",
+    price_pkr: null,
+    price_usd: null,
+    previous_price_pkr: null,
+    previous_price_usd: null,
+    price_on_request: true,
     stock_status: textValue(formData, "stockStatus") || "made_to_order",
     featured: formData.get("featured") === "on",
     active: formData.get("active") === "on",

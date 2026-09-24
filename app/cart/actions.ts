@@ -35,15 +35,15 @@ export async function submitCartEnquiry(formData: FormData) {
   const supabase = await createClient();
   const { data: products } = await supabase
     .from("products")
-    .select("id, name, slug, price_pkr, price_usd, active")
+    .select("id, name, slug, active")
     .in("id", productIds)
     .eq("active", true);
 
   const productMap = new Map((products ?? []).map((product) => [product.id, product]));
   const variantIds = Array.from(new Set(incoming.map((item) => item.variantId).filter(Boolean))) as string[];
   const { data: variants } = variantIds.length
-    ? await supabase.from("product_variants").select("id, product_id, label, price_pkr, price_usd, active").in("id", variantIds).eq("active", true)
-    : { data: [] as Array<{ id: string; product_id: string; label: string; price_pkr: number | null; price_usd: number | null; active: boolean }> };
+    ? await supabase.from("product_variants").select("id, product_id, label, active").in("id", variantIds).eq("active", true)
+    : { data: [] as Array<{ id: string; product_id: string; label: string; active: boolean }> };
 
   const variantMap = new Map((variants ?? []).map((variant) => [variant.id, variant]));
 
@@ -61,8 +61,8 @@ export async function submitCartEnquiry(formData: FormData) {
       };
     })
     .filter(Boolean) as Array<{
-      product: { id: string; name: string; price_pkr: number | null; price_usd: number | null };
-      variant: { id: string; label: string; price_pkr: number | null; price_usd: number | null } | null | undefined;
+      product: { id: string; name: string };
+      variant: { id: string; label: string } | null | undefined;
       quantity: number;
     }>;
 
@@ -100,8 +100,8 @@ export async function submitCartEnquiry(formData: FormData) {
     product_name: line.product.name,
     variant_label: line.variant?.label ?? null,
     quantity: line.quantity,
-    unit_price_pkr: line.variant?.price_pkr ?? line.product.price_pkr,
-    unit_price_usd: line.variant?.price_usd ?? line.product.price_usd,
+    unit_price_pkr: null,
+    unit_price_usd: null,
   }));
 
   await supabase.from("enquiry_items").insert(itemRows);
@@ -125,7 +125,7 @@ export async function submitCartEnquiry(formData: FormData) {
       name: profile.full_name,
       subject: "Quotation request received — " + enquiry.enquiry_number,
       heading: "We have received your product quotation request",
-      message: "Your request " + enquiry.enquiry_number + " contains " + lines.length + " product line(s). We will review the specifications and send pricing through your customer account.",
+      message: "Your request " + enquiry.enquiry_number + " contains " + lines.length + " product line(s). We will review the specifications and respond through your customer account.",
       actionLabel: "View enquiry",
       actionPath: "/customer/enquiries/" + enquiry.id,
       idempotencyKey: "cart-enquiry-customer-" + enquiry.id,
@@ -137,7 +137,7 @@ export async function submitCartEnquiry(formData: FormData) {
         name: "MM Rashid Admin",
         subject: "New website quotation request — " + enquiry.enquiry_number,
         heading: "A new product quotation needs review",
-        message: (profile.company_name || profile.full_name) + " requested pricing for " + lines.length + " product line(s).",
+        message: (profile.company_name || profile.full_name) + " submitted " + lines.length + " product line(s) for quotation.",
         actionLabel: "Review enquiry",
         actionPath: "/admin/enquiries/" + enquiry.id,
         idempotencyKey: "cart-enquiry-admin-" + enquiry.id,
