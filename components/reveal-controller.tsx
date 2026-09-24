@@ -6,15 +6,10 @@ import { loadMotionRuntime } from "@/lib/motion-runtime";
 export function RevealController() {
   useEffect(() => {
     const root = document.documentElement;
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const revealElements = Array.from(document.querySelectorAll<HTMLElement>(".reveal"));
 
     root.classList.add("motion-ready");
-
-    const revealElements = Array.from(
-      document.querySelectorAll<HTMLElement>(".reveal"),
-    );
 
     if (reduceMotion) {
       revealElements.forEach((element) => {
@@ -23,10 +18,7 @@ export function RevealController() {
         element.style.transform = "none";
         element.style.filter = "none";
       });
-
-      return () => {
-        root.classList.remove("motion-ready");
-      };
+      return () => root.classList.remove("motion-ready");
     }
 
     let disposed = false;
@@ -38,38 +30,34 @@ export function RevealController() {
 
         revealElements.forEach((element) => {
           element.style.opacity = "0";
-          element.style.transform = "translateY(28px)";
-          element.style.filter = "blur(3px)";
+          element.style.transform = "translateY(34px)";
+          element.style.filter = "blur(5px)";
         });
 
-        const stopReveal = Motion.inView(
-          revealElements,
-          (element) => {
-            const htmlElement = element as HTMLElement;
-            htmlElement.classList.add("is-visible");
-
-            Motion.animate(
-              htmlElement,
-              {
-                opacity: [0, 1],
-                y: [28, 0],
-                filter: ["blur(3px)", "blur(0px)"],
-              },
-              {
-                type: "spring",
-                stiffness: 110,
-                damping: 21,
-                mass: 0.75,
-              },
-            );
-          },
-          {
-            amount: 0.14,
-            margin: "0px 0px -8% 0px",
-          },
+        cleanups.push(
+          Motion.inView(
+            revealElements,
+            (element) => {
+              const node = element as HTMLElement;
+              node.classList.add("is-visible");
+              Motion.animate(
+                node,
+                {
+                  opacity: [0, 1],
+                  y: [34, 0],
+                  filter: ["blur(5px)", "blur(0px)"],
+                },
+                {
+                  type: "spring",
+                  stiffness: 95,
+                  damping: 20,
+                  mass: 0.82,
+                },
+              );
+            },
+            { amount: 0.12, margin: "0px 0px -8% 0px" },
+          ),
         );
-
-        cleanups.push(stopReveal);
 
         cleanups.push(
           Motion.scroll((progress: number) => {
@@ -77,35 +65,17 @@ export function RevealController() {
           }),
         );
 
-        const parallaxTargets = [
-          {
-            element: document.querySelector<HTMLElement>(".heritage-store-image"),
-            from: "-18px",
-            to: "18px",
-          },
-          {
-            element: document.querySelector<HTMLElement>(".workshop-store-video"),
-            from: "16px",
-            to: "-16px",
-          },
-          {
-            element: document.querySelector<HTMLElement>(".collection-promo-image"),
-            from: "-12px",
-            to: "12px",
-          },
-        ];
+        const parallaxTargets = Array.from(
+          document.querySelectorAll<HTMLElement>(
+            ".bloom-hero-mark, .bloom-heritage-media, .bloom-workshop-frame",
+          ),
+        );
 
-        parallaxTargets.forEach(({ element, from, to }) => {
-          if (!element) return;
-
+        parallaxTargets.forEach((element, index) => {
           const animation = Motion.animate(
             element,
-            {
-              y: [from, to],
-            },
-            {
-              ease: "linear",
-            },
+            { y: index === 0 ? ["-10px", "18px"] : ["14px", "-14px"] },
+            { ease: "linear" },
           );
 
           cleanups.push(
@@ -118,20 +88,18 @@ export function RevealController() {
 
         const rails = Array.from(
           document.querySelectorAll<HTMLElement>(
-            ".category-grid, .product-grid, .collection-grid, .reason-grid",
+            ".bloom-group-grid, .store-product-grid, .bloom-process-list, .bloom-trust-rail",
           ),
         );
 
         rails.forEach((rail) => {
-          const cards = Array.from(
-            rail.querySelectorAll<HTMLElement>(
-              ".category-tile, .product-card, .collection-card, .reason-card",
-            ),
+          const cards = Array.from(rail.children).filter(
+            (node): node is HTMLElement => node instanceof HTMLElement,
           );
 
           cards.forEach((card) => {
             card.style.opacity = "0";
-            card.style.transform = "translateY(22px) scale(0.985)";
+            card.style.transform = "translateY(24px)";
           });
 
           cleanups.push(
@@ -140,155 +108,54 @@ export function RevealController() {
               () => {
                 Motion.animate(
                   cards,
-                  {
-                    opacity: [0, 1],
-                    y: [22, 0],
-                    scale: [0.985, 1],
-                  },
+                  { opacity: [0, 1], y: [24, 0] },
                   {
                     delay: Motion.stagger(0.07),
                     type: "spring",
                     stiffness: 105,
-                    damping: 20,
-                    mass: 0.7,
+                    damping: 21,
+                    mass: 0.74,
                   },
                 );
               },
-              {
-                amount: 0.12,
-              },
+              { amount: 0.08 },
             ),
           );
         });
 
         const magneticItems = Array.from(
           document.querySelectorAll<HTMLElement>(
-            ".samsung-primary-action, .header-enquiry, .button-gold",
+            ".store-primary-button, .bloom-quote, .bloom-group-card",
           ),
         );
 
-        const magneticCleanup = magneticItems.map((item) => {
+        magneticItems.forEach((item) => {
           const move = (event: PointerEvent) => {
             const rect = item.getBoundingClientRect();
             const x = event.clientX - (rect.left + rect.width / 2);
             const y = event.clientY - (rect.top + rect.height / 2);
-
             Motion.animate(
               item,
-              {
-                x: x * 0.1,
-                y: y * 0.1,
-              },
-              {
-                type: "spring",
-                stiffness: 260,
-                damping: 24,
-                mass: 0.45,
-              },
+              { x: x * 0.055, y: y * 0.055 },
+              { type: "spring", stiffness: 250, damping: 24, mass: 0.45 },
             );
           };
 
           const leave = () => {
             Motion.animate(
               item,
-              {
-                x: 0,
-                y: 0,
-              },
-              {
-                type: "spring",
-                stiffness: 220,
-                damping: 22,
-              },
+              { x: 0, y: 0 },
+              { type: "spring", stiffness: 220, damping: 22 },
             );
           };
 
           item.addEventListener("pointermove", move);
           item.addEventListener("pointerleave", leave);
-
-          return () => {
+          cleanups.push(() => {
             item.removeEventListener("pointermove", move);
             item.removeEventListener("pointerleave", leave);
-          };
+          });
         });
-
-        cleanups.push(...magneticCleanup);
-
-        const hoverCards = Array.from(
-          document.querySelectorAll<HTMLElement>(
-            ".product-card, .collection-card, .category-tile",
-          ),
-        );
-
-        const hoverCleanup = hoverCards.map((card) => {
-          const image = card.querySelector<HTMLElement>("img");
-
-          const enter = () => {
-            Motion.animate(
-              card,
-              {
-                y: -6,
-              },
-              {
-                type: "spring",
-                stiffness: 210,
-                damping: 22,
-              },
-            );
-
-            if (image) {
-              Motion.animate(
-                image,
-                {
-                  scale: 1.045,
-                },
-                {
-                  type: "spring",
-                  stiffness: 150,
-                  damping: 20,
-                },
-              );
-            }
-          };
-
-          const leave = () => {
-            Motion.animate(
-              card,
-              {
-                y: 0,
-              },
-              {
-                type: "spring",
-                stiffness: 190,
-                damping: 22,
-              },
-            );
-
-            if (image) {
-              Motion.animate(
-                image,
-                {
-                  scale: 1,
-                },
-                {
-                  type: "spring",
-                  stiffness: 150,
-                  damping: 20,
-                },
-              );
-            }
-          };
-
-          card.addEventListener("pointerenter", enter);
-          card.addEventListener("pointerleave", leave);
-
-          return () => {
-            card.removeEventListener("pointerenter", enter);
-            card.removeEventListener("pointerleave", leave);
-          };
-        });
-
-        cleanups.push(...hoverCleanup);
       })
       .catch(() => {
         revealElements.forEach((element) => {
