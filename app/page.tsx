@@ -17,30 +17,6 @@ type HomeProduct = ProductCardData & {
 
 const groupVisuals: Record<string, string> = {};
 
-const timelineItems = [
-  {
-    year: "1922",
-    label: "The beginning",
-    title: "A specialist workshop tradition begins in Sialkot.",
-    text: "MM Rashid & Co. was established in Sialkot, building its reputation around disciplined hand embroidery and ceremonial detail.",
-    image: "/images/gallery/goldwork-leaf-detail.webp",
-  },
-  {
-    year: "1965",
-    label: "The archive",
-    title: "The craft passes through the family workshop.",
-    text: "A surviving workshop photograph records the people, environment and hand skills that shaped the company through the mid-century period.",
-    image: "/images/heritage/mm-rashid-history.jpeg",
-  },
-  {
-    year: "Today",
-    label: "The atelier now",
-    title: "The same attention to detail continues by hand.",
-    text: "Custom ceremonial work is still developed in Sialkot for customers, institutions and specialist businesses around the world.",
-    image: "/images/workshop/hand-stitching.jpeg",
-  },
-];
-
 const processSteps = [
   {
     number: "01",
@@ -304,10 +280,6 @@ export default async function HomePage() {
               alt="Historic MM Rashid and Company workshop in Sialkot, circa 1965"
             />
             <div className="bloom-year" aria-hidden="true">1922</div>
-            <div className="bloom-heritage-caption">
-              <span>Archive</span>
-              <strong>MM Rashid &amp; Co. workshop, circa 1965</strong>
-            </div>
           </div>
 
           <div className="bloom-heritage-copy reveal delay-one">
@@ -324,36 +296,6 @@ export default async function HomePage() {
               organisations and private customers worldwide.
             </p>
             <Link href="#process">See how we work ↘</Link>
-          </div>
-        </section>
-
-        <section className="luxury-timeline" id="legacy">
-          <div className="luxury-timeline-intro reveal">
-            <p className="bloom-eyebrow">A century in three moments</p>
-            <h2>1922. 1965. Today.</h2>
-            <p>
-              The company has changed with time, but the value placed on handwork,
-              precision and ceremonial detail has remained constant.
-            </p>
-          </div>
-
-          <div className="luxury-timeline-list">
-            {timelineItems.map((item, index) => (
-              <article className="luxury-timeline-item reveal" key={item.year}>
-                <div className="luxury-timeline-year">
-                  <span>{String(index + 1).padStart(2, "0")}</span>
-                  <strong>{item.year}</strong>
-                </div>
-                <div className="luxury-timeline-media">
-                  <img src={item.image} alt="" loading="lazy" />
-                </div>
-                <div className="luxury-timeline-copy">
-                  <p>{item.label}</p>
-                  <h3>{item.title}</h3>
-                  <span>{item.text}</span>
-                </div>
-              </article>
-            ))}
           </div>
         </section>
 
