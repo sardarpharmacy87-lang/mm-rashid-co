@@ -902,26 +902,6 @@
     drop-shadow(0 0 18px rgba(230,180,57,.14));
 }
 
-/* The supplied emblem reads MM RASHID. Hide only the two legacy punctuation dots. */
-.hero-logo-stage::before,
-.hero-logo-stage::after {
-  position: absolute;
-  z-index: 4;
-  width: 2.45%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: #f8f7f1;
-  content: "";
-  pointer-events: none;
-}
-.hero-logo-stage::before {
-  top: 17.4%;
-  left: 27.1%;
-}
-.hero-logo-stage::after {
-  top: 14.1%;
-  left: 32.5%;
-}
 
 .store-section-heading h2,
 .store-heritage-copy h2 {
@@ -946,4 +926,50 @@
   .commerce-hero { min-height: auto; }
   .commerce-hero-visual { min-height: 480px; }
   .hero-logo-stage { width: min(76vw, 520px); }
+}
+
+
+/* LOGO FIX: preserve the original artwork; cover only the single dot between M.M. */
+.hero-logo-stage::after,
+.store-header .brand-logo::after {
+  position: absolute;
+  z-index: 5;
+  top: 25.7%;
+  left: 26.55%;
+  width: 1.85%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #faf9f5;
+  content: "";
+  pointer-events: none;
+}
+
+.hero-logo-stage {
+  isolation: isolate;
+}
+
+.store-header .brand-logo {
+  position: relative;
+  overflow: visible;
+}
+
+.store-header .brand-logo img,
+.hero-logo-stage > img {
+  display: block;
+  object-fit: contain;
+  object-position: center;
+}
+
+.hero-logo-stage > img {
+  width: 100%;
+  height: auto;
+  max-height: none;
+}
+
+@media (max-width: 900px) {
+  .hero-logo-stage::after,
+  .store-header .brand-logo::after {
+    top: 25.7%;
+    left: 26.55%;
+  }
 }
