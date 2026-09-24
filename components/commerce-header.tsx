@@ -36,6 +36,7 @@ export function CommerceHeader() {
             aria-label="Main navigation"
           >
             <Link href="/products" onClick={close}>Products</Link>
+            <Link href="/catalogue" onClick={close}>Catalogue</Link>
             <Link href="/#heritage" onClick={close}>Our history</Link>
             <Link href="/#workshop" onClick={close}>Workshop</Link>
             <Link href="/#process" onClick={close}>How we work</Link>

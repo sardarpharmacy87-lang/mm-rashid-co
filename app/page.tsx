@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CommerceHeader } from "@/components/commerce-header";
+import { HomepageSlider, type HomepageSlide } from "@/components/homepage-slider";
 import { ProductCard, type ProductCardData } from "@/components/product-card";
 import { RevealController } from "@/components/reveal-controller";
 import { StoreFooter } from "@/components/store-footer";
@@ -43,7 +44,7 @@ const processSteps = [
 export default async function HomePage() {
   const supabase = await createClient();
 
-  const [groupsResult, productsResult] = await Promise.all([
+  const [groupsResult, productsResult, slidesResult] = await Promise.all([
     supabase
       .from("product_groups")
       .select("id, name, slug")
@@ -56,10 +57,17 @@ export default async function HomePage() {
       .eq("active", true)
       .order("sort_order", { ascending: true })
       .order("name", { ascending: true }),
+    supabase
+      .from("homepage_slides")
+      .select("id, image_url, alt_text, sort_order, delay_ms")
+      .eq("active", true)
+      .order("sort_order", { ascending: true })
+      .order("created_at", { ascending: true }),
   ]);
 
   const groups = (groupsResult.data ?? []) as ProductGroup[];
   const products = (productsResult.data ?? []) as HomeProduct[];
+  const slides = (slidesResult.data ?? []) as HomepageSlide[];
   const siteUrl =
     process.env.NEXT_PUBLIC_SITE_URL || "https://mm-rashid-co-l5hh.vercel.app";
 
@@ -122,15 +130,6 @@ export default async function HomePage() {
             <div className="bloom-emblem-stage">
               <img src="/mm-rashid-logo.png" alt="MM Rashid and Company emblem" />
             </div>
-            <div className="bloom-mark-note bloom-mark-note-top">
-              <span>01</span>
-              <strong>Goldwork</strong>
-            </div>
-            <div className="bloom-mark-note bloom-mark-note-bottom">
-              <span>02</span>
-              <strong>Custom regalia</strong>
-            </div>
-
             <div className="luxury-seal" aria-label="Established 1922 in Sialkot">
               <span>EST.</span>
               <strong>1922</strong>
@@ -143,6 +142,8 @@ export default async function HomePage() {
             Scroll to explore
           </div>
         </section>
+
+        <HomepageSlider slides={slides} />
 
         <section className="luxury-film-section reveal" aria-labelledby="owner-interview-title">
           <div className="luxury-film-copy">
