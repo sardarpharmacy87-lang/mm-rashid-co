@@ -14,59 +14,6 @@ type HomeProduct = ProductCardData & {
   product_group_id: string | null;
 };
 
-const galleryItems = [
-  {
-    src: "/images/gallery/ceremonial-embroidered-banner.webp",
-    title: "Ceremonial Banner",
-    line: "Hand embroidery and bullion detail",
-  },
-  {
-    src: "/images/gallery/gold-bullion-naval-badge.webp",
-    title: "Naval Bullion Badge",
-    line: "Goldwork embroidery",
-  },
-  {
-    src: "/images/gallery/gold-bullion-shoulder-boards.webp",
-    title: "Bullion Shoulder Boards",
-    line: "Ceremonial uniform insignia",
-  },
-  {
-    src: "/images/gallery/silver-bullion-cap-visor.webp",
-    title: "Silver Bullion Visor",
-    line: "Ceremonial headwear",
-  },
-  {
-    src: "/images/gallery/custom-maroon-fez.webp",
-    title: "Custom Maroon Fez",
-    line: "Fraternal regalia",
-  },
-  {
-    src: "/images/gallery/custom-purple-fez-set.webp",
-    title: "Custom Purple Fez Set",
-    line: "Custom embroidered fez work",
-  },
-  {
-    src: "/images/gallery/silver-bullion-ceremonial-emblem.webp",
-    title: "Silver Ceremonial Emblem",
-    line: "Hand-built emblem work",
-  },
-  {
-    src: "/images/gallery/medical-corps-embroidered-badge.webp",
-    title: "Medical Corps Badge",
-    line: "Hand embroidered badge",
-  },
-  {
-    src: "/images/gallery/goldwork-leaf-detail.webp",
-    title: "Goldwork Leaf Detail",
-    line: "Bullion craftsmanship detail",
-  },
-  {
-    src: "/images/gallery/ceremonial-gold-cords-and-tassels.png",
-    title: "Ceremonial Cords & Tassels",
-    line: "Military accessories",
-  },
-];
-
 const processSteps = [
   {
     number: "01",
@@ -223,33 +170,6 @@ export default async function HomePage() {
           <video controls playsInline preload="metadata" poster="/images/workshop/stitching-video-poster.jpg">
             <source src="/videos/stitching/stitching-process.mp4" type="video/mp4" />
           </video>
-        </section>
-
-        <section className="legacy-gallery" id="gallery">
-          <div className="legacy-section-head">
-            <div>
-              <p className="store-kicker">Selected commissions</p>
-              <h2>Craftsmanship in every detail.</h2>
-            </div>
-            <p>
-              Examples of ceremonial embroidery, bullion work, regalia,
-              headwear and custom commissioned pieces.
-            </p>
-          </div>
-
-          <div className="legacy-gallery-grid">
-            {galleryItems.map((item) => (
-              <article className="legacy-gallery-card" key={item.src}>
-                <div className="legacy-gallery-image">
-                  <img src={item.src} alt={item.title} loading="lazy" />
-                </div>
-                <div className="legacy-gallery-copy">
-                  <p>{item.line}</p>
-                  <h3>{item.title}</h3>
-                </div>
-              </article>
-            ))}
-          </div>
         </section>
 
         <section className="legacy-process" id="process">
