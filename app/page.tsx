@@ -14,6 +14,82 @@ type HomeProduct = ProductCardData & {
   product_group_id: string | null;
 };
 
+const galleryItems = [
+  {
+    src: "/images/gallery/ceremonial-embroidered-banner.webp",
+    title: "Ceremonial Banner",
+    line: "Hand embroidery and bullion detail",
+  },
+  {
+    src: "/images/gallery/gold-bullion-naval-badge.webp",
+    title: "Naval Bullion Badge",
+    line: "Goldwork embroidery",
+  },
+  {
+    src: "/images/gallery/gold-bullion-shoulder-boards.webp",
+    title: "Bullion Shoulder Boards",
+    line: "Ceremonial uniform insignia",
+  },
+  {
+    src: "/images/gallery/silver-bullion-cap-visor.webp",
+    title: "Silver Bullion Visor",
+    line: "Ceremonial headwear",
+  },
+  {
+    src: "/images/gallery/custom-maroon-fez.webp",
+    title: "Custom Maroon Fez",
+    line: "Fraternal regalia",
+  },
+  {
+    src: "/images/gallery/custom-purple-fez-set.webp",
+    title: "Custom Purple Fez Set",
+    line: "Custom embroidered fez work",
+  },
+  {
+    src: "/images/gallery/silver-bullion-ceremonial-emblem.webp",
+    title: "Silver Ceremonial Emblem",
+    line: "Hand-built emblem work",
+  },
+  {
+    src: "/images/gallery/medical-corps-embroidered-badge.webp",
+    title: "Medical Corps Badge",
+    line: "Hand embroidered badge",
+  },
+  {
+    src: "/images/gallery/goldwork-leaf-detail.webp",
+    title: "Goldwork Leaf Detail",
+    line: "Bullion craftsmanship detail",
+  },
+  {
+    src: "/images/gallery/ceremonial-gold-cords-and-tassels.png",
+    title: "Ceremonial Cords & Tassels",
+    line: "Military accessories",
+  },
+];
+
+const processSteps = [
+  {
+    number: "01",
+    title: "Share the brief",
+    description: "Send your artwork, measurements, quantity and required finish.",
+  },
+  {
+    number: "02",
+    title: "Material and detail review",
+    description: "We confirm colours, bullion style, construction and production details.",
+  },
+  {
+    number: "03",
+    title: "Hand production",
+    description: "Our artisans build each piece with disciplined and exacting handwork.",
+  },
+  {
+    number: "04",
+    title: "Inspection and dispatch",
+    description: "Finished work is checked carefully before secure packing and dispatch.",
+  },
+];
+
 export default async function HomePage() {
   const supabase = await createClient();
 
@@ -102,23 +178,38 @@ export default async function HomePage() {
           <Link href="/customer/enquiries/new">Start custom enquiry →</Link>
         </section>
 
-        <section className="store-heritage" id="heritage">
+        <section className="store-heritage store-heritage-expanded" id="heritage">
           <div className="store-heritage-image">
-            <img src="/images/heritage/mm-rashid-history.jpeg" alt="MM Rashid and Company historic workshop" />
+            <img
+              src="/images/heritage/mm-rashid-history.jpeg"
+              alt="Historic MM Rashid and Company workshop in Sialkot, circa 1965"
+            />
+            <div className="heritage-caption">
+              <strong>MM Rashid &amp; Co. workshop, circa 1965</strong>
+              <span>Muhammad Pura, Commissioner Road, Sialkot</span>
+            </div>
           </div>
+
           <div className="store-heritage-copy">
             <p className="store-kicker">Our heritage</p>
-            <h2>A Sialkot family craft established in 1922.</h2>
+            <h2>A family craft established in 1922.</h2>
             <p>
-              For more than a century, skilled hands have transformed metallic thread,
-              purl, cord, sequins and fine textiles into ceremonial work made to carry
-              identity, rank and tradition.
+              This historical photograph, taken around 1965 at Muhammad Pura,
+              Commissioner Road, Sialkot, preserves an early chapter of MM Rashid
+              &amp; Co. and the workshop tradition behind the company.
             </p>
             <p>
-              Today MM Rashid &amp; Co. continues that specialist work for institutions,
-              uniform businesses and private customers around the world.
+              Founder Muhammad Rashid is pictured with his father Muhammad Hakim
+              Deen, his son Muhammad Rafique and craftsmen working by hand on
+              embroidered pieces. Behind them are examples of badges and other
+              workshop work produced using skills passed through generations.
             </p>
-            <Link href="/customer/enquiries/new">Discuss a commission →</Link>
+            <p>
+              Today the same emphasis on handwork, accuracy and ceremonial detail
+              continues in commissions made for institutions, uniform businesses,
+              fraternal organisations and private customers worldwide.
+            </p>
+            <Link href="#process">See how we work →</Link>
           </div>
         </section>
 
@@ -132,6 +223,75 @@ export default async function HomePage() {
           <video controls playsInline preload="metadata" poster="/images/workshop/stitching-video-poster.jpg">
             <source src="/videos/stitching/stitching-process.mp4" type="video/mp4" />
           </video>
+        </section>
+
+        <section className="legacy-gallery" id="gallery">
+          <div className="legacy-section-head">
+            <div>
+              <p className="store-kicker">Selected commissions</p>
+              <h2>Craftsmanship in every detail.</h2>
+            </div>
+            <p>
+              Examples of ceremonial embroidery, bullion work, regalia,
+              headwear and custom commissioned pieces.
+            </p>
+          </div>
+
+          <div className="legacy-gallery-grid">
+            {galleryItems.map((item) => (
+              <article className="legacy-gallery-card" key={item.src}>
+                <div className="legacy-gallery-image">
+                  <img src={item.src} alt={item.title} loading="lazy" />
+                </div>
+                <div className="legacy-gallery-copy">
+                  <p>{item.line}</p>
+                  <h3>{item.title}</h3>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="legacy-process" id="process">
+          <div className="legacy-process-copy">
+            <p className="store-kicker store-kicker-light">Our process</p>
+            <h2>From your brief to finished handwork.</h2>
+            <p>
+              A clear process keeps custom details faithful to your artwork,
+              dimensions and required finish.
+            </p>
+          </div>
+
+          <ol className="legacy-process-list">
+            {processSteps.map((step) => (
+              <li key={step.number}>
+                <span>{step.number}</span>
+                <div>
+                  <h3>{step.title}</h3>
+                  <p>{step.description}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <section className="legacy-contact" id="contact">
+          <div>
+            <p className="store-kicker store-kicker-light">Commission enquiries</p>
+            <h2>Let&apos;s create something worthy of the occasion.</h2>
+            <p>
+              Tell us what you need, the required quantity, delivery country and
+              any artwork or measurements you already have.
+            </p>
+          </div>
+
+          <div className="legacy-contact-actions">
+            <Link className="store-primary-button" href="/customer/enquiries/new">
+              Start custom enquiry
+            </Link>
+            <a className="legacy-phone-link" href="tel:+923343342223">+92 334 334 2223</a>
+            <span>Commissioner Road · Sialkot 51310 · Pakistan</span>
+          </div>
         </section>
 
         <section className="store-benefits">
