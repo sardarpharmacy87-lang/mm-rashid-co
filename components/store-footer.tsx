@@ -25,7 +25,6 @@ export function StoreFooter() {
           <strong>Company</strong>
           <Link href="/#heritage">Our history</Link>
           <Link href="/#workshop">Workshop</Link>
-          <Link href="/#gallery">Gallery</Link>
           <Link href="/#process">How we work</Link>
           <Link href="/#contact">Contact</Link>
           <a href="tel:+923343342223">+92 334 334 2223</a>
