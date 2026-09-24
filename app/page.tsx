@@ -15,9 +15,7 @@ type HomeProduct = ProductCardData & {
   product_group_id: string | null;
 };
 
-const groupVisuals: Record<string, string> = {
-  jackets: "/images/workshop/hand-stitching.jpeg",
-};
+const groupVisuals: Record<string, string> = {};
 
 const timelineItems = [
   {
