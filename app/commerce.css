@@ -6433,3 +6433,14 @@ html {
   border: 0 !important;
   box-shadow: none !important;
 }
+
+
+.rate-private-note {
+  margin: 12px 0 0 !important;
+  color: var(--premium-muted) !important;
+  font-size: .72rem !important;
+  line-height: 1.5;
+}
+.rate-login-actions .rate-private-note {
+  flex-basis: 100%;
+}
