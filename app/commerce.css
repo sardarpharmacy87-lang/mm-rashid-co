@@ -6014,3 +6014,170 @@ html {
   background: transparent !important;
   box-shadow: none !important;
 }
+
+
+/* PREMIUM COLOR REFRESH — deep midnight blue + antique gold + porcelain white */
+:root {
+  --premium-ink: #07111f;
+  --premium-navy: #0a1f3b;
+  --premium-navy-2: #102a4d;
+  --premium-gold: #c7a24a;
+  --premium-gold-soft: #e1c77a;
+  --premium-ivory: #f7f3eb;
+  --premium-white: #ffffff;
+  --premium-muted: #6d7480;
+}
+
+/* Header / announcement */
+.store-announcement,
+.bloom-topbar {
+  background: var(--premium-ink) !important;
+  color: #f7f1e6 !important;
+}
+.store-header,
+.bloom-header,
+.bloom-nav {
+  background: rgba(255,255,255,.98) !important;
+  border-color: rgba(10,31,59,.10) !important;
+}
+.store-main-nav {
+  background: var(--premium-navy) !important;
+}
+.store-main-nav a:hover {
+  background: rgba(255,255,255,.08) !important;
+}
+
+/* Buttons and accents */
+.store-primary-button,
+.portal-button,
+.reference-catalogue-toolbar button,
+.detail-add-button,
+.cart-enquiry-form button {
+  color: #fff !important;
+  border-color: var(--premium-navy) !important;
+  background: linear-gradient(135deg,var(--premium-navy) 0%,var(--premium-navy-2) 100%) !important;
+}
+.store-primary-button:hover,
+.portal-button:hover {
+  color: var(--premium-ink) !important;
+  border-color: var(--premium-gold) !important;
+  background: linear-gradient(135deg,var(--premium-gold-soft),var(--premium-gold)) !important;
+}
+
+.store-secondary-button {
+  color: var(--premium-navy) !important;
+  border-color: rgba(10,31,59,.24) !important;
+  background: #fff !important;
+}
+
+/* Premium gold labels */
+.store-kicker,
+.product-detail-category,
+.portal-kicker,
+.bloom-eyebrow,
+.stock-made_to_order {
+  color: #9f7928 !important;
+}
+
+/* Headings */
+.catalogue-page h1,
+.product-detail-copy h1,
+.store-section-heading h2,
+.product-group-heading h2,
+.bloom-site h1,
+.bloom-site h2,
+.portal-main h1,
+.portal-section h2 {
+  color: var(--premium-navy) !important;
+}
+
+/* Premium warm-white site surfaces */
+.store-shell,
+.catalogue-page,
+.product-detail-page,
+.portal-layout {
+  background: var(--premium-white) !important;
+}
+.reference-catalogue-hero,
+.catalogue-layout,
+.catalogue-results,
+.product-group-nav,
+.collection-heading,
+.product-group-list,
+.product-group-block,
+.all-products-grid,
+.catalogue-product-grid,
+.store-product-grid,
+.store-product-card,
+.store-product-content,
+.store-product-media,
+.product-detail-grid,
+.product-gallery,
+.product-main-image,
+.premium-product-gallery,
+.premium-product-gallery .product-main-image,
+.premium-product-gallery .product-thumbnails,
+.premium-product-gallery .product-thumbnails button {
+  background: transparent !important;
+  background-image: none !important;
+}
+
+/* Remove pale beige/cream blocks from catalogue */
+.category-shop,
+.home-product-group,
+.bloom-site .home-product-group,
+.store-section.home-product-group,
+.catalogue-empty {
+  background: #fff !important;
+  background-image: none !important;
+}
+
+/* Refined separators */
+.product-group-heading,
+.collection-heading,
+.reference-catalogue-toolbar,
+.catalogue-toolbar,
+.product-description,
+.product-specifications,
+.product-meta-line {
+  border-color: rgba(10,31,59,.12) !important;
+}
+
+/* Product status */
+.stock-pill,
+.stock-in_stock {
+  color: #fff !important;
+  background: var(--premium-ink) !important;
+}
+.stock-out_of_stock {
+  color: #fff !important;
+  background: #5f2630 !important;
+}
+
+/* Product rate request */
+.storefront-order-panel {
+  color: var(--premium-ink) !important;
+  background: transparent !important;
+}
+.product-rate-form input,
+.product-rate-form select,
+.product-rate-form textarea {
+  color: var(--premium-ink) !important;
+  border-color: rgba(10,31,59,.30) !important;
+  background: #fff !important;
+}
+.product-rate-form input:focus,
+.product-rate-form select:focus,
+.product-rate-form textarea:focus {
+  border-color: var(--premium-gold) !important;
+  box-shadow: 0 0 0 3px rgba(199,162,74,.12) !important;
+}
+
+/* Links */
+.product-card-actions a,
+.product-group-heading a,
+.store-section-heading > a,
+.bloom-site a,
+.store-breadcrumbs a {
+  color: var(--premium-navy) !important;
+}
