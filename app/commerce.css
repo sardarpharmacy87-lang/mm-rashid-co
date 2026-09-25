@@ -6685,3 +6685,55 @@ html {
 .bloom-hero-intro {
   color: #58635f !important;
 }
+
+
+/* PROCESS SECTION — restore text visibility after white-background test */
+.bloom-process {
+  color: var(--premium-charcoal) !important;
+}
+
+.bloom-process-intro h2,
+.bloom-process-list h3 {
+  color: var(--premium-green) !important;
+}
+
+.bloom-process-intro > p:last-child,
+.bloom-process-list p {
+  color: #66706c !important;
+}
+
+.bloom-process-list {
+  border-top-color: rgba(11,43,36,.14) !important;
+}
+
+.bloom-process-list li {
+  border-bottom-color: rgba(11,43,36,.12) !important;
+}
+
+.bloom-process-list li:hover {
+  background: rgba(11,43,36,.025) !important;
+}
+
+.bloom-process-list > li > span {
+  color: #F5D98F !important;
+  border-color: rgba(197,161,90,.45) !important;
+  background: var(--premium-green) !important;
+}
+
+.bloom-process-list li:hover > span {
+  border-color: var(--premium-gold-soft) !important;
+  background: var(--premium-green-2) !important;
+  box-shadow: 0 0 0 6px rgba(197,161,90,.08) !important;
+}
+
+.bloom-process-list::before {
+  background: linear-gradient(
+    to bottom,
+    rgba(197,161,90,.75),
+    rgba(11,43,36,.18)
+  ) !important;
+}
+
+.bloom-process-list i {
+  color: var(--premium-gold) !important;
+}
