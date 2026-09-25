@@ -1,0 +1,28 @@
+name: Publish current main
+
+on:
+  push:
+    paths:
+      - ".github/workflows/vercel-publish.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  republish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out current main
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Republish as project owner
+        shell: bash
+        run: |
+          git config user.name "sardarpharmacy87-lang"
+          git config user.email "sardarpharmacy87@gmail.com"
+          rm -f .github/workflows/vercel-publish.yml
+          git add -A
+          git commit -m "Publish grouped home products to production"
+          git push origin HEAD:main
