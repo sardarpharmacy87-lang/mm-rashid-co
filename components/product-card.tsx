@@ -1,7 +1,4 @@
-"use client";
-
 import Link from "next/link";
-import { useCommerce } from "@/components/commerce-provider";
 
 export type ProductCardData = {
   id: string;
@@ -14,8 +11,6 @@ export type ProductCardData = {
 };
 
 export function ProductCard({ product }: { product: ProductCardData }) {
-  const { addToCart } = useCommerce();
-
   const stockLabel =
     product.stock_status === "in_stock"
       ? "In stock"
@@ -42,21 +37,6 @@ export function ProductCard({ product }: { product: ProductCardData }) {
 
         <div className="product-card-actions">
           <Link href={"/products/" + product.slug}>View details</Link>
-          <button
-            type="button"
-            disabled={product.stock_status === "out_of_stock"}
-            onClick={() =>
-              addToCart({
-                productId: product.id,
-                slug: product.slug,
-                name: product.name,
-                image: product.primary_image ?? null,
-                quantity: 1,
-              })
-            }
-          >
-            Request this piece
-          </button>
         </div>
       </div>
     </article>
