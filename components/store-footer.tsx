@@ -27,8 +27,6 @@ export function StoreFooter() {
             <strong>Company</strong>
             <Link href="/privacy">Privacy policy</Link>
             <Link href="/terms">Terms &amp; conditions</Link>
-            <a href="tel:+923343342223">+92 334 334 2223</a>
-            <span>Commissioner Road, Sialkot 51310, Pakistan</span>
           </div>
         </div>
       </div>
