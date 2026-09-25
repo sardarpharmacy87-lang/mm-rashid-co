@@ -3,10 +3,8 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Brand } from "@/components/brand";
-import { useCommerce } from "@/components/commerce-provider";
 
 export function CommerceHeader() {
-  const { cartCount } = useCommerce();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -23,7 +21,7 @@ export function CommerceHeader() {
     <>
       <div className="bloom-ribbon">
         <span>MM Rashid & Co. · Commissioner Road · Sialkot</span>
-        <Link href="/sign-in">Customer portal ↗</Link>
+        <span>Handcrafted ceremonial regalia since 1922</span>
       </div>
 
       <header className={"store-header bloom-header " + (scrolled ? "is-scrolled" : "")}>
@@ -48,13 +46,6 @@ export function CommerceHeader() {
               <input type="search" name="q" aria-label="Search products" placeholder="Search" />
               <button type="submit" aria-label="Search products">↗</button>
             </form>
-
-            <Link className="bloom-account" href="/sign-in">Account</Link>
-
-            <Link className="bloom-quote" href="/cart" aria-label={"Enquiry list with " + cartCount + " items"}>
-              Enquiry
-              <span>{cartCount}</span>
-            </Link>
 
             <button
               className="store-menu-button bloom-menu-button"
