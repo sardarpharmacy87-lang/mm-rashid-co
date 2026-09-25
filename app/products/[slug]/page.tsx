@@ -88,6 +88,14 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
     product.specifications && typeof product.specifications === "object"
       ? Object.entries(product.specifications as Record<string, unknown>)
       : [];
+  const selectableSpecifications = specifications
+    .map(([key, value]) => [key, String(value)] as const)
+    .filter(([, value]) => value.includes("|"))
+    .map(([key, value]) => ({
+      key,
+      options: value.split("|").map((option) => option.trim()).filter(Boolean),
+    }));
+  const staticSpecifications = specifications.filter(([, value]) => !String(value).includes("|"));
 
   const productSchema = {
     "@context": "https://schema.org",
@@ -134,19 +142,11 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
             </div>
 
             {product.short_description ? <p className="product-lead">{product.short_description}</p> : null}
-            {variants.length ? (
-              <div className="product-specifications">
-                <h2>Available options / sizes</h2>
-                <ul>
-                  {variants.map((variant) => <li key={variant.id}>{variant.label}</li>)}
-                </ul>
-              </div>
-            ) : null}
 
-            <div className="product-rate-request">
-              <p className="store-kicker">Made-to-order pricing</p>
-              <h2>Request a rate</h2>
-              <p>Tell us the quantity you need. We will review the specification and send you the rate that applies to that quantity.</p>
+            <div className="product-rate-request storefront-order-panel">
+              <p className="store-kicker">Made to order</p>
+              <h2>Request a quotation</h2>
+              <p>Select the required options, enter your quantity, and send an enquiry. We will quote the rate according to your quantity and specification.</p>
 
               {enquiry === "sent" ? <p className="rate-request-success">Your rate request has been submitted. We will send your quotation through your customer account.</p> : null}
               {enquiry === "invalid" ? <p className="rate-request-error">Please enter a valid quantity and delivery country.</p> : null}
@@ -156,6 +156,31 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
                 <form action={submitProductEnquiry} className="product-rate-form">
                   <input type="hidden" name="product_id" value={product.id} />
                   <input type="hidden" name="slug" value={product.slug} />
+                  {variants.length ? (
+                    <label className="rate-option-full">
+                      Size / option
+                      <select name="option__Size / option" defaultValue="" required>
+                        <option value="" disabled>Choose one</option>
+                        {variants.map((variant) => <option key={variant.id} value={variant.label}>{variant.label}</option>)}
+                      </select>
+                    </label>
+                  ) : null}
+
+                  {selectableSpecifications.map((specification) => (
+                    <label className="rate-option-full" key={specification.key}>
+                      {specification.key}
+                      <select name={"option__" + specification.key} defaultValue="">
+                        <option value="">Choose one</option>
+                        {specification.options.map((option) => <option key={option} value={option}>{option}</option>)}
+                      </select>
+                    </label>
+                  ))}
+
+                  <label className="rate-option-full">
+                    Additional information <span>(optional)</span>
+                    <input name="notes" type="text" placeholder="Any custom requirements or notes" />
+                  </label>
+
                   <label>
                     Quantity
                     <input name="quantity" type="number" min="1" step="1" defaultValue="1" required />
@@ -164,15 +189,12 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
                     Delivery country
                     <input name="delivery_country" type="text" defaultValue={customerProfile?.country ?? ""} placeholder="e.g. United Kingdom" required />
                   </label>
-                  <label>
+                  <label className="rate-option-full">
                     Required by <span>(optional)</span>
                     <input name="required_by" type="date" />
                   </label>
-                  <label className="rate-notes">
-                    Requirements / notes <span>(optional)</span>
-                    <textarea name="notes" rows={4} placeholder="Size, colour, material, badge artwork, packing or other requirements" />
-                  </label>
-                  <button className="store-primary-button" type="submit">Request rate</button>
+
+                  <button className="store-primary-button rate-submit-button" type="submit">Send rate enquiry</button>
                 </form>
               ) : (
                 <div className="rate-login-actions">
@@ -190,11 +212,11 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
               </p>
             </div>
 
-            {specifications.length ? (
+            {staticSpecifications.length ? (
               <div className="product-specifications">
                 <h2>Specifications</h2>
                 <dl>
-                  {specifications.map(([key, value]) => (
+                  {staticSpecifications.map(([key, value]) => (
                     <div key={key}><dt>{key}</dt><dd>{String(value)}</dd></div>
                   ))}
                 </dl>
