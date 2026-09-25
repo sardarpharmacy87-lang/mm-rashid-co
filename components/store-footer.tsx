@@ -8,7 +8,7 @@ export function StoreFooter() {
         <div className="bloom-footer-statement">
           <Brand footer />
           <p>
-            Ceremonial embroidery, bullion work and regalia handcrafted in Sialkot since 1922.
+            Ceremonial embroidery, bullion work and regalia handcrafted since 1922.
           </p>
         </div>
 
@@ -30,8 +30,7 @@ export function StoreFooter() {
       </div>
 
       <div className="bloom-footer-bottom">
-        <span>© {new Date().getFullYear()} MM Rashid &amp; Co.</span>
-        <span>Commissioner Road · Sialkot · Pakistan</span>
+        <span>© {new Date().getFullYear()} MM Rashid &amp; Co. · All rights reserved.</span>
       </div>
     </footer>
   );
