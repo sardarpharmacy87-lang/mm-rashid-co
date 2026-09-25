@@ -15,7 +15,7 @@ export default async function SignUpPage({ searchParams }: PageProps) {
         <p className="portal-kicker">Customer registration</p>
         <h1>Create your account</h1>
         <p className="auth-intro">
-          Register once to submit enquiries, receive prices and follow every order.
+          Create a private customer account for easy access to the catalogue and company information.
         </p>
 
         {error ? <p className="form-alert form-alert-error">{error}</p> : null}
@@ -80,7 +80,7 @@ export default async function SignUpPage({ searchParams }: PageProps) {
 
           <label className="checkbox-label">
             <input name="terms" type="checkbox" required />
-            <span>I confirm that these details are correct and agree to receive account, quotation and order emails.</span>
+            <span>I confirm that these details are correct and agree to receive account-related emails.</span>
           </label>
 
           <button className="portal-button" type="submit">Create account</button>
