@@ -6932,3 +6932,251 @@ html {
 .clean-footer-social a:hover {
   color: var(--premium-gold) !important;
 }
+
+
+/* REFERENCE-STYLE COUNTRY / LANGUAGE CONTROLS */
+.locale-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 12px;
+}
+
+.locale-controls label {
+  display: grid;
+  gap: 6px;
+}
+
+.locale-controls label > span {
+  color: #6b736f;
+  font-size: .68rem;
+}
+
+.locale-controls select {
+  min-height: 42px;
+  padding: 0 34px 0 12px;
+  color: #26312c;
+  border: 1px solid #cfd3d0;
+  background: #fff;
+  font-size: .76rem;
+}
+
+.locale-controls.is-compact {
+  display: grid;
+  gap: 2px;
+}
+
+.locale-controls.is-compact select {
+  min-height: 28px;
+  max-width: 170px;
+  padding: 0 24px 0 4px;
+  border: 0;
+  background: transparent;
+  font-size: .69rem;
+}
+
+.locale-note {
+  flex-basis: 100%;
+  max-width: 650px;
+  margin: 2px 0 0;
+  color: #7c847f;
+  font-size: .66rem;
+  line-height: 1.5;
+}
+
+/* NEWSLETTER */
+.footer-newsletter {
+  display: grid;
+  grid-template-columns: 1fr minmax(320px,460px);
+  gap: 50px;
+  align-items: end;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 52px clamp(22px,6vw,100px);
+  border-bottom: 1px solid #e9e6df;
+  background: #fff;
+}
+
+.footer-newsletter h2 {
+  margin: 4px 0 8px;
+  color: var(--premium-green);
+  font-family: Georgia,serif;
+  font-size: clamp(1.7rem,2.5vw,2.35rem);
+  font-weight: 500;
+}
+
+.footer-newsletter p {
+  margin: 0;
+  color: #707873;
+  font-size: .82rem;
+}
+
+.footer-newsletter-form {
+  display: grid;
+  grid-template-columns: 1fr 54px;
+  border: 1px solid #989f9b;
+}
+
+.footer-newsletter-form input {
+  min-height: 52px;
+  padding: 0 16px;
+  border: 0;
+  outline: 0;
+  background: #fff;
+}
+
+.footer-newsletter-form button {
+  border: 0;
+  background: transparent;
+  color: var(--premium-green);
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.footer-localization-row {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 24px clamp(22px,6vw,100px);
+  border-top: 1px solid #ece9e3;
+}
+
+.footer-policy-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.footer-policy-links a {
+  color: inherit !important;
+  text-decoration: none;
+}
+
+/* SUPPORT CHAT */
+.support-chat {
+  position: fixed;
+  z-index: 150;
+  right: 22px;
+  bottom: 22px;
+}
+
+.support-chat-toggle {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 18px;
+  color: #fff;
+  border: 0;
+  border-radius: 999px;
+  background: #333a37;
+  box-shadow: 0 10px 30px rgba(0,0,0,.16);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.support-chat-panel {
+  width: min(390px,calc(100vw - 32px));
+  margin-bottom: 12px;
+  padding: 22px;
+  border: 1px solid #e5e5e2;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 24px 70px rgba(0,0,0,.16);
+}
+
+.support-chat-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: start;
+}
+
+.support-chat-head strong {
+  display: block;
+  color: var(--premium-green);
+  font-size: 1.15rem;
+}
+
+.support-chat-head span,
+.support-chat-panel p,
+.support-chat-panel small {
+  color: #68716c;
+}
+
+.support-chat-head button {
+  border: 0;
+  background: transparent;
+  font-size: 1.35rem;
+  cursor: pointer;
+}
+
+.support-chat-actions {
+  display: grid;
+  gap: 8px;
+  margin: 18px 0;
+}
+
+.support-chat-actions a {
+  padding: 11px 13px;
+  color: #fff !important;
+  border-radius: 8px;
+  background: var(--premium-green);
+  text-decoration: none;
+  font-weight: 800;
+  font-size: .78rem;
+}
+
+/* CONTACT INFO PAGE */
+.contact-info-page {
+  min-height: 62vh;
+  padding: clamp(65px,8vw,120px) 22px;
+  background: linear-gradient(135deg,#efffff 0%,#d9fbfa 100%);
+}
+
+.contact-info-card {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.contact-info-card h1 {
+  margin: 0 0 48px;
+  color: #111;
+  font-family: Georgia,serif;
+  font-size: clamp(2.5rem,5vw,4.2rem);
+  font-weight: 500;
+  text-align: center;
+}
+
+.contact-info-card h2 {
+  color: var(--premium-green);
+  font-size: 1rem;
+}
+
+.contact-info-card p,
+.contact-info-card li {
+  color: #3f514a;
+  line-height: 1.75;
+}
+
+.contact-info-card a {
+  color: var(--premium-green) !important;
+}
+
+@media (max-width: 900px) {
+  .footer-newsletter {
+    grid-template-columns: 1fr;
+  }
+  .locale-controls.is-compact {
+    display: none;
+  }
+}
+
+@media (max-width: 620px) {
+  .footer-newsletter {
+    padding-inline: 22px;
+  }
+  .support-chat {
+    right: 14px;
+    bottom: 14px;
+  }
+}
