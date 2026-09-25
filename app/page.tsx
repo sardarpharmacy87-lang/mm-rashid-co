@@ -300,7 +300,7 @@ export default async function HomePage() {
         <section className="bloom-contact" id="contact">
           <div className="bloom-contact-copy reveal">
             <p className="bloom-eyebrow bloom-eyebrow-light">Contact</p>
-            <h2>MM Rashid &amp; Co.</h2>
+            <h2>Get in touch.</h2>
           </div>
 
           <div className="bloom-contact-actions reveal delay-one">
