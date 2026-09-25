@@ -194,12 +194,14 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
                     <input name="required_by" type="date" />
                   </label>
 
-                  <button className="store-primary-button rate-submit-button" type="submit">Send rate enquiry</button>
+                  <button className="store-primary-button rate-submit-button" type="submit">Send enquiry for rate</button>
+                  <p className="rate-private-note">Your enquiry and quotation are private to your signed-in customer account.</p>
                 </form>
               ) : (
                 <div className="rate-login-actions">
-                  <Link className="store-primary-button" href="/sign-in?message=Sign in to request a rate.">Sign in to request rate</Link>
-                  <Link className="store-secondary-button" href="/sign-up">Create account</Link>
+                  <Link className="store-primary-button" href="/sign-in?message=Please sign in to send an enquiry and receive your private rate.">Sign in to request rate</Link>
+                  <Link className="store-secondary-button" href="/sign-up">Create customer account</Link>
+                  <p className="rate-private-note">Login is required to send an enquiry and receive a quotation.</p>
                 </div>
               )}
             </div>
