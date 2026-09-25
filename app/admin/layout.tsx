@@ -13,6 +13,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           <Link href="/admin/products">Products</Link>
           <Link href="/admin/enquiries">Rate requests</Link>
           <Link href="/admin/slides">Homepage slides</Link>
+          <Link href="/admin/settings">Settings</Link>
           <Link href="/">Website</Link>
           <form action={signOut}><button type="submit">Sign out</button></form>
         </nav>
