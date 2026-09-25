@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export type ProductCardData = {
@@ -22,7 +23,13 @@ export function ProductCard({ product }: { product: ProductCardData }) {
     <article className="store-product-card">
       <Link className="store-product-media" href={"/products/" + product.slug}>
         {product.primary_image ? (
-          <img src={product.primary_image} alt={product.name} loading="lazy" />
+          <Image
+            src={product.primary_image}
+            alt={product.name}
+            fill
+            sizes="(max-width: 620px) 50vw, (max-width: 1050px) 33vw, 25vw"
+            loading="lazy"
+          />
         ) : (
           <div className="store-image-placeholder">MM RASHID & CO.</div>
         )}
