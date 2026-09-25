@@ -17,8 +17,6 @@ type HomeProduct = ProductCardData & {
   product_group_id: string | null;
 };
 
-const groupVisuals: Record<string, string> = {};
-
 const processSteps = [
   {
     number: "01",
@@ -205,56 +203,21 @@ export default async function HomePage() {
           </div>
         </div>
 
-        {groups.length ? (
-          <section className="bloom-groups reveal" aria-label="Product groups">
-            <div className="bloom-section-heading">
-              <div>
-                <p className="bloom-eyebrow">Products</p>
-                <h2>Browse by section.</h2>
-              </div>
-              <Link href="/products">View all products ↗</Link>
-            </div>
-
-            <div className="bloom-group-grid">
-              {groups.map((group, index) => (
-                <Link
-                  className="bloom-group-card"
-                  href={"/products?group=" + group.slug}
-                  key={group.id}
-                >
-                  {groupVisuals[group.slug] ? (
-                    <div className="luxury-group-media" aria-hidden="true">
-                      <img
-                        src={groupVisuals[group.slug]}
-                        alt=""
-                        loading="lazy"
-                      />
-                    </div>
-                  ) : null}
-                  <span>{String(index + 1).padStart(2, "0")}</span>
-                  <strong>{group.name}</strong>
-                  <i aria-hidden="true">↗</i>
-                </Link>
-              ))}
-            </div>
-          </section>
-        ) : null}
-
         {groups.map((group) => {
           const groupProducts = products.filter((product) => product.product_group_id === group.id);
           if (!groupProducts.length) return null;
 
           return (
-            <section className="store-section product-shop home-product-group bloom-product-section reveal" key={group.id}>
+            <section
+              className="store-section product-shop home-product-group bloom-product-section reveal"
+              key={group.id}
+            >
               <div className="store-section-heading">
-                <div>
-                  <p className="bloom-eyebrow">Selected work</p>
-                  <h2>{group.name}</h2>
-                </div>
-                <Link href={"/products?group=" + group.slug}>View all ↗</Link>
+                <h2>{group.name}</h2>
               </div>
+
               <div className="store-product-grid">
-                {groupProducts.slice(0, 8).map((product) => (
+                {groupProducts.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
               </div>
