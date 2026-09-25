@@ -6913,3 +6913,22 @@ html {
     flex-direction: column;
   }
 }
+
+
+.clean-footer-social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  margin-top: 22px;
+}
+
+.clean-footer-social a {
+  color: var(--premium-green) !important;
+  font-size: .72rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.clean-footer-social a:hover {
+  color: var(--premium-gold) !important;
+}
