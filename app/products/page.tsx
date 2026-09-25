@@ -5,7 +5,7 @@ import { StoreFooter } from "@/components/store-footer";
 import { createClient } from "@/lib/supabase/server";
 
 type PageProps = {
-  searchParams: Promise<{ q?: string; sort?: string; page?: string; group?: string }>;
+  searchParams: Promise<{ q?: string; sort?: string; page?: string; group?: string; availability?: string }>;
 };
 
 type ProductGroup = {
@@ -54,6 +54,8 @@ export default async function ProductsPage({ searchParams }: PageProps) {
 
   let filtered = allProducts.filter((product) => {
     if (selectedGroup && product.product_group_id !== selectedGroup.id) return false;
+    if (filters.availability === "in_stock" && product.stock_status !== "in_stock") return false;
+    if (filters.availability === "made_to_order" && product.stock_status !== "made_to_order") return false;
     if (!safeSearch) return true;
     const haystack = [
       product.name,
@@ -92,6 +94,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
     if (filters.q) params.set("q", filters.q);
     if (filters.sort) params.set("sort", filters.sort);
     if (filters.group) params.set("group", filters.group);
+    if (filters.availability) params.set("availability", filters.availability);
     params.set("page", String(nextPage));
     return "/products?" + params.toString();
   };
@@ -101,13 +104,12 @@ export default async function ProductsPage({ searchParams }: PageProps) {
       <CommerceHeader />
 
       <main className="catalogue-page">
-        <div className="catalogue-hero">
+        <div className="catalogue-hero reference-catalogue-hero">
           <div>
             <p className="store-kicker">MM Rashid &amp; Co.</p>
-            <h1>Products</h1>
-            <p>Browse current pieces by section. For made-to-order work, send artwork and quantity with your enquiry.</p>
+            <h1>{selectedGroup?.name ?? "Ceremonial & Military Products"}</h1>
+            <p>Browse our made-to-order collection. Open any product to select specifications and request a rate for your required quantity.</p>
           </div>
-          <Link className="store-primary-button" href="/customer/enquiries/new">Send enquiry</Link>
         </div>
 
         {groups.length ? (
@@ -127,20 +129,26 @@ export default async function ProductsPage({ searchParams }: PageProps) {
 
         <div className="catalogue-layout catalogue-layout-simple">
           <section className="catalogue-results">
-            <form className="catalogue-toolbar catalogue-toolbar-simple" action="/products" method="get">
+            <form className="catalogue-toolbar catalogue-toolbar-simple reference-catalogue-toolbar" action="/products" method="get">
               {selectedGroup ? <input type="hidden" name="group" value={selectedGroup.slug} /> : null}
-              <input
-                type="search"
-                name="q"
-                defaultValue={filters.q ?? ""}
-                placeholder="Search product name or SKU..."
-                aria-label="Search catalogue"
-              />
-              <select name="sort" defaultValue={filters.sort ?? ""}>
-                <option value="">Recommended</option>
-                <option value="newest">Newest</option>
-                <option value="name">Name A-Z</option>
-              </select>
+              <div className="catalogue-filter-control">
+                <span>Filter:</span>
+                <select name="availability" defaultValue={filters.availability ?? ""}>
+                  <option value="">Availability</option>
+                  <option value="in_stock">In stock</option>
+                  <option value="made_to_order">Made to order</option>
+                </select>
+              </div>
+              <div className="catalogue-sort-control">
+                <span>Sort by:</span>
+                <select name="sort" defaultValue={filters.sort ?? ""}>
+                  <option value="">Recommended</option>
+                  <option value="newest">Newest</option>
+                  <option value="name">Name A-Z</option>
+                </select>
+              </div>
+              <span className="catalogue-total-count">{filtered.length} products</span>
+              <input className="catalogue-search-compact" type="search" name="q" defaultValue={filters.q ?? ""} placeholder="Search" aria-label="Search catalogue" />
               <button type="submit">Apply</button>
             </form>
 
