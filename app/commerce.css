@@ -6342,3 +6342,94 @@ html {
 .store-breadcrumbs a {
   color: var(--premium-green) !important;
 }
+
+
+/* PRODUCT SECTION POLISH — remove white card blocks, improve CTA visibility */
+.home-product-group,
+.store-section.home-product-group,
+.product-group-block,
+.collection-heading,
+.catalogue-results,
+.catalogue-product-grid,
+.store-product-grid {
+  background: transparent !important;
+  background-image: none !important;
+}
+
+.store-product-card,
+.catalogue-product-grid .store-product-card,
+.bloom-site .store-product-card {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.store-product-content,
+.store-product-card .store-product-content,
+.catalogue-product-grid .store-product-content,
+.bloom-site .store-product-content {
+  background: transparent !important;
+  padding: 14px 0 0 !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.store-product-content h3 {
+  margin: 0 0 12px !important;
+  color: var(--premium-green) !important;
+}
+
+.product-card-actions {
+  margin-top: 10px !important;
+  background: transparent !important;
+}
+
+.product-card-actions a {
+  display: inline-flex !important;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 18px !important;
+  color: #ffffff !important;
+  border: 1px solid var(--premium-green) !important;
+  border-radius: 999px !important;
+  background: var(--premium-green) !important;
+  text-decoration: none !important;
+  font-size: .72rem !important;
+  font-weight: 850 !important;
+  letter-spacing: .02em;
+}
+
+.product-card-actions a:hover {
+  color: var(--premium-green) !important;
+  border-color: var(--premium-gold) !important;
+  background: var(--premium-gold-soft) !important;
+}
+
+/* Make homepage primary CTAs clearly readable */
+.bloom-site .store-primary-button,
+.home-product-group .store-primary-button,
+.commerce-hero .store-primary-button,
+.bloom-commission .store-primary-button {
+  color: #ffffff !important;
+  border-color: var(--premium-green) !important;
+  background: var(--premium-green) !important;
+  text-shadow: none !important;
+}
+
+.bloom-site .store-primary-button:hover,
+.home-product-group .store-primary-button:hover,
+.commerce-hero .store-primary-button:hover,
+.bloom-commission .store-primary-button:hover {
+  color: var(--premium-green) !important;
+  border-color: var(--premium-gold) !important;
+  background: var(--premium-gold-soft) !important;
+}
+
+/* Keep the product media itself frameless */
+.store-product-media,
+.store-product-media img {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
