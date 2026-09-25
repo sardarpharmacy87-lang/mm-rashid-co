@@ -77,13 +77,6 @@ export default async function ProductsPage({ searchParams }: PageProps) {
     filtered = [...filtered].sort((a, b) => a.name.localeCompare(b.name));
   }
 
-  const groupedHomeView = !selectedGroup && !safeSearch && !filters.sort;
-  const groupedProducts = groups.map((group) => ({
-    ...group,
-    products: allProducts.filter((product) => product.product_group_id === group.id),
-  }));
-  const ungrouped = allProducts.filter((product) => !product.product_group_id);
-
   const pageCount = Math.max(1, Math.ceil(filtered.length / pageSize));
   const safePage = Math.min(page, pageCount);
   const from = (safePage - 1) * pageSize;
@@ -152,67 +145,23 @@ export default async function ProductsPage({ searchParams }: PageProps) {
               <button type="submit">Apply</button>
             </form>
 
-            {selectedGroup ? (
-              <div className="product-group-heading">
-                <h2>{selectedGroup.name}</h2>
-                <span>{filtered.length} products</span>
-              </div>
-            ) : safeSearch ? (
-              <div className="catalogue-count">
-                <span>{filtered.length} products</span>
-                <span>Search: “{filters.q}”</span>
-              </div>
-            ) : null}
+            <div className="product-group-heading collection-heading">
+              <h2>{selectedGroup?.name ?? "All products"}</h2>
+              <span>{filtered.length} products</span>
+            </div>
 
-            {groupedHomeView ? (
-              <div className="product-group-list">
-                {groupedProducts.map((group) => (
-                  <section className="product-group-block" id={group.slug} key={group.id}>
-                    <div className="product-group-heading">
-                      <h2>{group.name}</h2>
-                      {group.products.length ? (
-                        <Link href={"/products?group=" + group.slug}>View all →</Link>
-                      ) : null}
-                    </div>
-                    {group.products.length ? (
-                      <div className="store-product-grid catalogue-product-grid">
-                        {group.products.map((product) => (
-                          <ProductCard key={product.id} product={product} />
-                        ))}
-                      </div>
-                    ) : null}
-                  </section>
-                ))}
-
-                {ungrouped.length ? (
-                  <section className="product-group-block">
-                    <div className="product-group-heading"><h2>More</h2></div>
-                    <div className="store-product-grid catalogue-product-grid">
-                      {ungrouped.map((product) => <ProductCard key={product.id} product={product} />)}
-                    </div>
-                  </section>
-                ) : null}
-
-                {!allProducts.length ? (
-                  <div className="catalogue-empty">
-                    <h2>No products added yet</h2>
-                    <p>Products will appear here after they are added in the admin portal.</p>
-                  </div>
-                ) : null}
-              </div>
-            ) : products.length ? (
-              <div className="store-product-grid catalogue-product-grid">
+            {products.length ? (
+              <div className="store-product-grid catalogue-product-grid all-products-grid">
                 {products.map((product) => <ProductCard key={product.id} product={product} />)}
               </div>
             ) : (
               <div className="catalogue-empty">
                 <h2>No matching products</h2>
-                <p>Try another search or send us the product reference you need.</p>
-                <Link href="/customer/enquiries/new">Send enquiry</Link>
+                <p>Try another filter or search term.</p>
               </div>
             )}
 
-            {!groupedHomeView && pageCount > 1 ? (
+            {pageCount > 1 ? (
               <nav className="catalogue-pagination" aria-label="Product pages">
                 {safePage > 1 ? <Link href={makePageHref(safePage - 1)}>← Previous</Link> : <span />}
                 <strong>Page {safePage} of {pageCount}</strong>
