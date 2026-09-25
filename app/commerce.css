@@ -5658,3 +5658,61 @@ html {
   .product-rate-form textarea,
   .product-rate-form .rate-submit-button { width: 100% !important; }
 }
+
+
+/* CLEAN WHITE PRODUCT CATALOGUE BACKGROUND */
+.catalogue-page,
+.catalogue-layout-simple,
+.catalogue-results,
+.product-group-list,
+.product-group-block,
+.collection-heading,
+.all-products-grid,
+.store-product-card,
+.store-product-media,
+.store-product-content {
+  background: #ffffff !important;
+}
+
+.catalogue-page {
+  min-height: 100vh;
+}
+
+.reference-catalogue-hero {
+  background: #ffffff !important;
+}
+
+.product-group-nav {
+  background: #ffffff !important;
+  border-top: 1px solid #eeeeee;
+  border-bottom: 1px solid #eeeeee;
+}
+
+.collection-heading {
+  padding-top: 10px;
+  border-bottom-color: #e9e9e9 !important;
+}
+
+.store-product-card {
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.store-product-media {
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.store-product-media img {
+  background: #ffffff !important;
+}
+
+.catalogue-toolbar,
+.reference-catalogue-toolbar {
+  background: #ffffff !important;
+}
+
+.catalogue-empty {
+  background: #ffffff !important;
+}
