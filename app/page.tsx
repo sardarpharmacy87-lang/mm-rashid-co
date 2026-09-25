@@ -50,12 +50,7 @@ export default async function HomePage() {
       .eq("active", true)
       .order("sort_order", { ascending: true })
       .order("name", { ascending: true }),
-    supabase
-      .from("products")
-      .select("id, name, slug, sku, short_description, primary_image, stock_status, product_group_id")
-      .eq("active", true)
-      .order("sort_order", { ascending: true })
-      .order("name", { ascending: true }),
+    supabase.rpc("homepage_products", { per_group: 4 }),
     supabase
       .from("homepage_slides")
       .select("id, image_url, alt_text, sort_order, delay_ms")
