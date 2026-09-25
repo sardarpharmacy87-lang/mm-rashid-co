@@ -6787,3 +6787,23 @@ html {
 .bloom-footer-bottom {
   justify-content: flex-start !important;
 }
+
+
+/* PROCESS SECTION — remove connector and row divider lines */
+.bloom-process-list {
+  border-top: 0 !important;
+}
+
+.bloom-process-list::before {
+  display: none !important;
+  content: none !important;
+}
+
+.bloom-process-list li {
+  border-bottom: 0 !important;
+}
+
+.bloom-process-list li::before {
+  display: none !important;
+  content: none !important;
+}
