@@ -5899,3 +5899,118 @@ html {
   object-fit: contain !important;
   filter: none !important;
 }
+
+
+/* ABSOLUTE TRANSPARENT PRODUCT MEDIA — no card/image frame */
+.catalogue-page,
+.catalogue-layout,
+.catalogue-layout-simple,
+.catalogue-results,
+.product-group-list,
+.product-group-block,
+.home-product-group,
+.store-section.home-product-group,
+.collection-heading,
+.all-products-grid,
+.catalogue-product-grid,
+.store-product-grid,
+.product-detail-page,
+.product-detail-grid {
+  background: #ffffff !important;
+  background-image: none !important;
+}
+
+/* Product cards themselves have no visual container */
+.store-product-card,
+.catalogue-product-grid .store-product-card,
+.bloom-site .store-product-card,
+.store-product-content {
+  background: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  border-color: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+/* Remove every decorative layer that can look like a frame */
+.store-product-card::before,
+.store-product-card::after,
+.catalogue-product-grid .store-product-card::before,
+.catalogue-product-grid .store-product-card::after,
+.bloom-site .store-product-card::before,
+.bloom-site .store-product-card::after,
+.store-product-media::before,
+.store-product-media::after,
+.product-main-image::before,
+.product-main-image::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Product-list images: transparent media canvas, no border at all */
+.store-product-media,
+.catalogue-product-grid .store-product-media,
+.bloom-site .store-product-media {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  border-color: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+/* Product detail gallery: also transparent and frameless */
+.product-gallery,
+.premium-product-gallery,
+.product-main-image,
+.premium-product-gallery .product-main-image,
+.product-thumbnails,
+.premium-product-gallery .product-thumbnails,
+.product-thumbnails button,
+.premium-product-gallery .product-thumbnails button {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  border-color: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+/* Never paint a background behind the actual transparent image */
+.store-product-media img,
+.product-main-image img,
+.premium-product-gallery .product-main-image img,
+.product-thumbnails img,
+.premium-product-gallery .product-thumbnails img {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+/* Preserve only clean spacing around the cut-out product */
+.store-product-media img {
+  padding: 0 !important;
+  object-fit: contain !important;
+}
+
+.premium-product-gallery .product-main-image img {
+  padding: 0 !important;
+  object-fit: contain !important;
+}
+
+/* No framed action box under cards */
+.product-card-actions,
+.product-card-actions a {
+  background: transparent !important;
+  box-shadow: none !important;
+}
