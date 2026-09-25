@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CommerceHeader } from "@/components/commerce-header";
-import { ProductDetailBuybox } from "@/components/product-detail-buybox";
 import { ProductGallery } from "@/components/product-gallery";
 import { ProductCard, type ProductCardData } from "@/components/product-card";
 import { StoreFooter } from "@/components/store-footer";
@@ -128,23 +127,20 @@ export default async function ProductPage({ params }: PageProps) {
             </div>
 
             {product.short_description ? <p className="product-lead">{product.short_description}</p> : null}
-
-            <ProductDetailBuybox
-              product={{
-                id: product.id,
-                slug: product.slug,
-                name: product.name,
-                primary_image: product.primary_image,
-                stock_status: product.stock_status,
-              }}
-              variants={variants}
-            />
+            {variants.length ? (
+              <div className="product-specifications">
+                <h2>Available options / sizes</h2>
+                <ul>
+                  {variants.map((variant) => <li key={variant.id}>{variant.label}</li>)}
+                </ul>
+              </div>
+            ) : null}
 
             <div className="product-description">
               <h2>Product details</h2>
               <p>
                 {product.description ??
-                  "Made to customer specification. Send artwork, quantity and finish requirements with your enquiry."}
+                  "Made to customer specification with careful attention to material, finish and construction."}
               </p>
             </div>
 
