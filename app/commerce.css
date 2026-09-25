@@ -5795,3 +5795,107 @@ html {
 .product-group-nav {
   background: #fff !important;
 }
+
+
+/* FINAL WHITE STORE COLLECTION LOOK — match clean reference */
+.catalogue-page,
+.catalogue-layout,
+.catalogue-layout-simple,
+.catalogue-results,
+.reference-catalogue-hero,
+.reference-catalogue-toolbar,
+.catalogue-toolbar,
+.product-group-nav,
+.collection-heading,
+.product-group-list,
+.product-group-block,
+.home-product-group,
+.store-section.home-product-group,
+.all-products-grid,
+.catalogue-product-grid,
+.store-product-grid,
+.store-product-card,
+.store-product-content,
+.store-product-media,
+.product-detail-page,
+.product-detail-grid,
+.premium-product-gallery,
+.premium-product-gallery .product-main-image,
+.premium-product-gallery .product-thumbnails,
+.premium-product-gallery .product-thumbnails button {
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+.catalogue-page,
+.product-detail-page,
+.store-shell {
+  background: #ffffff !important;
+}
+
+.catalogue-product-grid,
+.all-products-grid,
+.store-product-grid {
+  align-items: start;
+}
+
+.store-product-card,
+.catalogue-product-grid .store-product-card,
+.bloom-site .store-product-card {
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+.store-product-media {
+  aspect-ratio: 4 / 5;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+.store-product-media img {
+  width: 100%;
+  height: 100%;
+  padding: 0 !important;
+  background: transparent !important;
+  object-fit: contain !important;
+  filter: none !important;
+}
+
+.store-product-content {
+  padding: 14px 0 0 !important;
+  background: #ffffff !important;
+}
+
+.store-product-content h3 {
+  color: #171717 !important;
+}
+
+.stock-pill {
+  background: #111111 !important;
+  color: #ffffff !important;
+}
+
+.product-group-heading,
+.collection-heading,
+.reference-catalogue-toolbar,
+.catalogue-toolbar {
+  border-color: #ececec !important;
+}
+
+.premium-product-gallery .product-main-image,
+.premium-product-gallery .product-thumbnails button {
+  border-color: #ededed !important;
+  background: #ffffff !important;
+}
+
+.premium-product-gallery .product-main-image img,
+.premium-product-gallery .product-thumbnails img {
+  background: transparent !important;
+  object-fit: contain !important;
+  filter: none !important;
+}
