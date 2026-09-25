@@ -5238,3 +5238,93 @@ html {
 }
 .bloom-signout:hover,
 .bloom-session-links button:hover { opacity: 1; }
+
+
+/* PRODUCT RATE REQUEST */
+.product-rate-request {
+  margin-top: 30px;
+  padding: 24px;
+  border: 1px solid #d9dfE7;
+  border-radius: 12px;
+  background: linear-gradient(180deg,#fffdf8 0%,#f8f4ea 100%);
+  box-shadow: 0 16px 38px rgba(8,30,67,.06);
+}
+.product-rate-request h2 {
+  margin: 0;
+  color: #10213d;
+  font-family: Georgia,serif;
+  font-size: 1.55rem;
+  font-weight: 600;
+}
+.product-rate-request > p:not(.store-kicker):not(.rate-request-success):not(.rate-request-error) {
+  margin: 10px 0 0;
+  color: #667183;
+  line-height: 1.65;
+}
+.product-rate-form {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 14px;
+  margin-top: 20px;
+}
+.product-rate-form label {
+  display: grid;
+  gap: 6px;
+  color: #435168;
+  font-size: .72rem;
+  font-weight: 850;
+}
+.product-rate-form label span { color: #8a93a2; font-weight: 600; }
+.product-rate-form input,
+.product-rate-form textarea {
+  width: 100%;
+  padding: 11px 12px;
+  color: #10213d;
+  border: 1px solid #cfd7e1;
+  border-radius: 6px;
+  outline: 0;
+  background: #fff;
+}
+.product-rate-form input { min-height: 44px; }
+.product-rate-form input:focus,
+.product-rate-form textarea:focus {
+  border-color: #9f7a2e;
+  box-shadow: 0 0 0 3px rgba(159,122,46,.10);
+}
+.product-rate-form .rate-notes { grid-column: 1 / -1; }
+.product-rate-form .store-primary-button {
+  width: fit-content;
+  min-width: 170px;
+  cursor: pointer;
+}
+.rate-request-success,
+.rate-request-error {
+  margin: 16px 0 0;
+  padding: 12px 14px;
+  border-radius: 6px;
+  font-size: .78rem;
+  font-weight: 750;
+  line-height: 1.5;
+}
+.rate-request-success {
+  color: #17613f;
+  border: 1px solid #bfe0ce;
+  background: #effaf4;
+}
+.rate-request-error {
+  color: #8b2f2f;
+  border: 1px solid #edcaca;
+  background: #fff3f3;
+}
+.rate-login-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+@media (max-width: 650px) {
+  .product-rate-request { padding: 20px 16px; }
+  .product-rate-form { grid-template-columns: 1fr; }
+  .product-rate-form .rate-notes { grid-column: auto; }
+  .product-rate-form .store-primary-button { width: 100%; }
+}
