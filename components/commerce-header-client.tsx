@@ -27,20 +27,6 @@ export function CommerceHeaderClient({ signedIn, role }: HeaderProps) {
 
   return (
     <>
-      <div className="bloom-ribbon">
-        <span>MM Rashid & Co. · Commissioner Road · Sialkot</span>
-        {signedIn ? (
-          <div className="bloom-session-links">
-            <Link href={portalHref}>{portalLabel} ↗</Link>
-            <form action={signOut}>
-              <button type="submit">Sign out</button>
-            </form>
-          </div>
-        ) : (
-          <Link href="/sign-in">Login ↗</Link>
-        )}
-      </div>
-
       <header className={"store-header bloom-header " + (scrolled ? "is-scrolled" : "")}>
         <div className="bloom-header-inner">
           <Brand />
