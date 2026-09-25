@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { CommerceProvider } from "@/components/commerce-provider";
 import "./globals.css";
 import "./commerce.css";
 import "./portal.css";
@@ -52,9 +51,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body>
-        <CommerceProvider>{children}</CommerceProvider>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
