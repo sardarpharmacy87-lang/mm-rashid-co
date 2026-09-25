@@ -6737,3 +6737,53 @@ html {
 .bloom-process-list i {
   color: var(--premium-gold) !important;
 }
+
+
+/* MERGED CONTACT + FOOTER — single premium blue section */
+.bloom-contact,
+.bloom-footer {
+  background:
+    radial-gradient(circle at 82% 28%,rgba(197,161,90,.08),transparent 26%),
+    linear-gradient(135deg,#06152f 0%,#0a2348 56%,#0d2d58 100%) !important;
+}
+
+.bloom-contact {
+  border-bottom: 0 !important;
+  padding-bottom: clamp(58px,7vw,92px) !important;
+}
+
+.bloom-footer {
+  margin-top: 0 !important;
+  border-top: 1px solid rgba(225,199,122,.22) !important;
+}
+
+.bloom-contact h2,
+.bloom-contact-copy h2 {
+  color: #FFFFFF !important;
+}
+
+.bloom-contact .bloom-eyebrow,
+.bloom-contact .bloom-eyebrow-light,
+.bloom-footer-links strong {
+  color: #E1C77A !important;
+}
+
+.bloom-contact-actions a {
+  color: #F0D58D !important;
+}
+
+.bloom-contact-actions p,
+.bloom-contact-actions span,
+.bloom-footer-statement > p,
+.bloom-footer-links a,
+.bloom-footer-bottom {
+  color: rgba(255,255,255,.78) !important;
+}
+
+.bloom-footer-top {
+  padding-top: clamp(48px,5vw,70px) !important;
+}
+
+.bloom-footer-bottom {
+  justify-content: flex-start !important;
+}
