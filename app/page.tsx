@@ -214,10 +214,16 @@ export default async function HomePage() {
             >
               <div className="store-section-heading">
                 <h2>{group.name}</h2>
+                <Link
+                  className="home-category-browse-link"
+                  href={"/products?group=" + group.slug}
+                >
+                  Browse all {group.name} ↗
+                </Link>
               </div>
 
-              <div className="store-product-grid">
-                {groupProducts.map((product) => (
+              <div className="store-product-grid home-category-grid">
+                {groupProducts.slice(0, 4).map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
               </div>
