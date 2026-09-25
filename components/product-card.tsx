@@ -36,7 +36,7 @@ export function ProductCard({ product }: { product: ProductCardData }) {
         {product.short_description ? <p className="product-short">{product.short_description}</p> : null}
 
         <div className="product-card-actions">
-          <Link href={"/products/" + product.slug}>View details</Link>
+          <Link href={"/products/" + product.slug}>Request rate</Link>
         </div>
       </div>
     </article>
