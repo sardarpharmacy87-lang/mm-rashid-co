@@ -6,8 +6,9 @@ import { ProductGallery } from "@/components/product-gallery";
 import { ProductCard, type ProductCardData } from "@/components/product-card";
 import { StoreFooter } from "@/components/store-footer";
 import { createClient } from "@/lib/supabase/server";
+import { submitProductEnquiry } from "./actions";
 
-type PageProps = { params: Promise<{ slug: string }> };
+type PageProps = { params: Promise<{ slug: string }>; searchParams: Promise<{ enquiry?: string }> };
 
 async function getProduct(slug: string) {
   const supabase = await createClient();
@@ -33,11 +34,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function ProductPage({ params }: PageProps) {
+export default async function ProductPage({ params, searchParams }: PageProps) {
   const { slug } = await params;
+  const { enquiry } = await searchParams;
   const supabase = await createClient();
   const product = await getProduct(slug);
   if (!product) notFound();
+
+  const { data: { user } } = await supabase.auth.getUser();
+  const { data: customerProfile } = user
+    ? await supabase.from("profiles").select("country").eq("id", user.id).maybeSingle()
+    : { data: null };
 
   const [variantsResult, relatedResult, groupResult] = await Promise.all([
     supabase
@@ -135,6 +142,45 @@ export default async function ProductPage({ params }: PageProps) {
                 </ul>
               </div>
             ) : null}
+
+            <div className="product-rate-request">
+              <p className="store-kicker">Made-to-order pricing</p>
+              <h2>Request a rate</h2>
+              <p>Tell us the quantity you need. We will review the specification and send you the rate that applies to that quantity.</p>
+
+              {enquiry === "sent" ? <p className="rate-request-success">Your rate request has been submitted. We will send your quotation through your customer account.</p> : null}
+              {enquiry === "invalid" ? <p className="rate-request-error">Please enter a valid quantity and delivery country.</p> : null}
+              {enquiry === "error" ? <p className="rate-request-error">Your request could not be submitted. Please try again.</p> : null}
+
+              {user ? (
+                <form action={submitProductEnquiry} className="product-rate-form">
+                  <input type="hidden" name="product_id" value={product.id} />
+                  <input type="hidden" name="slug" value={product.slug} />
+                  <label>
+                    Quantity
+                    <input name="quantity" type="number" min="1" step="1" defaultValue="1" required />
+                  </label>
+                  <label>
+                    Delivery country
+                    <input name="delivery_country" type="text" defaultValue={customerProfile?.country ?? ""} placeholder="e.g. United Kingdom" required />
+                  </label>
+                  <label>
+                    Required by <span>(optional)</span>
+                    <input name="required_by" type="date" />
+                  </label>
+                  <label className="rate-notes">
+                    Requirements / notes <span>(optional)</span>
+                    <textarea name="notes" rows={4} placeholder="Size, colour, material, badge artwork, packing or other requirements" />
+                  </label>
+                  <button className="store-primary-button" type="submit">Request rate</button>
+                </form>
+              ) : (
+                <div className="rate-login-actions">
+                  <Link className="store-primary-button" href="/sign-in?message=Sign in to request a rate.">Sign in to request rate</Link>
+                  <Link className="store-secondary-button" href="/sign-up">Create account</Link>
+                </div>
+              )}
+            </div>
 
             <div className="product-description">
               <h2>Product details</h2>
