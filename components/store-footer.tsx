@@ -7,10 +7,8 @@ export function StoreFooter() {
       <div className="bloom-footer-top">
         <div className="bloom-footer-statement">
           <Brand footer />
-          <h2>MM Rashid &amp; Co.</h2>
           <p>
-            Ceremonial embroidery, bullion work and regalia made in Sialkot
-            since 1922.
+            Ceremonial embroidery, bullion work and regalia handcrafted in Sialkot since 1922.
           </p>
         </div>
 
