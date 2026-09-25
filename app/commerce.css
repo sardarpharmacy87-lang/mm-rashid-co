@@ -6593,3 +6593,35 @@ html {
     flex-direction: column !important;
   }
 }
+
+
+/* TEST PASS — turn all warm/golden homepage section backgrounds white, keep hero unchanged */
+.bloom-home > section:not(.bloom-hero):not(.bloom-contact),
+.luxury-film-section,
+.bloom-statement,
+.home-product-group,
+.store-section.home-product-group,
+.bloom-heritage,
+.bloom-workshop,
+.bloom-process {
+  background: #ffffff !important;
+  background-image: none !important;
+}
+
+/* Remove warm/gold surface panels inside those sections */
+.bloom-home > section:not(.bloom-hero):not(.bloom-contact) .store-product-card,
+.bloom-home > section:not(.bloom-hero):not(.bloom-contact) .store-product-media,
+.bloom-home > section:not(.bloom-hero):not(.bloom-contact) .store-product-content {
+  background: transparent !important;
+  background-image: none !important;
+}
+
+/* Keep separators subtle on white */
+.bloom-statement,
+.bloom-heritage,
+.bloom-workshop,
+.bloom-process,
+.luxury-film-section,
+.home-product-group {
+  border-color: rgba(11,43,36,.10) !important;
+}
