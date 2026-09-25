@@ -5214,3 +5214,27 @@ html {
     transition: none;
   }
 }
+
+.bloom-session-links {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.bloom-session-links a,
+.bloom-session-links button,
+.bloom-signout {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  text-decoration: none;
+}
+.bloom-signout-form { margin: 0; }
+.bloom-signout {
+  font-size: .78rem;
+  font-weight: 700;
+  opacity: .78;
+}
+.bloom-signout:hover,
+.bloom-session-links button:hover { opacity: 1; }
