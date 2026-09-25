@@ -29,6 +29,9 @@ export async function submitProductEnquiry(formData: FormData) {
   const deliveryCountry = String(formData.get("delivery_country") ?? "").trim();
   const requiredByRaw = String(formData.get("required_by") ?? "").trim();
   const notes = String(formData.get("notes") ?? "").trim();
+  const selectedOptions = Array.from(formData.entries())
+    .filter(([key, value]) => key.startsWith("option__") && String(value).trim())
+    .map(([key, value]) => key.replace("option__", "") + ": " + String(value).trim());
 
   if (!productId || !slug || !Number.isInteger(quantity) || quantity < 1 || !deliveryCountry) {
     redirect("/products/" + encodeURIComponent(slug) + "?enquiry=invalid");
@@ -57,7 +60,9 @@ export async function submitProductEnquiry(formData: FormData) {
 
   const description = [
     product.sku ? "Product SKU: " + product.sku : null,
-    notes ? "Customer requirements: " + notes : "Customer requested a rate for this product.",
+    ...selectedOptions,
+    notes ? "Additional information: " + notes : null,
+    "Customer requested a rate for quantity " + quantity + ".",
   ].filter(Boolean).join("\n");
 
   const { error } = await supabase.from("enquiries").insert({
