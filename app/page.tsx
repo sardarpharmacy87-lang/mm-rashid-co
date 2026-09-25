@@ -231,22 +231,6 @@ export default async function HomePage() {
           );
         })}
 
-        <section className="bloom-commission reveal">
-          <div>
-            <p className="bloom-eyebrow bloom-eyebrow-light">Made to order</p>
-            <h2>Send your artwork and requirements.</h2>
-          </div>
-          <div>
-            <p>
-              Include quantity, dimensions, colours and delivery country. We will
-              review the details and reply with the next steps.
-            </p>
-            <Link className="store-primary-button" href="/customer/enquiries/new">
-              Send an enquiry <span>↗</span>
-            </Link>
-          </div>
-        </section>
-
         <section className="bloom-heritage" id="heritage">
           <div className="bloom-heritage-media reveal">
             <img
