@@ -6181,3 +6181,164 @@ html {
 .store-breadcrumbs a {
   color: var(--premium-navy) !important;
 }
+
+
+/* FINAL PREMIUM PALETTE — British Racing Green + Antique Gold + Ivory */
+:root {
+  --premium-green: #0B2B24;
+  --premium-green-2: #123A31;
+  --premium-gold: #C5A15A;
+  --premium-gold-soft: #D8BC86;
+  --premium-ivory: #FAF8F2;
+  --premium-white: #FFFFFF;
+  --premium-charcoal: #22272A;
+  --premium-muted: #6F756F;
+}
+
+.store-shell,
+.catalogue-page,
+.product-detail-page,
+.portal-layout {
+  background: var(--premium-white) !important;
+  color: var(--premium-charcoal) !important;
+}
+
+.store-announcement,
+.bloom-topbar {
+  background: var(--premium-green) !important;
+  color: #F6F1E8 !important;
+}
+
+.store-header,
+.bloom-header,
+.bloom-nav {
+  background: rgba(255,255,255,.98) !important;
+  border-color: rgba(11,43,36,.10) !important;
+}
+
+.store-main-nav {
+  background: var(--premium-green) !important;
+}
+.store-main-nav a {
+  color: #fff !important;
+}
+.store-main-nav a:hover {
+  background: rgba(255,255,255,.08) !important;
+}
+
+.catalogue-page h1,
+.product-detail-copy h1,
+.store-section-heading h2,
+.product-group-heading h2,
+.portal-main h1,
+.portal-section h2,
+.bloom-site h1,
+.bloom-site h2 {
+  color: var(--premium-green) !important;
+}
+
+.store-kicker,
+.product-detail-category,
+.portal-kicker,
+.bloom-eyebrow {
+  color: var(--premium-gold) !important;
+}
+
+.store-primary-button,
+.portal-button,
+.reference-catalogue-toolbar button,
+.detail-add-button,
+.cart-enquiry-form button {
+  color: #fff !important;
+  border-color: var(--premium-green) !important;
+  background: linear-gradient(135deg,var(--premium-green),var(--premium-green-2)) !important;
+}
+
+.store-primary-button:hover,
+.portal-button:hover {
+  color: var(--premium-green) !important;
+  border-color: var(--premium-gold) !important;
+  background: linear-gradient(135deg,var(--premium-gold-soft),var(--premium-gold)) !important;
+}
+
+.store-secondary-button {
+  color: var(--premium-green) !important;
+  border-color: rgba(11,43,36,.20) !important;
+  background: #fff !important;
+}
+
+.reference-catalogue-hero,
+.catalogue-layout,
+.catalogue-results,
+.product-group-nav,
+.collection-heading,
+.product-group-list,
+.product-group-block,
+.all-products-grid,
+.catalogue-product-grid,
+.store-product-grid,
+.store-product-card,
+.store-product-content,
+.store-product-media,
+.product-detail-grid,
+.product-gallery,
+.product-main-image,
+.premium-product-gallery,
+.premium-product-gallery .product-main-image,
+.premium-product-gallery .product-thumbnails,
+.premium-product-gallery .product-thumbnails button {
+  background: transparent !important;
+  background-image: none !important;
+}
+
+.home-product-group,
+.store-section.home-product-group,
+.catalogue-empty {
+  background: var(--premium-ivory) !important;
+  background-image: none !important;
+}
+
+.product-group-heading,
+.collection-heading,
+.reference-catalogue-toolbar,
+.catalogue-toolbar,
+.product-description,
+.product-specifications,
+.product-meta-line {
+  border-color: rgba(11,43,36,.12) !important;
+}
+
+.stock-pill,
+.stock-in_stock {
+  color: #fff !important;
+  background: var(--premium-green) !important;
+}
+.stock-made_to_order {
+  color: #fff !important;
+  background: var(--premium-gold) !important;
+}
+.stock-out_of_stock {
+  color: #fff !important;
+  background: #6A2E2E !important;
+}
+
+.product-rate-form input,
+.product-rate-form select,
+.product-rate-form textarea {
+  color: var(--premium-charcoal) !important;
+  border-color: rgba(11,43,36,.28) !important;
+  background: #fff !important;
+}
+.product-rate-form input:focus,
+.product-rate-form select:focus,
+.product-rate-form textarea:focus {
+  border-color: var(--premium-gold) !important;
+  box-shadow: 0 0 0 3px rgba(197,161,90,.12) !important;
+}
+
+.product-card-actions a,
+.product-group-heading a,
+.store-section-heading > a,
+.store-breadcrumbs a {
+  color: var(--premium-green) !important;
+}
