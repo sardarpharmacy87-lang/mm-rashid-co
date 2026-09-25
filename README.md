@@ -32,3 +32,4 @@ Complete Visual Studio Code project for the MM Rashid & Co. embroidery website a
 ## Deploy to Vercel
 
 Upload this folder to GitHub and import the repository into Vercel. Vercel will automatically recognise the Next.js project and use `npm run build`.
+Latest production deployment
