@@ -79,10 +79,16 @@ export async function signIn(formData: FormData) {
   if (!parsed.success) redirect(destination("/sign-in", "error", firstError(parsed.error)));
 
   const supabase = await createClient();
-  const { error } = await supabase.auth.signInWithPassword(parsed.data);
+  const { data, error } = await supabase.auth.signInWithPassword(parsed.data);
   if (error) redirect(destination("/sign-in", "error", "Email or password is incorrect, or the email is not verified."));
 
-  redirect("/customer");
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", data.user.id)
+    .maybeSingle();
+
+  redirect(profile?.role === "admin" ? "/admin" : "/customer");
 }
 
 export async function requestPasswordReset(formData: FormData) {
