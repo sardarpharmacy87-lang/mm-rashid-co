@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 
 export function ProductGallery({
@@ -16,7 +17,13 @@ export function ProductGallery({
     <div className="product-gallery premium-product-gallery">
       <div className="product-main-image">
         {activeImage ? (
-          <img src={activeImage} alt={productName + " view " + (active + 1)} />
+          <Image
+            src={activeImage}
+            alt={productName + " view " + (active + 1)}
+            fill
+            sizes="(max-width: 820px) 100vw, 52vw"
+            priority={active === 0}
+          />
         ) : (
           <div className="store-image-placeholder">MM RASHID &amp; CO.</div>
         )}
@@ -33,7 +40,7 @@ export function ProductGallery({
               aria-label={"Show " + productName + " view " + (index + 1)}
               aria-pressed={index === active}
             >
-              <img src={image} alt="" />
+              <Image src={image} alt="" fill sizes="92px" />
             </button>
           ))}
         </div>
