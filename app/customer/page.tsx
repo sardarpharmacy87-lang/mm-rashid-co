@@ -63,7 +63,7 @@ export default async function CustomerDashboard() {
                       <td>{enquiry.title.replace("Rate request — ", "")}</td>
                       <td>{enquiry.quantity}</td>
                       <td><span className="status">{enquiry.status.replace("_", " ")}</span></td>
-                      <td>{quote && unitRate !== null ? \`\${quote.currency} \${unitRate.toFixed(2)} / unit\` : "Awaiting rate"}</td>
+                      <td>{quote && unitRate !== null ? quote.currency + " " + unitRate.toFixed(2) + " / unit" : "Awaiting rate"}</td>
                       <td>{quote ? <strong>{quote.currency} {Number(quote.total).toFixed(2)}</strong> : "—"}</td>
                     </tr>
                   );
