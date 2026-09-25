@@ -23,14 +23,6 @@ export function StoreFooter() {
             <Link href="/#heritage">Our history</Link>
             <Link href="/#workshop">Workshop</Link>
           </div>
-
-          <div>
-            <strong>Customer</strong>
-            <Link href="/sign-in">My account</Link>
-            <Link href="/cart">Enquiry list</Link>
-            <Link href="/customer/enquiries/new">Send enquiry</Link>
-          </div>
-
           <div>
             <strong>Company</strong>
             <Link href="/privacy">Privacy policy</Link>
