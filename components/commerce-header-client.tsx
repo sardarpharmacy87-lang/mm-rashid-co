@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { signOut } from "@/app/auth/actions";
 import { Brand } from "@/components/brand";
+import { LocaleControls } from "@/components/locale-controls";
 
 type HeaderProps = {
   signedIn: boolean;
@@ -41,10 +42,11 @@ export function CommerceHeaderClient({ signedIn, role }: HeaderProps) {
             <Link href="/catalogue" onClick={close}>Catalogue</Link>
             <Link href="/#heritage" onClick={close}>Our history</Link>
             <Link href="/#workshop" onClick={close}>Workshop</Link>
-            <Link href="/#contact" onClick={close}>Contact</Link>
+            <Link href="/contact" onClick={close}>Contact</Link>
           </nav>
 
           <div className="bloom-header-actions">
+            <LocaleControls compact />
             <form className="bloom-search" action="/products" method="get">
               <input type="search" name="q" aria-label="Search products" placeholder="Search" />
               <button type="submit" aria-label="Search products">↗</button>
