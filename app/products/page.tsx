@@ -31,56 +31,60 @@ export default async function ProductsPage({ searchParams }: PageProps) {
   const page = Math.max(1, Number(filters.page) || 1);
   const pageSize = 24;
 
-  const [productsResult, groupsResult] = await Promise.all([
-    supabase
-      .from("products")
-      .select("id, name, slug, sku, short_description, primary_image, stock_status, created_at, product_group_id")
-      .eq("active", true)
-      .order("sort_order", { ascending: true })
-      .order("name", { ascending: true }),
-    supabase
-      .from("product_groups")
-      .select("id, name, slug")
-      .eq("active", true)
-      .order("sort_order", { ascending: true })
-      .order("name", { ascending: true }),
-  ]);
+  const groupsResult = await supabase
+    .from("product_groups")
+    .select("id, name, slug")
+    .eq("active", true)
+    .order("sort_order", { ascending: true })
+    .order("name", { ascending: true });
 
-  const allProducts = (productsResult.data ?? []) as CatalogueProduct[];
   const groups = (groupsResult.data ?? []) as ProductGroup[];
   const selectedGroup = groups.find((item) => item.slug === filters.group) ?? null;
-  const groupNameById = new Map(groups.map((group) => [group.id, group.name]));
-  const safeSearch = (filters.q ?? "").trim().toLowerCase();
+  const safeSearch = (filters.q ?? "").trim().replace(/[(),]/g, " ");
 
-  let filtered = allProducts.filter((product) => {
-    if (selectedGroup && product.product_group_id !== selectedGroup.id) return false;
-    if (filters.availability === "in_stock" && product.stock_status !== "in_stock") return false;
-    if (filters.availability === "made_to_order" && product.stock_status !== "made_to_order") return false;
-    if (!safeSearch) return true;
-    const haystack = [
-      product.name,
-      product.sku,
-      product.short_description,
-      product.product_group_id ? groupNameById.get(product.product_group_id) : null,
-    ]
-      .filter(Boolean)
-      .join(" ")
-      .toLowerCase();
-    return haystack.includes(safeSearch);
-  });
+  let productsQuery = supabase
+    .from("products")
+    .select(
+      "id, name, slug, sku, short_description, primary_image, stock_status, created_at, product_group_id",
+      { count: "exact" },
+    )
+    .eq("active", true);
 
-  if (filters.sort === "newest") {
-    filtered = [...filtered].sort(
-      (a, b) => new Date(b.created_at ?? 0).getTime() - new Date(a.created_at ?? 0).getTime(),
-    );
-  } else if (filters.sort === "name") {
-    filtered = [...filtered].sort((a, b) => a.name.localeCompare(b.name));
+  if (selectedGroup) {
+    productsQuery = productsQuery.eq("product_group_id", selectedGroup.id);
   }
 
-  const pageCount = Math.max(1, Math.ceil(filtered.length / pageSize));
+  if (filters.availability === "in_stock") {
+    productsQuery = productsQuery.eq("stock_status", "in_stock");
+  } else if (filters.availability === "made_to_order") {
+    productsQuery = productsQuery.eq("stock_status", "made_to_order");
+  }
+
+  if (safeSearch) {
+    const pattern = "%" + safeSearch + "%";
+    productsQuery = productsQuery.or(
+      "name.ilike." + pattern + ",sku.ilike." + pattern + ",short_description.ilike." + pattern,
+    );
+  }
+
+  if (filters.sort === "newest") {
+    productsQuery = productsQuery.order("created_at", { ascending: false });
+  } else if (filters.sort === "name") {
+    productsQuery = productsQuery.order("name", { ascending: true });
+  } else {
+    productsQuery = productsQuery
+      .order("sort_order", { ascending: true })
+      .order("name", { ascending: true });
+  }
+
+  const from = (page - 1) * pageSize;
+  const to = from + pageSize - 1;
+  const productsResult = await productsQuery.range(from, to);
+
+  const products = (productsResult.data ?? []) as CatalogueProduct[];
+  const productCount = productsResult.count ?? 0;
+  const pageCount = Math.max(1, Math.ceil(productCount / pageSize));
   const safePage = Math.min(page, pageCount);
-  const from = (safePage - 1) * pageSize;
-  const products = filtered.slice(from, from + pageSize);
 
   const makePageHref = (nextPage: number) => {
     const params = new URLSearchParams();
@@ -140,14 +144,14 @@ export default async function ProductsPage({ searchParams }: PageProps) {
                   <option value="name">Name A-Z</option>
                 </select>
               </div>
-              <span className="catalogue-total-count">{filtered.length} products</span>
+              <span className="catalogue-total-count">{productCount} products</span>
               <input className="catalogue-search-compact" type="search" name="q" defaultValue={filters.q ?? ""} placeholder="Search" aria-label="Search catalogue" />
               <button type="submit">Apply</button>
             </form>
 
             <div className="product-group-heading collection-heading">
               <h2>{selectedGroup?.name ?? "All products"}</h2>
-              <span>{filtered.length} products</span>
+              <span>{productCount} products</span>
             </div>
 
             {products.length ? (
