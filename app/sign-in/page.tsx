@@ -12,9 +12,9 @@ export default async function SignInPage({ searchParams }: PageProps) {
     <main className="auth-page">
       <section className="auth-panel">
         <Link className="auth-brand" href="/">MM RASHID &amp; CO.</Link>
-        <p className="portal-kicker">Private customer portal</p>
+        <p className="portal-kicker">Secure account access</p>
         <h1>Sign in</h1>
-        <p className="auth-intro">View your enquiries, quotations, orders and updates.</p>
+        <p className="auth-intro">Sign in to your customer account or administration portal.</p>
 
         {error ? <p className="form-alert form-alert-error">{error}</p> : null}
         {message ? <p className="form-alert form-alert-success">{message}</p> : null}
