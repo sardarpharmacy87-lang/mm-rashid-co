@@ -14,7 +14,7 @@ export function Brand({ footer = false }: BrandProps) {
     >
       <span className="brand-logo">
         <Image
-          src="/favicon.svg"
+          src="/mm-rashid-logo.jpg"
           alt="MM Rashid & Co. logo"
           width={58}
           height={58}
