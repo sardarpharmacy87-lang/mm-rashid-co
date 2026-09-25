@@ -1974,6 +1974,34 @@ html {
 .bloom-product-section .store-section-heading h2 {
   font-size: clamp(3rem,5.4vw,6rem);
 }
+.home-category-browse-link {
+  margin-left: auto;
+  align-self: flex-end;
+  color: var(--bloom-navy);
+  font-size: .86rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(7,26,53,.28);
+  padding-bottom: 3px;
+}
+.home-category-browse-link:hover {
+  border-bottom-color: currentColor;
+}
+@media (max-width: 1100px) {
+  .home-category-grid > :nth-child(n+4) { display: none; }
+}
+@media (max-width: 700px) {
+  .home-category-grid > :nth-child(n+3) { display: none; }
+  .bloom-product-section .store-section-heading {
+    align-items: flex-end;
+    gap: 16px;
+  }
+  .home-category-browse-link {
+    font-size: .78rem;
+    white-space: nowrap;
+  }
+}
 .bloom-site .store-product-grid,
 .catalogue-product-grid {
   gap: 14px;
