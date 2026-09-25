@@ -1,67 +1,21 @@
-"use client";
+import { CommerceHeaderClient } from "@/components/commerce-header-client";
+import { getCurrentUser } from "@/lib/auth";
+import { createClient } from "@/lib/supabase/server";
 
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { Brand } from "@/components/brand";
+export async function CommerceHeader() {
+  const user = await getCurrentUser();
+  let role: "admin" | "customer" | null = null;
 
-export function CommerceHeader() {
-  const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  if (user) {
+    const supabase = await createClient();
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .maybeSingle();
 
-  useEffect(() => {
-    const update = () => setScrolled(window.scrollY > 18);
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    return () => window.removeEventListener("scroll", update);
-  }, []);
+    role = profile?.role === "admin" ? "admin" : "customer";
+  }
 
-  const close = () => setOpen(false);
-
-  return (
-    <>
-      <div className="bloom-ribbon">
-        <span>MM Rashid & Co. · Commissioner Road · Sialkot</span>
-        <span>Handcrafted ceremonial regalia since 1922</span>
-      </div>
-
-      <header className={"store-header bloom-header " + (scrolled ? "is-scrolled" : "")}>
-        <div className="bloom-header-inner">
-          <Brand />
-
-          <nav
-            id="bloom-main-navigation"
-            className={"bloom-main-nav " + (open ? "is-open" : "")}
-            aria-label="Main navigation"
-          >
-            <Link href="/products" onClick={close}>Products</Link>
-            <Link href="/capabilities" onClick={close}>Capabilities</Link>
-            <Link href="/catalogue" onClick={close}>Catalogue</Link>
-            <Link href="/#heritage" onClick={close}>Our history</Link>
-            <Link href="/#workshop" onClick={close}>Workshop</Link>
-            <Link href="/#contact" onClick={close}>Contact</Link>
-          </nav>
-
-          <div className="bloom-header-actions">
-            <form className="bloom-search" action="/products" method="get">
-              <input type="search" name="q" aria-label="Search products" placeholder="Search" />
-              <button type="submit" aria-label="Search products">↗</button>
-            </form>
-
-            <button
-              className="store-menu-button bloom-menu-button"
-              type="button"
-              onClick={() => setOpen((value) => !value)}
-              aria-label={open ? "Close navigation" : "Open navigation"}
-              aria-expanded={open}
-              aria-controls="bloom-main-navigation"
-            >
-              <span />
-              <span />
-              <span />
-            </button>
-          </div>
-        </div>
-      </header>
-    </>
-  );
+  return <CommerceHeaderClient signedIn={Boolean(user)} role={role} />;
 }
