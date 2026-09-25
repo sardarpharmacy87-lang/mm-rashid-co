@@ -6444,3 +6444,29 @@ html {
 .rate-login-actions .rate-private-note {
   flex-basis: 100%;
 }
+
+
+/* CONTACT SECTION CONTRAST FIX */
+.bloom-contact .bloom-eyebrow,
+.bloom-contact .bloom-eyebrow-light {
+  color: #D8BC86 !important;
+}
+
+.bloom-contact h2 {
+  color: #FFFFFF !important;
+  text-shadow: 0 2px 18px rgba(0,0,0,.18);
+}
+
+.bloom-contact-actions p {
+  color: rgba(255,255,255,.82) !important;
+}
+
+.bloom-contact-actions a {
+  color: #F0D58D !important;
+  font-weight: 800 !important;
+  text-decoration-color: rgba(240,213,141,.55) !important;
+}
+
+.bloom-contact-actions span {
+  color: rgba(255,255,255,.68) !important;
+}
