@@ -305,8 +305,7 @@ export default async function HomePage() {
 
           <div className="bloom-contact-actions reveal delay-one">
             <p>
-              For quotations and order questions, contact the workshop by telephone
-              or use the customer enquiry form.
+              For product, catalogue and workshop questions, contact us by telephone.
             </p>
             <a href="tel:+923343342223">+92 334 334 2223</a>
             <span>Commissioner Road · Sialkot 51310 · Pakistan</span>
