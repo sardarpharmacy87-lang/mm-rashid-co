@@ -6470,3 +6470,34 @@ html {
 .bloom-contact-actions span {
   color: rgba(255,255,255,.68) !important;
 }
+
+
+/* SINGLE CONTACT SECTION — high contrast */
+.bloom-contact {
+  color: #ffffff !important;
+}
+
+.bloom-contact .bloom-eyebrow,
+.bloom-contact .bloom-eyebrow-light {
+  color: #D8BC86 !important;
+}
+
+.bloom-contact h2,
+.bloom-contact-copy h2 {
+  color: #FFFFFF !important;
+  opacity: 1 !important;
+}
+
+.bloom-contact-actions p {
+  color: rgba(255,255,255,.9) !important;
+}
+
+.bloom-contact-actions a {
+  color: #F0D58D !important;
+  opacity: 1 !important;
+  font-weight: 900 !important;
+}
+
+.bloom-contact-actions span {
+  color: rgba(255,255,255,.75) !important;
+}
