@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Brand } from "@/components/brand";
 import { createClient } from "@/lib/supabase/server";
+import { LocaleControls } from "@/components/locale-controls";
+import { subscribeNewsletter } from "@/app/newsletter/actions";
 
 type SocialLink = {
   label: string;
@@ -26,6 +28,18 @@ export async function StoreFooter() {
 
   return (
     <footer className="commerce-footer bloom-footer clean-store-footer" id="contact">
+      <section className="footer-newsletter" id="newsletter">
+        <div>
+          <p className="store-kicker">Stay connected</p>
+          <h2>Subscribe to our emails</h2>
+          <p>New products, workshop updates and company news.</p>
+        </div>
+        <form action={subscribeNewsletter} className="footer-newsletter-form">
+          <input type="email" name="email" placeholder="Email" aria-label="Email address" required />
+          <button type="submit" aria-label="Subscribe">→</button>
+        </form>
+      </section>
+
       <div className="clean-footer-main">
         <div className="clean-footer-brand">
           <Brand footer />
@@ -63,6 +77,7 @@ export async function StoreFooter() {
           <Link href="/sign-up">Request a quote</Link>
           <Link href="/privacy">Privacy policy</Link>
           <Link href="/terms">Terms &amp; conditions</Link>
+          <Link href="/contact">Contact information</Link>
         </div>
 
         <div className="clean-footer-column clean-footer-contact">
@@ -74,9 +89,17 @@ export async function StoreFooter() {
         </div>
       </div>
 
+      <div className="footer-localization-row">
+        <LocaleControls />
+      </div>
+
       <div className="clean-footer-bottom">
         <span>© {new Date().getFullYear()} MM Rashid &amp; Co. All rights reserved.</span>
-        <span>Handcrafted in Sialkot · Since 1922</span>
+        <div className="footer-policy-links">
+          <Link href="/privacy">Privacy policy</Link>
+          <Link href="/terms">Terms &amp; conditions</Link>
+          <Link href="/contact">Contact information</Link>
+        </div>
       </div>
     </footer>
   );
