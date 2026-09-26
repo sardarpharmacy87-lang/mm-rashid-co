@@ -38,61 +38,45 @@ export default async function HomePage({
   const groups = (g.data ?? []) as Group[];
   const products = (p.data ?? []) as HomeProduct[];
   const slides = (s.data ?? []) as HomepageSlide[];
+  const categories = groups
+    .map((group) => ({
+      ...group,
+      products: products
+        .filter((product) => product.product_group_id === group.id)
+        .slice(0, 4),
+    }))
+    .filter((group) => group.products.length > 0);
   return (
     <div className="store-shell atelier royal-home">
       <CommerceHeader />
       <main id="main-content">
         <RoyalHero />
-        <section
-          className="atelier-section royal-collection-section"
-          id="collections"
-        >
-          <div className="atelier-section-heading">
-            <div>
-              <p className="eyebrow">The MM Rashid collection</p>
-              <h2>Our products</h2>
-              <p className="royal-section-subtitle">
-                Quality regalia, made to order.
-              </p>
-            </div>
-            <Link className="text-link" href="/collections">
-              Discover all collections ↗
-            </Link>
-          </div>
-          <div className="atelier-collections">
-            {groups.slice(0, 3).map((group, i) => {
-              const product = products.find(
-                (item) =>
-                  item.product_group_id === group.id && item.primary_image,
-              );
-              return (
+        <div className="home-categories" id="collections">
+          {categories.map((group) => (
+            <section
+              className="atelier-section home-category-products"
+              key={group.id}
+              aria-labelledby={"category-" + group.id}
+            >
+              <div className="home-category-heading">
+                <h2 id={"category-" + group.id}>{group.name}</h2>
                 <Link
-                  href={"/products?group=" + group.slug}
-                  className="atelier-collection"
-                  key={group.id}
+                  className="text-link"
+                  href={"/products?group=" + encodeURIComponent(group.slug)}
+                  aria-label={"Browse all " + group.name}
                 >
-                  <div className="collection-image">
-                    <Image
-                      src={
-                        product?.primary_image ||
-                        "/images/gallery/gold-bullion-naval-badge.webp"
-                      }
-                      alt={group.name}
-                      fill
-                      sizes="(max-width:760px) 90vw, 33vw"
-                    />
-                  </div>
-                  <div className="collection-caption">
-                    <span className="collection-number">0{i + 1}</span>
-                    <h3>{group.name}</h3>
-                    <span aria-hidden="true">↗</span>
-                  </div>
+                  Browse all <span aria-hidden="true">↗</span>
                 </Link>
-              );
-            })}
-          </div>
-          {!groups.length && (
-            <p>
+              </div>
+              <div className="store-product-grid home-category-row">
+                {group.products.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            </section>
+          ))}
+          {!categories.length && (
+            <p className="atelier-section">
               Explore our{" "}
               <Link className="text-link" href="/products">
                 product catalogue
@@ -104,7 +88,7 @@ export default async function HomePage({
               .
             </p>
           )}
-        </section>
+        </div>
         <section className="atelier-manifesto">
           <p className="eyebrow">The MM Rashid signature</p>
           <h2>
@@ -120,24 +104,6 @@ export default async function HomePage({
             Discover our craft ↗
           </Link>
         </section>
-        {products.length > 0 && (
-          <section className="atelier-section">
-            <div className="atelier-section-heading">
-              <div>
-                <p className="eyebrow">From the workshop</p>
-                <h2>Selected pieces.</h2>
-              </div>
-              <Link className="text-link" href="/products">
-                View the complete collection ↗
-              </Link>
-            </div>
-            <div className="store-product-grid">
-              {products.slice(0, 4).map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          </section>
-        )}
         <section className="atelier-story" id="heritage">
           <div className="atelier-story-image">
             <Image
