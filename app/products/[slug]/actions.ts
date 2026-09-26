@@ -17,7 +17,9 @@ function enquiryCategory(groupSlug?: string | null) {
 
 export async function submitProductEnquiry(formData: FormData) {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   if (!user) {
     redirect("/sign-in?message=Please sign in to request a rate.");
@@ -30,21 +32,39 @@ export async function submitProductEnquiry(formData: FormData) {
   const requiredByRaw = String(formData.get("required_by") ?? "").trim();
   const notes = String(formData.get("notes") ?? "").trim();
   const selectedOptions = Array.from(formData.entries())
-    .filter(([key, value]) => key.startsWith("option__") && String(value).trim())
-    .map(([key, value]) => key.replace("option__", "") + ": " + String(value).trim());
+    .filter(
+      ([key, value]) => key.startsWith("option__") && String(value).trim(),
+    )
+    .map(
+      ([key, value]) =>
+        key.replace("option__", "") + ": " + String(value).trim(),
+    );
 
-  if (!productId || !slug || !Number.isInteger(quantity) || quantity < 1 || !deliveryCountry) {
+  if (
+    !productId ||
+    !slug ||
+    !Number.isInteger(quantity) ||
+    quantity < 1 ||
+    quantity > 100000 ||
+    !deliveryCountry ||
+    deliveryCountry.length > 100 ||
+    notes.length > 5000 ||
+    selectedOptions.join("\n").length > 5000 ||
+    (requiredByRaw &&
+      (!/^\d{4}-\d{2}-\d{2}$/.test(requiredByRaw) ||
+        Number.isNaN(Date.parse(requiredByRaw))))
+  ) {
     redirect("/products/" + encodeURIComponent(slug) + "?enquiry=invalid");
   }
 
   const { data: product } = await supabase
     .from("products")
-    .select("id, name, sku, product_group_id")
+    .select("id, name, sku, product_group_id, stock_status")
     .eq("id", productId)
     .eq("active", true)
     .single();
 
-  if (!product) {
+  if (!product || product.stock_status === "out_of_stock") {
     redirect("/products");
   }
 
@@ -63,7 +83,9 @@ export async function submitProductEnquiry(formData: FormData) {
     ...selectedOptions,
     notes ? "Additional information: " + notes : null,
     "Customer requested a rate for quantity " + quantity + ".",
-  ].filter(Boolean).join("\n");
+  ]
+    .filter(Boolean)
+    .join("\n");
 
   const { error } = await supabase.from("enquiries").insert({
     customer_id: user.id,

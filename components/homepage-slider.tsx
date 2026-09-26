@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 
 export type HomepageSlide = {
   id: string;
@@ -12,6 +13,7 @@ export type HomepageSlide = {
 
 export function HomepageSlider({ slides }: { slides: HomepageSlide[] }) {
   const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
   const pointerStart = useRef<number | null>(null);
 
   const show = useCallback(
@@ -26,15 +28,18 @@ export function HomepageSlider({ slides }: { slides: HomepageSlide[] }) {
   const previous = useCallback(() => show(active - 1), [active, show]);
 
   useEffect(() => {
-    if (slides.length < 2) return;
+    if (
+      slides.length < 2 ||
+      paused ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    )
+      return;
     const delay = Math.max(2000, slides[active]?.delay_ms || 5000);
     const timer = window.setTimeout(next, delay);
     return () => window.clearTimeout(timer);
-  }, [active, next, slides]);
+  }, [active, next, slides, paused]);
 
-  useEffect(() => {
-    if (active >= slides.length && slides.length) setActive(0);
-  }, [active, slides.length]);
+  const visibleIndex = slides.length ? active % slides.length : 0;
 
   if (!slides.length) return null;
 
@@ -58,18 +63,29 @@ export function HomepageSlider({ slides }: { slides: HomepageSlide[] }) {
       aria-label="Featured MM Rashid & Co. work"
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
-      onPointerCancel={() => { pointerStart.current = null; }}
+      onPointerCancel={() => {
+        pointerStart.current = null;
+      }}
     >
       <div className="homepage-slider-track">
         {slides.map((slide, index) => (
           <div
-            className={"homepage-slider-slide " + (index === active ? "is-active" : "")}
-            aria-hidden={index !== active}
+            className={
+              "homepage-slider-slide " +
+              (index === visibleIndex ? "is-active" : "")
+            }
+            aria-hidden={index !== visibleIndex}
             key={slide.id}
           >
-            <img
+            <Image
               src={slide.image_url}
-              alt={index === active ? slide.alt_text || "MM Rashid & Co. featured work" : ""}
+              alt={
+                index === visibleIndex
+                  ? slide.alt_text || "MM Rashid & Co. featured work"
+                  : ""
+              }
+              fill
+              sizes="90vw"
               loading={index === 0 ? "eager" : "lazy"}
               draggable={false}
             />
@@ -79,17 +95,39 @@ export function HomepageSlider({ slides }: { slides: HomepageSlide[] }) {
 
       {slides.length > 1 ? (
         <>
-          <button className="homepage-slider-arrow prev" type="button" onClick={previous} aria-label="Previous slide">←</button>
-          <button className="homepage-slider-arrow next" type="button" onClick={next} aria-label="Next slide">→</button>
+          <button
+            className="homepage-slider-pause"
+            type="button"
+            onClick={() => setPaused(!paused)}
+            aria-pressed={paused}
+          >
+            {paused ? "Play slideshow" : "Pause slideshow"}
+          </button>
+          <button
+            className="homepage-slider-arrow prev"
+            type="button"
+            onClick={previous}
+            aria-label="Previous slide"
+          >
+            ←
+          </button>
+          <button
+            className="homepage-slider-arrow next"
+            type="button"
+            onClick={next}
+            aria-label="Next slide"
+          >
+            →
+          </button>
 
           <div className="homepage-slider-dots" aria-label="Choose slide">
             {slides.map((slide, index) => (
               <button
                 type="button"
                 key={slide.id}
-                className={index === active ? "is-active" : ""}
+                className={index === visibleIndex ? "is-active" : ""}
                 aria-label={"Show slide " + (index + 1)}
-                aria-current={index === active ? "true" : undefined}
+                aria-current={index === visibleIndex ? "true" : undefined}
                 onClick={() => show(index)}
               />
             ))}
@@ -98,7 +136,8 @@ export function HomepageSlider({ slides }: { slides: HomepageSlide[] }) {
       ) : null}
 
       <span className="homepage-slider-counter">
-        {String(active + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}
+        {String(visibleIndex + 1).padStart(2, "0")} /{" "}
+        {String(slides.length).padStart(2, "0")}
       </span>
     </section>
   );

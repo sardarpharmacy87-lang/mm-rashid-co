@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { articles } from "@/lib/journal";
 import { createClient } from "@supabase/supabase-js";
 import { SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL } from "@/lib/supabase/config";
 
@@ -9,6 +10,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     process.env.NEXT_PUBLIC_SITE_URL || "https://mm-rashid-co-l5hh.vercel.app";
 
   const staticEntries: MetadataRoute.Sitemap = [
+    ...[
+      "/collections",
+      "/contact",
+      "/journal",
+      ...articles.map((article) => "/journal/" + article.slug),
+    ].map((path) => ({
+      url: baseUrl + path,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
     {
       url: baseUrl,
       changeFrequency: "weekly",
@@ -52,12 +63,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .eq("active", true)
       .order("updated_at", { ascending: false });
 
-    const productEntries: MetadataRoute.Sitemap = (data ?? []).map((product) => ({
-      url: baseUrl + "/products/" + product.slug,
-      lastModified: product.updated_at ? new Date(product.updated_at) : undefined,
-      changeFrequency: "weekly",
-      priority: 0.8,
-    }));
+    const productEntries: MetadataRoute.Sitemap = (data ?? []).map(
+      (product) => ({
+        url: baseUrl + "/products/" + product.slug,
+        lastModified: product.updated_at
+          ? new Date(product.updated_at)
+          : undefined,
+        changeFrequency: "weekly",
+        priority: 0.8,
+      }),
+    );
 
     return [...staticEntries, ...productEntries];
   } catch {

@@ -1,306 +1,260 @@
+import Image from "next/image";
 import Link from "next/link";
 import { CommerceHeader } from "@/components/commerce-header";
-import { HomepageSlider, type HomepageSlide } from "@/components/homepage-slider";
+import {
+  HomepageSlider,
+  type HomepageSlide,
+} from "@/components/homepage-slider";
 import { ProductCard, type ProductCardData } from "@/components/product-card";
-import { RevealController } from "@/components/reveal-controller";
 import { WorkshopReels } from "@/components/workshop-reels";
 import { StoreFooter } from "@/components/store-footer";
 import { createClient } from "@/lib/supabase/server";
+import { Faq } from "@/components/faq";
+import { RoyalHero } from "@/components/royal-hero";
 
-type ProductGroup = {
-  id: string;
-  name: string;
-  slug: string;
-};
+type Group = { id: string; name: string; slug: string };
+type HomeProduct = ProductCardData & { product_group_id: string | null };
 
-type HomeProduct = ProductCardData & {
-  product_group_id: string | null;
-};
-
-const processSteps = [
-  {
-    number: "01",
-    title: "Send the artwork",
-    description: "Send artwork or a reference, along with size, quantity and colours.",
-  },
-  {
-    number: "02",
-    title: "Confirm materials",
-    description: "We check construction, thread, materials and the required finish.",
-  },
-  {
-    number: "03",
-    title: "Production",
-    description: "The piece is made in the workshop to the confirmed specification.",
-  },
-  {
-    number: "04",
-    title: "Final check",
-    description: "We inspect, pack and dispatch the finished order.",
-  },
-];
-
-export default async function HomePage() {
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ newsletter?: string }>;
+}) {
+  const { newsletter } = await searchParams;
   const supabase = await createClient();
-
-  const [groupsResult, productsResult, slidesResult] = await Promise.all([
+  const [g, p, s] = await Promise.all([
     supabase
       .from("product_groups")
-      .select("id, name, slug")
+      .select("id,name,slug")
       .eq("active", true)
-      .order("sort_order", { ascending: true })
-      .order("name", { ascending: true }),
+      .order("sort_order"),
     supabase.rpc("homepage_products", { per_group: 4 }),
     supabase
       .from("homepage_slides")
-      .select("id, image_url, alt_text, sort_order, delay_ms")
+      .select("id,image_url,alt_text,sort_order,delay_ms")
       .eq("active", true)
-      .order("sort_order", { ascending: true })
-      .order("created_at", { ascending: true }),
+      .order("sort_order"),
   ]);
-
-  const groups = (groupsResult.data ?? []) as ProductGroup[];
-  const products = (productsResult.data ?? []) as HomeProduct[];
-  const slides = (slidesResult.data ?? []) as HomepageSlide[];
-  const siteUrl =
-    process.env.NEXT_PUBLIC_SITE_URL || "https://mm-rashid-co-l5hh.vercel.app";
-
-  const organizationSchema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "MM Rashid & Co.",
-    url: siteUrl,
-    logo: siteUrl + "/mm-rashid-logo.png",
-    foundingDate: "1922",
-    telephone: "+92 334 334 2223",
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "Commissioner Road",
-      addressLocality: "Sialkot",
-      postalCode: "51310",
-      addressCountry: "PK",
-    },
-  };
-
+  const groups = (g.data ?? []) as Group[];
+  const products = (p.data ?? []) as HomeProduct[];
+  const slides = (s.data ?? []) as HomepageSlide[];
+  const categories = groups
+    .map((group) => ({
+      ...group,
+      products: products
+        .filter((product) => product.product_group_id === group.id)
+        .slice(0, 4),
+    }))
+    .filter((group) => group.products.length > 0);
   return (
-    <div className="store-shell bloom-site">
-      <RevealController />
+    <div className="store-shell atelier royal-home">
       <CommerceHeader />
-
-      <main className="bloom-home">
-        <section className="bloom-hero">
-          <div className="bloom-hero-grid" aria-hidden="true" />
-
-          <div className="bloom-hero-copy reveal">
-            <p className="bloom-eyebrow">Sialkot · Pakistan · Since 1922</p>
-            <h1>
-              Regalia with
-              <span> a century of handwork.</span>
-            </h1>
-            <p className="bloom-hero-intro">
-              Ceremonial embroidery, bullion work and insignia made in our
-              Sialkot workshop to supplied artwork and specification.
-            </p>
-
-            <div className="bloom-hero-actions">
-              <Link className="store-primary-button" href="/products">
-                Explore products <span>↗</span>
-              </Link>
-            </div>
-
-            <dl className="bloom-hero-facts">
-              <div><dt>1922</dt><dd>Established</dd></div>
-              <div><dt>Sialkot</dt><dd>Workshop</dd></div>
-              <div><dt>Made to order</dt><dd>By specification</dd></div>
-            </dl>
-          </div>
-
-          <div className="bloom-hero-mark reveal delay-one">
-            <div className="bloom-orbit bloom-orbit-one" aria-hidden="true" />
-            <div className="bloom-orbit bloom-orbit-two" aria-hidden="true" />
-            <div className="bloom-emblem-stage">
-              <img src="/mm-rashid-logo.png" alt="MM Rashid and Company emblem" />
-            </div>
-            <div className="luxury-seal" aria-label="Established 1922 in Sialkot">
-              <span>EST.</span>
-              <strong>1922</strong>
-              <em>SIALKOT</em>
-            </div>
-          </div>
-
-          <div className="bloom-scroll-cue" aria-hidden="true">
-            <span />
-            Scroll to explore
-          </div>
-        </section>
-
-        <HomepageSlider slides={slides} />
-
-        <section className="luxury-film-section reveal" aria-labelledby="owner-interview-title">
-          <div className="luxury-film-copy">
-            <p className="bloom-eyebrow">Owner interview</p>
-            <h2 id="owner-interview-title">A conversation about the workshop.</h2>
-            <p>
-              The owner talks about the company, its history in Sialkot and the
-              work being made in the workshop today.
-            </p>
-          </div>
-
-          <div className="luxury-film-window">
-            <div className="luxury-film-window-bar">
-              <div aria-hidden="true">
-                <span />
-                <span />
-                <span />
-              </div>
-              <strong>OWNER INTERVIEW · MM RASHID &amp; CO.</strong>
-              <em>SIALKOT · PAKISTAN</em>
-            </div>
-            <video controls playsInline preload="metadata">
-              <source
-                src="https://pub-dfe5ed136766499f955fc1f470752cdd.r2.dev/M-Rashid-Interview.mp4"
-                type="video/mp4"
-              />
-              Your browser does not support the video element.
-            </video>
-          </div>
-        </section>
-
-        <section className="bloom-statement reveal">
-          <p className="bloom-eyebrow">MM Rashid &amp; Co.</p>
-          <div className="bloom-statement-grid">
-            <h2>
-              Ceremonial embroidery.
-              <br />
-              <span>Made to specification.</span>
-            </h2>
-            <div>
-              <p>
-                We make headwear, bullion embroidery, insignia and ceremonial
-                pieces from supplied artwork, measurements and reference samples.
-              </p>
-              <Link href="#heritage">Our history ↘</Link>
-            </div>
-          </div>
-        </section>
-
-        <div className="luxury-marquee" aria-hidden="true">
-          <div className="luxury-marquee-track">
-            {[0, 1].map((copy) => (
-              <div className="luxury-marquee-set" key={copy}>
-                <span>GOLDWORK</span><i>◆</i>
-                <span>BULLION</span><i>◆</i>
-                <span>CEREMONIAL</span><i>◆</i>
-                <span>BESPOKE</span><i>◆</i>
-                <span>HANDCRAFTED IN SIALKOT</span><i>◆</i>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {groups.map((group) => {
-          const groupProducts = products.filter((product) => product.product_group_id === group.id);
-          if (!groupProducts.length) return null;
-
-          return (
+      <main id="main-content">
+        <RoyalHero />
+        <div className="home-categories" id="collections">
+          {categories.map((group) => (
             <section
-              className="store-section product-shop home-product-group bloom-product-section reveal"
+              className="atelier-section home-category-products"
               key={group.id}
+              aria-labelledby={"category-" + group.id}
             >
-              <div className="store-section-heading">
-                <h2>{group.name}</h2>
+              <div className="home-category-heading">
+                <h2 id={"category-" + group.id}>{group.name}</h2>
                 <Link
-                  className="home-category-browse-link"
-                  href={"/products?group=" + group.slug}
+                  className="text-link"
+                  href={"/products?group=" + encodeURIComponent(group.slug)}
+                  aria-label={"Browse all " + group.name}
                 >
-                  Browse all {group.name} ↗
+                  Browse all <span aria-hidden="true">↗</span>
                 </Link>
               </div>
-
-              <div className="store-product-grid home-category-grid">
-                {groupProducts.slice(0, 4).map((product) => (
+              <div className="store-product-grid home-category-row">
+                {group.products.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
               </div>
             </section>
-          );
-        })}
-
-        <section className="bloom-heritage" id="heritage">
-          <div className="bloom-heritage-media reveal">
-            <img
+          ))}
+          {!categories.length && (
+            <p className="atelier-section">
+              Explore our{" "}
+              <Link className="text-link" href="/products">
+                product catalogue
+              </Link>{" "}
+              or{" "}
+              <Link className="text-link" href="/contact">
+                discuss a custom commission
+              </Link>
+              .
+            </p>
+          )}
+        </div>
+        <section className="atelier-manifesto">
+          <p className="eyebrow">The MM Rashid signature</p>
+          <h2>
+            Some things should
+            <br />
+            always be <em>made by hand.</em>
+          </h2>
+          <p>
+            The weight of bullion. The precision of a stitch. The care in a
+            finished edge. These are the details we have built our name on.
+          </p>
+          <Link className="text-link" href="/capabilities">
+            Discover our craft ↗
+          </Link>
+        </section>
+        <section className="atelier-story" id="heritage">
+          <div className="atelier-story-image">
+            <Image
               src="/images/heritage/mm-rashid-history.jpeg"
-              alt="Historic MM Rashid and Company workshop in Sialkot, circa 1965"
+              alt="The historic MM Rashid & Company workshop in Sialkot"
+              fill
+              sizes="(max-width:760px) 100vw, 50vw"
             />
-            <div className="bloom-year" aria-hidden="true">1922</div>
+            <span>FROM THE FAMILY ARCHIVE</span>
           </div>
-
-          <div className="bloom-heritage-copy reveal delay-one">
-            <p className="bloom-eyebrow">Our heritage</p>
-            <h2 className="heritage-motion-title">
-              <span className="motion-line">Three generations in</span>
-              <span className="motion-line">the workshop.</span>
+          <div className="atelier-story-copy">
+            <p className="eyebrow">Our story · Since 1922</p>
+            <h2>
+              A family craft.
+              <br />
+              <em>A lasting legacy.</em>
             </h2>
             <p>
-              MM Rashid &amp; Co. began in Sialkot in 1922. The archive photograph
-              records the workshop tradition that has continued through the family.
+              Our story began in Sialkot in 1922. Through three generations, the
+              workshop has remained a place where patient hands turn an idea
+              into something of lasting significance.
             </p>
             <p>
-              Today the workshop still produces embroidery, bullion work and
-              ceremonial pieces to customer specification.
+              Today we make ceremonial headwear, embroidered insignia and
+              regalia for customers with their own traditions to honour.
             </p>
-            <Link href="#process">See how we work ↘</Link>
+            <Link className="text-link" href="/journal/a-century-of-craft">
+              Read our story ↗
+            </Link>
           </div>
         </section>
-
-        <section className="bloom-workshop" id="workshop">
-          <div className="bloom-section-heading reveal">
+        {slides.length > 0 && (
+          <section className="atelier-section atelier-slides">
+            <div className="atelier-section-heading">
+              <div>
+                <p className="eyebrow">A closer look</p>
+                <h2>Details that define us.</h2>
+              </div>
+            </div>
+            <HomepageSlider slides={slides} />
+          </section>
+        )}
+        <section className="atelier-section" id="workshop">
+          <div className="atelier-section-heading">
             <div>
-              <p className="bloom-eyebrow">Inside the workshop</p>
-              <h2>Stitching in progress.</h2>
+              <p className="eyebrow">Behind the finished piece</p>
+              <h2>In the hands of the maker.</h2>
             </div>
             <p>
-              A short look at the hand stitching behind the finished pieces.
+              Step inside our workshop.
+              <br />
+              See the craft, one stitch at a time.
             </p>
           </div>
-
-          <div className="bloom-workshop-frame reveal">
-            <WorkshopReels />
-          </div>
+          <WorkshopReels />
         </section>
-
-        <section className="bloom-process" id="process">
-          <div className="bloom-process-intro reveal">
-            <p className="bloom-eyebrow">How we work</p>
-            <h2>From artwork to finished piece.</h2>
+        <section className="atelier-commission" id="process">
+          <div>
+            <p className="eyebrow">Made for you</p>
+            <h2>
+              Your vision.
+              <br />
+              <em>Our craftsmanship.</em>
+            </h2>
             <p>
-              For made-to-order work, we confirm the details before production begins.
+              From a single insignia to a complete ceremonial collection, every
+              commission begins with a conversation.
             </p>
+            <Link className="atelier-button" href="/contact">
+              Discuss your project ↗
+            </Link>
           </div>
-
-          <ol className="bloom-process-list">
-            {processSteps.map((step) => (
-              <li key={step.number}>
-                <span>{step.number}</span>
+          <ol>
+            {[
+              [
+                "Share your brief",
+                "Send your artwork, measurements, quantity and preferred materials.",
+              ],
+              [
+                "Receive your quotation",
+                "We prepare a private price for your exact requirements.",
+              ],
+              [
+                "Confirm the details",
+                "Approve the specification, delivery schedule and payment arrangements.",
+              ],
+              [
+                "Made with care",
+                "Your pieces are crafted, checked and prepared for dispatch.",
+              ],
+            ].map(([title, description], i) => (
+              <li key={title}>
+                <span>0{i + 1}</span>
                 <div>
-                  <h3>{step.title}</h3>
-                  <p>{step.description}</p>
+                  <h3>{title}</h3>
+                  <p>{description}</p>
                 </div>
-                <i aria-hidden="true">↗</i>
               </li>
             ))}
           </ol>
         </section>
-
-
-
+        <section className="atelier-section atelier-interview">
+          <div>
+            <p className="eyebrow">A conversation with the owner</p>
+            <h2>
+              The people
+              <br />
+              behind the craft.
+            </h2>
+            <p>
+              A personal introduction to the workshop, our history and the work
+              we make today.
+            </p>
+          </div>
+          <video
+            controls
+            playsInline
+            preload="none"
+            poster="/images/heritage/mm-rashid-history.jpeg"
+          >
+            <source
+              src="https://pub-dfe5ed136766499f955fc1f470752cdd.r2.dev/M-Rashid-Interview.mp4"
+              type="video/mp4"
+            />
+          </video>
+        </section>
+        <section className="atelier-section atelier-faq">
+          <div>
+            <p className="eyebrow">Before you commission</p>
+            <h2>
+              A few things
+              <br />
+              worth knowing.
+            </h2>
+            <Link className="text-link" href="/contact">
+              Speak to our team ↗
+            </Link>
+          </div>
+          <Faq />
+        </section>
+        <section className="atelier-closing">
+          <p className="eyebrow">Your next piece starts here</p>
+          <h2>
+            Let’s make something <em>exceptional.</em>
+          </h2>
+          <Link className="atelier-button" href="/products">
+            Find your piece ↗
+          </Link>
+        </section>
       </main>
-
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
-      />
-      <StoreFooter />
+      <StoreFooter newsletter={newsletter} />
     </div>
   );
 }

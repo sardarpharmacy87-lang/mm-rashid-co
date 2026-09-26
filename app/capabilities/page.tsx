@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { CommerceHeader } from "@/components/commerce-header";
 import { RevealController } from "@/components/reveal-controller";
 import { StoreFooter } from "@/components/store-footer";
@@ -50,19 +51,31 @@ const capabilities = [
 ];
 
 const requirements = [
-  ["Artwork", "Vector artwork, clear photographs or a physical reference can be used to begin the discussion."],
-  ["Dimensions", "Provide finished size, measurements and any placement requirements."],
-  ["Materials", "Specify metallic thread, fabric, colours or finish where these are already known."],
-  ["Quantity", "Include the quantity and delivery destination so the quotation can be prepared correctly."],
+  [
+    "Artwork",
+    "Vector artwork, clear photographs or a physical reference can be used to begin the discussion.",
+  ],
+  [
+    "Dimensions",
+    "Provide finished size, measurements and any placement requirements.",
+  ],
+  [
+    "Materials",
+    "Specify metallic thread, fabric, colours or finish where these are already known.",
+  ],
+  [
+    "Quantity",
+    "Include the quantity and delivery destination so the quotation can be prepared correctly.",
+  ],
 ];
 
 export default function CapabilitiesPage() {
   return (
-    <div className="store-shell bloom-site">
+    <div className="store-shell atelier craft-page">
       <RevealController />
       <CommerceHeader />
 
-      <main className="capabilities-page">
+      <main className="capabilities-page" id="main-content">
         <section className="capabilities-hero">
           <div className="capabilities-hero-copy reveal">
             <p className="bloom-eyebrow">Capabilities</p>
@@ -76,7 +89,7 @@ export default function CapabilitiesPage() {
               agreed specifications.
             </p>
             <div className="capabilities-actions">
-              <Link className="store-primary-button" href="/customer/enquiries/new">
+              <Link className="store-primary-button" href="/contact">
                 Send requirements <span>↗</span>
               </Link>
               <Link className="bloom-text-link" href="/catalogue">
@@ -85,12 +98,26 @@ export default function CapabilitiesPage() {
             </div>
           </div>
 
-          <div className="capabilities-hero-media reveal delay-one" aria-hidden="true">
+          <div
+            className="capabilities-hero-media reveal delay-one"
+            aria-hidden="true"
+          >
             <figure className="capability-hero-main">
-              <img src="/images/gallery/gold-bullion-naval-badge.webp" alt="" />
+              <Image
+                src="/images/gallery/gold-bullion-naval-badge.webp"
+                alt=""
+                width={720}
+                height={900}
+                priority
+              />
             </figure>
             <figure className="capability-hero-small">
-              <img src="/images/gallery/ceremonial-embroidered-banner.webp" alt="" />
+              <Image
+                src="/images/gallery/ceremonial-embroidered-banner.webp"
+                alt=""
+                width={400}
+                height={500}
+              />
             </figure>
             <span className="capability-hero-mark">MMR · SIALKOT · 1922</span>
           </div>
@@ -101,9 +128,10 @@ export default function CapabilitiesPage() {
           <div>
             <h2>Six areas of work.</h2>
             <p>
-              These are the main types of work currently represented in our archive
-              and enquiry system. Final construction depends on the artwork,
-              dimensions, materials and quantity supplied with the enquiry.
+              These are the main types of work currently represented in our
+              archive and enquiry system. Final construction depends on the
+              artwork, dimensions, materials and quantity supplied with the
+              enquiry.
             </p>
           </div>
         </section>
@@ -112,7 +140,12 @@ export default function CapabilitiesPage() {
           {capabilities.map((item) => (
             <article className="capability-card reveal" key={item.number}>
               <div className="capability-card-media">
-                <img src={item.image} alt={item.title} loading="lazy" />
+                <Image
+                  src={item.image}
+                  alt={item.title}
+                  width={600}
+                  height={600}
+                />
                 <span>{item.number}</span>
               </div>
               <div className="capability-card-copy">
@@ -149,9 +182,10 @@ export default function CapabilitiesPage() {
           <div>
             <p>
               Send the quantity, dimensions, delivery country and any files you
-              already have. The enquiry will be saved to your customer account.
+              already have. We will discuss the details and prepare your
+              personal quotation.
             </p>
-            <Link className="store-primary-button" href="/customer/enquiries/new">
+            <Link className="store-primary-button" href="/contact">
               Start enquiry <span>↗</span>
             </Link>
           </div>

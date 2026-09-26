@@ -2,7 +2,13 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import "./commerce.css";
 import "./portal.css";
+import "./atelier.css";
+import "./royal.css";
 import { SupportChat } from "@/components/support-chat";
+import { LocaleProvider } from "@/components/locale-provider";
+import { getStorefrontSettings } from "@/lib/storefront-settings";
+import { cookies, headers } from "next/headers";
+import { regionCodes } from "@/lib/regions";
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL || "https://mm-rashid-co-l5hh.vercel.app";
@@ -46,13 +52,32 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#082452",
+  themeColor: "#041329",
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
+  const settings = await getStorefrontSettings();
+  const jar = await cookies();
+  const requestHeaders = await headers();
+  const preferred =
+    jar.get("mmr-country")?.value ||
+    requestHeaders.get("x-vercel-ip-country") ||
+    "PK";
+  const initialCountry = regionCodes.includes(preferred) ? preferred : "PK";
   return (
     <html lang="en">
-      <body>{children}<SupportChat /></body>
+      <body>
+        <LocaleProvider
+          initialCountry={initialCountry}
+          translationKey={settings.translationKey}
+          languages={settings.languages}
+        >
+          {children}
+          <SupportChat />
+        </LocaleProvider>
+      </body>
     </html>
   );
 }
