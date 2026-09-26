@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { AddToBag } from "@/components/quote-bag";
 
 export type ProductCardData = {
   id: string;
@@ -33,17 +34,30 @@ export function ProductCard({ product }: { product: ProductCardData }) {
         ) : (
           <div className="store-image-placeholder">MM RASHID & CO.</div>
         )}
-        <span className={"stock-pill stock-" + product.stock_status}>{stockLabel}</span>
+        <span className={"stock-pill stock-" + product.stock_status}>
+          {stockLabel}
+        </span>
       </Link>
 
       <div className="store-product-content">
         <Link href={"/products/" + product.slug}>
           <h3>{product.name}</h3>
         </Link>
-        {product.short_description ? <p className="product-short">{product.short_description}</p> : null}
+        {product.short_description ? (
+          <p className="product-short">{product.short_description}</p>
+        ) : null}
 
         <div className="product-card-actions">
-          <Link href={"/products/" + product.slug}>Request rate</Link>
+          <Link href={"/products/" + product.slug}>Discover piece ↗</Link>
+          {product.stock_status !== "out_of_stock" && (
+            <AddToBag
+              product={{
+                id: product.id,
+                name: product.name,
+                slug: product.slug,
+              }}
+            />
+          )}
         </div>
       </div>
     </article>

@@ -6,26 +6,42 @@ import { catalogue } from "@/lib/catalogue";
 
 export const metadata: Metadata = {
   title: "Catalogue",
-  description: "Browse the MM Rashid & Co. ceremonial embroidery and insignia catalogue.",
+  description:
+    "Browse the MM Rashid & Co. ceremonial embroidery and insignia catalogue.",
 };
 
 export default function CataloguePage() {
   return (
-    <div className="store-shell bloom-site">
+    <div className="store-shell atelier">
       <CommerceHeader />
-      <main className="catalogue-page">
+      <main className="catalogue-page" id="main-content">
         <section className="catalogue-hero">
-          <div><p className="bloom-eyebrow">MM Rashid &amp; Co.</p><h1>Catalogue</h1></div>
           <div>
-            <p>Open the 17-page catalogue of embroidered badges, insignia and ceremonial work.</p>
+            <p className="bloom-eyebrow">MM Rashid &amp; Co.</p>
+            <h1>Catalogue</h1>
+          </div>
+          <div>
+            <p>
+              Open the 17-page catalogue of embroidered badges, insignia and
+              ceremonial work.
+            </p>
             <div className="catalogue-actions">
-              <a href={catalogue.path} target="_blank" rel="noreferrer">Open full catalogue ↗</a>
-              <a href={catalogue.path} download>Download PDF</a>
+              <a href={catalogue.path} target="_blank" rel="noreferrer">
+                Open full catalogue ↗
+              </a>
+              <a href={catalogue.path} download>
+                Download PDF
+              </a>
               <Link href="/">Back to website</Link>
             </div>
           </div>
         </section>
-        <div className="catalogue-frame"><iframe src={catalogue.path + "#view=FitH"} title="MM Rashid & Co. catalogue" /></div>
+        <div className="catalogue-frame">
+          <iframe
+            src={catalogue.path + "#view=FitH"}
+            title="MM Rashid & Co. catalogue"
+          />
+        </div>
       </main>
       <StoreFooter />
     </div>

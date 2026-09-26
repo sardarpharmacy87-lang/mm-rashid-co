@@ -1,11 +1,18 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { CommerceHeader } from "@/components/commerce-header";
 import { ProductCard, type ProductCardData } from "@/components/product-card";
 import { StoreFooter } from "@/components/store-footer";
 import { createClient } from "@/lib/supabase/server";
 
 type PageProps = {
-  searchParams: Promise<{ q?: string; sort?: string; page?: string; group?: string; availability?: string }>;
+  searchParams: Promise<{
+    q?: string;
+    sort?: string;
+    page?: string;
+    group?: string;
+    availability?: string;
+  }>;
 };
 
 type ProductGroup = {
@@ -28,7 +35,13 @@ export const metadata = {
 export default async function ProductsPage({ searchParams }: PageProps) {
   const filters = await searchParams;
   const supabase = await createClient();
-  const page = Math.max(1, Number(filters.page) || 1);
+  const requestedPage = Number(filters.page);
+  const page =
+    Number.isSafeInteger(requestedPage) &&
+    requestedPage > 0 &&
+    requestedPage <= 10000
+      ? requestedPage
+      : 1;
   const pageSize = 24;
 
   const groupsResult = await supabase
@@ -39,8 +52,12 @@ export default async function ProductsPage({ searchParams }: PageProps) {
     .order("name", { ascending: true });
 
   const groups = (groupsResult.data ?? []) as ProductGroup[];
-  const selectedGroup = groups.find((item) => item.slug === filters.group) ?? null;
-  const safeSearch = (filters.q ?? "").trim().replace(/[(),]/g, " ");
+  const selectedGroup =
+    groups.find((item) => item.slug === filters.group) ?? null;
+  const safeSearch = (filters.q ?? "")
+    .trim()
+    .slice(0, 200)
+    .replace(/[(),%_\\"]/g, " ");
 
   let productsQuery = supabase
     .from("products")
@@ -63,7 +80,12 @@ export default async function ProductsPage({ searchParams }: PageProps) {
   if (safeSearch) {
     const pattern = "%" + safeSearch + "%";
     productsQuery = productsQuery.or(
-      "name.ilike." + pattern + ",sku.ilike." + pattern + ",short_description.ilike." + pattern,
+      "name.ilike." +
+        pattern +
+        ",sku.ilike." +
+        pattern +
+        ",short_description.ilike." +
+        pattern,
     );
   }
 
@@ -96,22 +118,32 @@ export default async function ProductsPage({ searchParams }: PageProps) {
     return "/products?" + params.toString();
   };
 
+  if (page > pageCount) redirect(makePageHref(pageCount));
+
   return (
     <div className="store-shell">
       <CommerceHeader />
 
-      <main className="catalogue-page">
+      <main className="catalogue-page" id="main-content">
         <div className="catalogue-hero reference-catalogue-hero">
           <div>
             <p className="store-kicker">MM Rashid &amp; Co.</p>
             <h1>{selectedGroup?.name ?? "Ceremonial & Military Products"}</h1>
-            <p>Browse our made-to-order collection. Open any product to select specifications and request a rate for your required quantity.</p>
+            <p>
+              Browse our made-to-order collection. Open any product to select
+              specifications and request a rate for your required quantity.
+            </p>
           </div>
         </div>
 
         {groups.length ? (
           <nav className="product-group-nav" aria-label="Browse products">
-            <Link className={!selectedGroup ? "is-active" : ""} href="/products">All</Link>
+            <Link
+              className={!selectedGroup ? "is-active" : ""}
+              href="/products"
+            >
+              All
+            </Link>
             {groups.map((group) => (
               <Link
                 className={selectedGroup?.id === group.id ? "is-active" : ""}
@@ -126,11 +158,21 @@ export default async function ProductsPage({ searchParams }: PageProps) {
 
         <div className="catalogue-layout catalogue-layout-simple">
           <section className="catalogue-results">
-            <form className="catalogue-toolbar catalogue-toolbar-simple reference-catalogue-toolbar" action="/products" method="get">
-              {selectedGroup ? <input type="hidden" name="group" value={selectedGroup.slug} /> : null}
+            <form
+              className="catalogue-toolbar catalogue-toolbar-simple reference-catalogue-toolbar"
+              action="/products"
+              method="get"
+            >
+              {selectedGroup ? (
+                <input type="hidden" name="group" value={selectedGroup.slug} />
+              ) : null}
               <div className="catalogue-filter-control">
                 <span>Filter:</span>
-                <select name="availability" defaultValue={filters.availability ?? ""}>
+                <select
+                  name="availability"
+                  aria-label="Availability"
+                  defaultValue={filters.availability ?? ""}
+                >
                   <option value="">Availability</option>
                   <option value="in_stock">In stock</option>
                   <option value="made_to_order">Made to order</option>
@@ -138,14 +180,27 @@ export default async function ProductsPage({ searchParams }: PageProps) {
               </div>
               <div className="catalogue-sort-control">
                 <span>Sort by:</span>
-                <select name="sort" defaultValue={filters.sort ?? ""}>
+                <select
+                  name="sort"
+                  aria-label="Sort products"
+                  defaultValue={filters.sort ?? ""}
+                >
                   <option value="">Recommended</option>
                   <option value="newest">Newest</option>
                   <option value="name">Name A-Z</option>
                 </select>
               </div>
-              <span className="catalogue-total-count">{productCount} products</span>
-              <input className="catalogue-search-compact" type="search" name="q" defaultValue={filters.q ?? ""} placeholder="Search" aria-label="Search catalogue" />
+              <span className="catalogue-total-count">
+                {productCount} products
+              </span>
+              <input
+                className="catalogue-search-compact"
+                type="search"
+                name="q"
+                defaultValue={filters.q ?? ""}
+                placeholder="Search"
+                aria-label="Search catalogue"
+              />
               <button type="submit">Apply</button>
             </form>
 
@@ -156,20 +211,35 @@ export default async function ProductsPage({ searchParams }: PageProps) {
 
             {products.length ? (
               <div className="store-product-grid catalogue-product-grid all-products-grid">
-                {products.map((product) => <ProductCard key={product.id} product={product} />)}
+                {products.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
               </div>
             ) : (
               <div className="catalogue-empty">
                 <h2>No matching products</h2>
                 <p>Try another filter or search term.</p>
+                <Link className="atelier-text-link" href="/products">
+                  View all products ↗
+                </Link>
               </div>
             )}
 
             {pageCount > 1 ? (
               <nav className="catalogue-pagination" aria-label="Product pages">
-                {safePage > 1 ? <Link href={makePageHref(safePage - 1)}>← Previous</Link> : <span />}
-                <strong>Page {safePage} of {pageCount}</strong>
-                {safePage < pageCount ? <Link href={makePageHref(safePage + 1)}>Next →</Link> : <span />}
+                {safePage > 1 ? (
+                  <Link href={makePageHref(safePage - 1)}>← Previous</Link>
+                ) : (
+                  <span />
+                )}
+                <strong>
+                  Page {safePage} of {pageCount}
+                </strong>
+                {safePage < pageCount ? (
+                  <Link href={makePageHref(safePage + 1)}>Next →</Link>
+                ) : (
+                  <span />
+                )}
               </nav>
             ) : null}
           </section>

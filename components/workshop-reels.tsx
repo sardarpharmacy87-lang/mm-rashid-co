@@ -15,7 +15,7 @@ type WorkshopReel = {
 const reels: WorkshopReel[] = [
   {
     src: "/videos/stitching/stitching-process.mp4",
-    poster: "/images/workshop/stitching/stitching-video-poster.jpg",
+    poster: "/images/workshop/stitching-video-poster.jpg",
     label: "Hand embroidery",
     title: "Original stitching process",
     maxSeconds: 8,
@@ -74,7 +74,10 @@ export function WorkshopReels() {
     const video = videoRef.current;
     if (!video) return;
     if (video.paused) {
-      video.play().then(() => setPlaying(true)).catch(() => undefined);
+      video
+        .play()
+        .then(() => setPlaying(true))
+        .catch(() => undefined);
     } else {
       video.pause();
       setPlaying(false);
@@ -164,7 +167,8 @@ export function WorkshopReels() {
         </button>
 
         <span className="workshop-reel-counter">
-          {String(active + 1).padStart(2, "0")} / {String(reels.length).padStart(2, "0")}
+          {String(active + 1).padStart(2, "0")} /{" "}
+          {String(reels.length).padStart(2, "0")}
         </span>
       </div>
 

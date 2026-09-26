@@ -1,33 +1,75 @@
+import Image from "next/image";
+import Link from "next/link";
 import { CommerceHeader } from "@/components/commerce-header";
 import { StoreFooter } from "@/components/store-footer";
 
 export const metadata = {
-  title: "Contact information",
-  description: "Contact MM Rashid & Co. for ceremonial embroidery, regalia, quotations and workshop enquiries.",
+  title: "Contact the workshop",
+  description:
+    "Discuss a custom commission, trade order or ceremonial piece with MM Rashid & Co. in Sialkot, Pakistan.",
 };
 
 export default function ContactPage() {
   return (
-    <div className="store-shell">
+    <div className="store-shell atelier">
       <CommerceHeader />
-      <main className="contact-info-page">
-        <div className="contact-info-card">
-          <p className="store-kicker">MM Rashid &amp; Co.</p>
-          <h1>Contact information</h1>
-          <h2>Contact Information</h2>
-          <p>
-            We’re here to help. If you have questions, need assistance with a quotation,
-            or want to know more about our products and custom work, feel free to get in touch.
-          </p>
-          <ul>
-            <li><strong>Email:</strong> <a href="mailto:mmrashidco@hotmail.com">mmrashidco@hotmail.com</a></li>
-            <li><strong>Phone:</strong> <a href="tel:+923343342223">+92 334 334 2223</a></li>
-            <li><strong>Address:</strong> Commissioner Road, Sialkot 51310, Pakistan</li>
-            <li><strong>Business hours:</strong> Monday to Saturday, 9 AM to 6 PM (Pakistan time)</li>
-          </ul>
-          <p>
-            You can also contact us through the social platforms shown in the footer when those accounts are connected.
-          </p>
+      <main className="editorial-page" id="main-content">
+        <p className="eyebrow">A conversation starts here</p>
+        <h1 className="editorial-title">
+          Made personal.
+          <br />
+          <em>From the first hello.</em>
+        </h1>
+        <p className="editorial-intro">
+          A new design, a ceremonial collection, or a piece you have been
+          searching for. Tell us what you have in mind.
+        </p>
+        <div className="workshop-contact">
+          <div className="contact-photograph">
+            <Image
+              src="/images/workshop/hand-stitching.jpeg"
+              alt="Hand embroidery in the MM Rashid workshop"
+              fill
+              sizes="(max-width:760px) 100vw, 50vw"
+            />
+          </div>
+          <div className="workshop-contact-details">
+            <div>
+              <p className="eyebrow">Write to us</p>
+              <a href="mailto:mmrashidco@hotmail.com">
+                mmrashidco@hotmail.com ↗
+              </a>
+            </div>
+            <div>
+              <p className="eyebrow">Call the workshop</p>
+              <a href="tel:+923343342223">+92 334 334 2223</a>
+              <p>
+                Monday–Saturday · 9 AM–6 PM
+                <br />
+                Pakistan time (UTC+5)
+              </p>
+            </div>
+            <div>
+              <p className="eyebrow">Find us in Sialkot</p>
+              <p>
+                Commissioner Road
+                <br />
+                Sialkot 51310, Pakistan
+              </p>
+              <p>Please contact us before visiting.</p>
+            </div>
+            <div>
+              <p className="eyebrow">Preparing your brief</p>
+              <p>
+                Include your artwork or reference, dimensions, quantity,
+                delivery country and preferred date. We will agree the details
+                before preparing a quotation.
+              </p>
+              <Link className="text-link" href="/products">
+                Choose pieces for your quotation ↗
+              </Link>
+            </div>
+          </div>
         </div>
       </main>
       <StoreFooter />
