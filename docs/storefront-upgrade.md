@@ -2,7 +2,7 @@
 
 ## What is included
 
-An original navy, ivory and brass design using the existing MM Rashid logo, product photographs, archive and workshop videos. The storefront includes collections, search and filters, product options and image enlargement, a persistent quotation bag, journal, care guides, FAQ, newsletter feedback, account links and contact information. No product prices are public.
+A royal navy, ivory and gold design using the existing MM Rashid logo, owner-supplied regalia imagery, product photographs, archive and workshop videos. The hero artwork is prepared from the supplied design reference, with live HTML text and controls. The storefront includes collections, search and filters, product options and image enlargement, a persistent quotation bag, journal, care guides, FAQ, newsletter feedback, account links and contact information. No product prices are public.
 
 Country selection covers 249 countries and territories. Initial country comes from the saved preference or Vercel country header. A manually chosen language is independent of country. Until a translation provider is connected, the storefront is English. This release does not claim to contain completed translations for every world language.
 

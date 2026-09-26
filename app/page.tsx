@@ -10,6 +10,7 @@ import { WorkshopReels } from "@/components/workshop-reels";
 import { StoreFooter } from "@/components/store-footer";
 import { createClient } from "@/lib/supabase/server";
 import { Faq } from "@/components/faq";
+import { RoyalHero } from "@/components/royal-hero";
 
 type Group = { id: string; name: string; slug: string };
 type HomeProduct = ProductCardData & { product_group_id: string | null };
@@ -38,59 +39,21 @@ export default async function HomePage({
   const products = (p.data ?? []) as HomeProduct[];
   const slides = (s.data ?? []) as HomepageSlide[];
   return (
-    <div className="store-shell atelier">
+    <div className="store-shell atelier royal-home">
       <CommerceHeader />
       <main id="main-content">
-        <section className="atelier-hero">
-          <div className="atelier-hero-copy">
-            <p className="eyebrow">Sialkot, Pakistan · Established 1922</p>
-            <h1>
-              A tradition
-              <br />
-              in every <em>thread.</em>
-            </h1>
-            <p className="hero-description">
-              Ceremonial regalia, bullion embroidery and insignia. Made by hand.
-              Made to your specification.
-            </p>
-            <div className="atelier-actions">
-              <Link className="atelier-button" href="/collections">
-                Explore the collections <span>↗</span>
-              </Link>
-              <Link className="text-link" href="/#heritage">
-                Our story
-              </Link>
-            </div>
-            <div className="hero-footnote">
-              <span>01 / THE ART OF GOLDWORK</span>
-              <span>Over a century of craftsmanship</span>
-            </div>
-          </div>
-          <div className="atelier-hero-image">
-            <Image
-              src="/images/gallery/goldwork-leaf-detail.webp"
-              alt="Hand-worked gold bullion leaves, showing every coil of metallic thread"
-              fill
-              priority
-              sizes="(max-width: 760px) 100vw, 50vw"
-            />
-            <div className="hero-image-caption">
-              <span>BULLION EMBROIDERY</span>
-              <span>Made in our Sialkot workshop</span>
-            </div>
-          </div>
-        </section>
-        <div className="atelier-service-strip">
-          <span>Handcrafted since 1922</span>
-          <span>Made to your specification</span>
-          <span>Personal quotations</span>
-          <span>International enquiries welcome</span>
-        </div>
-        <section className="atelier-section" id="collections">
+        <RoyalHero />
+        <section
+          className="atelier-section royal-collection-section"
+          id="collections"
+        >
           <div className="atelier-section-heading">
             <div>
-              <p className="eyebrow">The collections</p>
-              <h2>For moments of distinction.</h2>
+              <p className="eyebrow">The MM Rashid collection</p>
+              <h2>Our products</h2>
+              <p className="royal-section-subtitle">
+                Quality regalia, made to order.
+              </p>
             </div>
             <Link className="text-link" href="/collections">
               Discover all collections ↗

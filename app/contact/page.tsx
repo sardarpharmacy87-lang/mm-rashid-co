@@ -27,8 +27,8 @@ export default function ContactPage() {
         <div className="workshop-contact">
           <div className="contact-photograph">
             <Image
-              src="/images/workshop/hand-stitching.jpeg"
-              alt="Hand embroidery in the MM Rashid workshop"
+              src="/images/royal/contact-regalia.webp"
+              alt="Masonic jacket, embroidered ceremonial banner, decorated fez caps and white gloves displayed on royal blue velvet"
               fill
               sizes="(max-width:760px) 100vw, 50vw"
             />
@@ -44,7 +44,7 @@ export default function ContactPage() {
               <p className="eyebrow">Call the workshop</p>
               <a href="tel:+923343342223">+92 334 334 2223</a>
               <p>
-                Monday–Saturday · 9 AM–6 PM
+                Monday–Sunday · 24 hours
                 <br />
                 Pakistan time (UTC+5)
               </p>

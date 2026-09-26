@@ -3,6 +3,7 @@ import "./globals.css";
 import "./commerce.css";
 import "./portal.css";
 import "./atelier.css";
+import "./royal.css";
 import { SupportChat } from "@/components/support-chat";
 import { LocaleProvider } from "@/components/locale-provider";
 import { getStorefrontSettings } from "@/lib/storefront-settings";
@@ -51,7 +52,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#082452",
+  themeColor: "#041329",
 };
 
 export default async function RootLayout({

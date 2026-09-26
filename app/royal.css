@@ -1,0 +1,871 @@
+/* Royal navy and gold, matched to the owner's supplied hero reference. */
+:root {
+  --ink: #06172e;
+  --midnight: #041329;
+  --brass: #bc8b32;
+  --paper: #fcf8ef;
+  --line: #ddd2bd;
+  --muted: #596474;
+  --royal-gold: #d9ad52;
+  --royal-pale: #f3dfa6;
+}
+body,
+.store-shell {
+  background: var(--paper);
+  color: var(--ink);
+}
+.atelier-topbar {
+  background: #020c1c;
+  color: #d9cba9;
+  border-bottom: 1px solid #d9ad522b;
+}
+.atelier-header {
+  background: var(--midnight);
+  color: #fff8e9;
+  border-bottom: 1px solid #d9ad5240;
+}
+.atelier-header .brand-copy strong {
+  color: #f1d793;
+}
+.atelier-header .brand-copy small {
+  color: #c4ad78;
+}
+.atelier-tools > a,
+.atelier-tools > button {
+  color: #f8efd9;
+}
+.atelier-header .brand-logo {
+  filter: drop-shadow(0 2px 5px #0005);
+}
+.atelier-nav-row {
+  border-color: #d9ad5240;
+}
+.atelier-nav a:hover,
+.atelier-mega summary:hover {
+  color: #e8c474;
+}
+.atelier-mega-panel {
+  background: #06172e;
+  border-color: #c0944744;
+  color: #f8edda;
+  box-shadow: 0 22px 35px #0005;
+}
+.atelier-mega-panel .eyebrow {
+  color: #e3c27e;
+}
+.atelier-header .locale-controls select {
+  color: #e1d2ad;
+}
+.masthead-note {
+  color: #e6cb8c;
+}
+.masthead-note span {
+  color: #bbc4d0;
+}
+.bag-count {
+  background: #d5a43e;
+  color: #06152a;
+}
+.atelier-search {
+  background: #06172e;
+  color: #f6eacf;
+  border-color: #d9ad5240;
+}
+.atelier-search input {
+  color: #fff8e9;
+  border-color: #d9ad5270;
+}
+.atelier-search input::placeholder {
+  color: #bdc0c6;
+}
+.atelier-search button {
+  color: #e5c47f;
+}
+.royal-home {
+  position: relative;
+}
+.royal-home .atelier-topbar {
+  display: none;
+}
+.royal-hero {
+  position: relative;
+  isolation: isolate;
+  min-height: clamp(780px, 61vw, 960px);
+  background: #020f21;
+  color: #fff7e9;
+  overflow: hidden;
+}
+.royal-hero-art {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
+.royal-hero-art img {
+  object-fit: cover;
+  object-position: center 32%;
+}
+.royal-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 8, 21, 0.56),
+    rgba(0, 8, 21, 0.15) 43%,
+    transparent 63%
+  );
+}
+.royal-hero-copy {
+  padding: clamp(235px, 19vw, 310px) 0 125px 5.4vw;
+  width: 55%;
+  position: relative;
+}
+.royal-eyebrow {
+  font-size: 11px;
+  color: #edc364;
+  letter-spacing: 0.48em;
+  text-transform: uppercase;
+  margin: 0 0 23px;
+}
+.atelier .royal-hero h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(48px, 5.2vw, 83px);
+  font-weight: 400;
+  line-height: 1.07;
+  letter-spacing: -0.045em;
+  margin: 0 0 19px;
+  color: #f0c96f;
+  text-shadow:
+    0 2px 1px #4d2c0e,
+    0 3px 18px #0006;
+}
+@supports (background-clip: text) {
+  .atelier .royal-hero h1 {
+    background: linear-gradient(
+      178deg,
+      #fff7d0 7%,
+      #eec062 45%,
+      #f9e7ab 56%,
+      #b77c29 100%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    text-shadow: none;
+  }
+}
+.royal-hero h1 span {
+  white-space: nowrap;
+}
+.royal-hero-description {
+  font-family: Georgia, serif;
+  font-size: clamp(19px, 1.85vw, 29px);
+  line-height: 1.42;
+  max-width: 610px;
+  margin: 0;
+  color: #f9f3e9;
+  text-shadow: 0 2px 8px #0009;
+}
+.royal-ornament {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  max-width: 510px;
+  margin: 26px 0 22px;
+  color: #e1b35b;
+}
+.royal-ornament span {
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(90deg, transparent, #dfb058);
+}
+.royal-ornament span:last-child {
+  transform: rotate(180deg);
+}
+.royal-ornament b {
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1;
+  text-shadow: 0 0 10px #e9bb5733;
+}
+.royal-values {
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: clamp(17px, 1.75vw, 27px);
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  color: #fcf6ed;
+  margin: 0 0 32px;
+  white-space: nowrap;
+}
+.royal-values span {
+  color: #e1ae4c;
+  font-style: normal;
+}
+.royal-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  padding: 18px 28px;
+  min-height: 56px;
+  min-width: 305px;
+  background: linear-gradient(110deg, #c99434, #f1d280 52%, #c59439);
+  color: #0a1524;
+  border: 1px solid #f6d884;
+  border-radius: 2px;
+  font-family: Georgia, serif;
+  font-size: 15px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  box-shadow: 0 7px 28px #0004;
+  transition:
+    filter 0.2s,
+    transform 0.2s;
+}
+.royal-cta:hover {
+  filter: brightness(1.09);
+  transform: translateY(-2px);
+}
+.royal-cta > span {
+  font-size: 24px;
+  line-height: 1;
+}
+.royal-qualities {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: -52px 2.2vw 0;
+  padding: 23px 22px;
+  background: linear-gradient(110deg, #041329, #071b35, #041329);
+  border: 1px solid #d5a851;
+  border-radius: 8px;
+  color: #f8eedd;
+  box-shadow: 0 6px 18px #04132913;
+}
+.royal-quality {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 0 20px;
+  min-width: 0;
+}
+.royal-quality + .royal-quality {
+  border-left: 1px solid #bb95503d;
+}
+.royal-quality-icon {
+  display: flex;
+  width: 58px;
+  height: 58px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  color: #deb051;
+  border: 1px solid #deb051;
+  border-radius: 50%;
+}
+.royal-quality-icon svg {
+  width: 35px;
+  height: 35px;
+}
+.royal-quality strong {
+  display: block;
+  font:
+    400 14px/1.4 Georgia,
+    serif;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.royal-quality > div > span {
+  display: block;
+  font:
+    italic 14px/1.5 Georgia,
+    serif;
+  color: #d6ccba;
+  margin-top: 4px;
+}
+.royal-collection-section {
+  padding-top: 65px;
+}
+.royal-collection-section .atelier-section-heading {
+  position: relative;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 38px;
+  gap: 20px;
+}
+.royal-collection-section .atelier-section-heading h2 {
+  font-family: Georgia, serif;
+  text-transform: uppercase;
+  font-size: clamp(34px, 3.2vw, 50px);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  position: relative;
+}
+.royal-collection-section .atelier-section-heading h2::before,
+.royal-collection-section .atelier-section-heading h2::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  height: 1px;
+  width: clamp(40px, 10vw, 170px);
+  background: linear-gradient(90deg, transparent, #bb8b35);
+  right: calc(100% + 28px);
+}
+.royal-collection-section .atelier-section-heading h2::after {
+  left: calc(100% + 28px);
+  right: auto;
+  transform: rotate(180deg);
+}
+.royal-section-subtitle {
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 22px;
+  line-height: 1.5;
+  color: #24344b;
+  margin: 12px 0 0;
+}
+.royal-collection-section .eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.24em;
+}
+.atelier-section-heading .eyebrow,
+.eyebrow,
+.store-kicker {
+  color: #946c26;
+}
+.atelier-section-heading h2,
+.atelier-story-copy h2,
+.editorial-title {
+  color: #07182f;
+}
+.text-link:hover {
+  color: #9c6e24;
+}
+.collection-image,
+.store-shell .store-product-media {
+  width: 100%;
+  min-width: 0;
+  height: auto;
+  background: #f0e9dc;
+  border: 1px solid #e2d6be;
+}
+.collection-caption {
+  border-color: #c8b38b;
+}
+.collection-number {
+  color: #a17a37;
+}
+.collection-caption h3 {
+  color: #07182f;
+}
+.atelier-manifesto {
+  background: #f3ead9;
+  border-block: 1px solid #e2d2b3;
+}
+.atelier-manifesto .eyebrow {
+  color: #a17a37;
+}
+.atelier-manifesto h2 em,
+.atelier-story-copy h2 em {
+  color: #8c672c;
+}
+.atelier-story {
+  background: #f0e7d7;
+}
+.atelier-commission {
+  background: linear-gradient(120deg, #041329, #092044);
+  border-block: 1px solid #c6a15a;
+}
+.atelier-commission .eyebrow {
+  color: #e2be72;
+}
+.atelier-commission li > span {
+  color: #e0b35d;
+}
+.atelier-commission li {
+  border-color: #c6a15a42;
+}
+.atelier-commission p,
+.atelier-commission h2 {
+  color: #f7f0e2;
+}
+.atelier-closing {
+  background: #ede1c9;
+  border-block: 1px solid #d7c09a;
+}
+.atelier-closing h2 {
+  color: #07182f;
+}
+.atelier-button,
+.store-shell .store-primary-button,
+.portal-layout .portal-button {
+  background: linear-gradient(110deg, #c39645, #e5c477, #caa04e);
+  border: 1px solid #c2974b;
+  color: #05152c;
+  box-shadow: 0 3px 12px #74532212;
+}
+.atelier-button:hover,
+.store-shell .store-primary-button:hover,
+.portal-layout .portal-button:hover {
+  background: #eed28c;
+  color: #05152c;
+}
+.atelier-closing .atelier-button {
+  background: #071931;
+  border-color: #071931;
+  color: #f4dfae;
+}
+.store-shell .stock-pill {
+  color: #081b36;
+  background: #f7eed9d9;
+  border: 1px solid #d6bd89;
+}
+.store-shell .bag-add {
+  color: #8d672a;
+}
+.store-shell .product-rate-request,
+.bag-form {
+  background: #f0e8d9;
+  border-color: #deceb0;
+}
+.store-shell .product-main-image {
+  background: #f0e9dc;
+  border: 1px solid #e2d6be;
+}
+.store-shell .catalogue-toolbar button {
+  background: #06172e;
+  color: #f4dfae;
+}
+.store-shell .product-group-nav .is-active {
+  border-color: #ba8a34;
+  color: #805c20;
+}
+.store-shell .clean-store-footer {
+  background: #041329;
+  border-top: 1px solid #b98e46;
+}
+.store-shell .footer-newsletter h2 {
+  color: #f4dfae;
+}
+.store-shell .footer-newsletter .store-kicker,
+.store-shell .clean-footer-column strong {
+  color: #d9b96f;
+}
+.store-shell .clean-store-footer .brand-copy strong {
+  color: #f0d796;
+}
+.store-shell .clean-footer-social a:hover {
+  border-color: #d0aa59;
+  color: #f3d486;
+}
+.support-chat-toggle {
+  background: #07172f !important;
+  border: 1px solid #b88c40 !important;
+  color: #fff5de !important;
+}
+.contact-photograph {
+  min-height: 0;
+  aspect-ratio: 1122/1402;
+  align-self: start;
+  background: #041329;
+  border: 1px solid #bfa365;
+}
+.contact-photograph img {
+  object-fit: contain;
+}
+.workshop-contact-details .eyebrow {
+  color: #947032;
+}
+.workshop-contact-details a {
+  color: #07182f;
+}
+.craft-page .capabilities-hero {
+  background: #f1e8d7;
+}
+.craft-page .capability-spec {
+  background: #041329;
+}
+.craft-page .capabilities-hero h1 span {
+  color: #9e7734;
+}
+.craft-page .capability-card-media {
+  background: #f0e8d8;
+}
+.portal-header {
+  background: #041329;
+  color: #f7e7bd;
+  border-color: #c09b52;
+}
+.portal-logo {
+  color: #f4d98f;
+}
+.portal-header nav a,
+.portal-header nav button {
+  color: #f7e7bd;
+}
+.portal-layout {
+  background: #f9f5ec;
+}
+.portal-layout .portal-section {
+  border-color: #e0d3bb;
+}
+.portal-layout h1,
+.portal-layout h2 {
+  color: #07182f;
+}
+@media (min-width: 1101px) {
+  .atelier-header {
+    display: grid;
+    grid-template-columns: 260px 1fr auto;
+    grid-template-rows: 32px auto;
+    padding: 16px 5.4vw 22px;
+    column-gap: 25px;
+    align-items: center;
+  }
+  .atelier-masthead,
+  .atelier-nav-row {
+    display: contents;
+  }
+  .masthead-note {
+    display: none;
+  }
+  .atelier-header .brand {
+    grid-column: 1;
+    grid-row: 1/3;
+    flex-direction: column;
+    align-items: center;
+    justify-self: start;
+    gap: 7px;
+    text-align: center;
+  }
+  .atelier-header .brand-logo {
+    width: 62px;
+    height: 62px;
+    flex-basis: 62px;
+  }
+  .atelier-header .brand-copy strong {
+    font-size: 21px;
+    letter-spacing: 0.06em;
+  }
+  .atelier-header .brand-copy small {
+    font-size: 8px;
+    margin-top: 5px;
+  }
+  .atelier-tools {
+    grid-column: 3;
+    grid-row: 2;
+    gap: 20px;
+  }
+  .atelier-nav {
+    grid-column: 2;
+    grid-row: 2;
+    justify-content: center;
+    gap: 23px;
+    font-family: Georgia, serif;
+    font-size: 13px;
+  }
+  .atelier-nav > a,
+  .atelier-nav > details > summary {
+    padding: 18px 0;
+  }
+  .atelier-header .locale-controls {
+    grid-column: 2/4;
+    grid-row: 1;
+    justify-self: end;
+  }
+  .atelier-header .locale-controls select {
+    font-size: 11px;
+    max-width: 170px;
+    height: 26px;
+  }
+  .atelier-search {
+    grid-column: 1/4;
+    width: 100%;
+    margin-top: 15px;
+  }
+  .royal-home .atelier-header {
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: 100;
+    background: linear-gradient(180deg, #010d20ce, #010d2055, transparent);
+    border: 0;
+  }
+  .royal-home .atelier-header .brand-logo {
+    width: 68px;
+    height: 68px;
+    flex-basis: 68px;
+  }
+}
+@media (min-width: 1600px) {
+  .royal-hero-copy {
+    padding-top: 270px;
+  }
+  .royal-hero {
+    min-height: 960px;
+  }
+}
+@media (max-width: 1200px) {
+  .royal-quality {
+    padding-inline: 12px;
+    gap: 10px;
+  }
+  .royal-quality strong {
+    font-size: 12px;
+  }
+  .royal-quality > div > span {
+    font-size: 12px;
+  }
+  .royal-quality-icon {
+    width: 46px;
+    height: 46px;
+  }
+  .royal-quality-icon svg {
+    width: 29px;
+    height: 29px;
+  }
+  .royal-values {
+    gap: 12px;
+  }
+  .royal-cta {
+    min-width: 285px;
+  }
+}
+@media (max-width: 1100px) {
+  .royal-hero {
+    min-height: 650px;
+  }
+  .royal-hero-copy {
+    padding: 120px 0 145px 4.5vw;
+    width: 56%;
+  }
+  .royal-hero h1 {
+    font-size: 51px;
+  }
+  .royal-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.32em;
+  }
+  .royal-hero-description {
+    font-size: 21px;
+  }
+  .royal-values {
+    font-size: 18px;
+    gap: 12px;
+  }
+  .royal-qualities {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 20px;
+    gap: 22px;
+  }
+  .royal-quality:nth-child(3) {
+    border-left: 0;
+  }
+  .royal-quality strong {
+    font-size: 14px;
+  }
+  .royal-quality > div > span {
+    font-size: 14px;
+  }
+  .royal-home .atelier-header {
+    position: relative;
+  }
+  .atelier-nav.is-open {
+    background: #041329;
+    color: #faefd6;
+    border-color: #d9ad5240;
+  }
+  .atelier-nav > a,
+  .atelier-nav > details > summary {
+    border-color: #d9ad5240;
+  }
+}
+@media (max-width: 760px) {
+  .royal-hero {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .royal-hero-copy {
+    width: 100%;
+    padding: 48px 24px 30px;
+    background: linear-gradient(135deg, #020e21, #071c36);
+    order: 0;
+  }
+  .royal-hero::after {
+    display: none;
+  }
+  .royal-hero-art {
+    position: relative;
+    inset: auto;
+    z-index: 0;
+    order: 1;
+    width: 100%;
+    height: 480px;
+  }
+  .royal-hero-art::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, #06172e50, transparent 20%);
+  }
+  .royal-hero-art img {
+    object-position: 85% center;
+    object-fit: cover;
+  }
+  .atelier .royal-hero h1 {
+    font-size: clamp(39px, 9.7vw, 64px);
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+  }
+  .royal-eyebrow {
+    font-size: 9px;
+    letter-spacing: 0.35em;
+    margin-bottom: 18px;
+  }
+  .royal-hero-description {
+    font-size: 19px;
+    max-width: 490px;
+    line-height: 1.5;
+  }
+  .royal-desktop-break {
+    display: none;
+  }
+  .royal-ornament {
+    margin: 22px 0 18px;
+    max-width: 450px;
+  }
+  .royal-ornament b {
+    font-size: 24px;
+  }
+  .royal-values {
+    font-size: clamp(13px, 3.8vw, 20px);
+    gap: 10px;
+    justify-content: flex-start;
+    margin-bottom: 26px;
+  }
+  .royal-cta {
+    min-width: 0;
+    max-width: 100%;
+    gap: 22px;
+    font-size: 13px;
+    padding: 16px 24px;
+    min-height: 53px;
+  }
+  .royal-qualities {
+    margin: -20px 14px 0;
+    padding: 18px 12px;
+    gap: 20px 12px;
+    border-radius: 5px;
+  }
+  .royal-quality {
+    padding: 0;
+    gap: 9px;
+    align-items: flex-start;
+  }
+  .royal-quality + .royal-quality {
+    border-left: 0;
+  }
+  .royal-quality-icon {
+    width: 32px;
+    height: 32px;
+  }
+  .royal-quality-icon svg {
+    width: 23px;
+    height: 23px;
+  }
+  .royal-quality strong {
+    font-size: 10px;
+    line-height: 1.5;
+    letter-spacing: 0;
+  }
+  .royal-quality > div > span {
+    font-size: 11px;
+    line-height: 1.45;
+    margin-top: 3px;
+  }
+  .royal-collection-section {
+    padding-top: 45px;
+  }
+  .royal-section-subtitle {
+    font-size: 19px;
+  }
+  .royal-collection-section .atelier-section-heading h2::before,
+  .royal-collection-section .atelier-section-heading h2::after {
+    width: 32px;
+  }
+  .royal-collection-section .atelier-section-heading h2::before {
+    right: calc(100% + 15px);
+  }
+  .royal-collection-section .atelier-section-heading h2::after {
+    left: calc(100% + 15px);
+  }
+  .atelier-header .locale-controls select {
+    max-width: 155px;
+  }
+  .contact-photograph {
+    min-height: 0;
+    aspect-ratio: 1122/1402;
+  }
+  .workshop-contact {
+    gap: 22px;
+  }
+  .store-shell .footer-newsletter h2 {
+    font-size: 30px;
+  }
+}
+@media (max-width: 380px) {
+  .royal-hero-copy {
+    padding-inline: 20px;
+  }
+  .royal-values {
+    gap: 7px;
+  }
+  .royal-hero-art {
+    height: 420px;
+  }
+  .royal-quality strong {
+    font-size: 9px;
+  }
+  .royal-quality-icon {
+    width: 28px;
+    height: 28px;
+  }
+  .royal-quality-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .royal-cta:hover {
+    transform: none;
+  }
+}
+@media (min-width: 1101px) {
+  .royal-hero-copy {
+    padding-top: clamp(205px, 15vw, 250px);
+  }
+}
+.royal-values {
+  text-shadow:
+    0 2px 8px #000,
+    0 1px 2px #000;
+}
+.royal-collection-section {
+  background: var(--paper);
+}
+.royal-collection-section .atelier-section-heading h2 {
+  display: inline-block;
+}
+@media (max-width: 400px) {
+  .royal-collection-section .atelier-section-heading h2::before,
+  .royal-collection-section .atelier-section-heading h2::after {
+    display: none;
+  }
+}
