@@ -88,8 +88,8 @@ export function WorkshopReels() {
     <div
       className="workshop-reels"
       onPointerDown={(event) => {
+        if ((event.target as HTMLElement).closest("button")) return;
         pointerStart.current = event.clientX;
-        event.currentTarget.setPointerCapture?.(event.pointerId);
       }}
       onPointerUp={(event) => {
         if (pointerStart.current === null) return;
@@ -100,6 +100,9 @@ export function WorkshopReels() {
         else previous();
       }}
       onPointerCancel={() => {
+        pointerStart.current = null;
+      }}
+      onPointerLeave={() => {
         pointerStart.current = null;
       }}
     >

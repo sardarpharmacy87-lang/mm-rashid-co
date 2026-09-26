@@ -68,8 +68,8 @@ export function RoyalHero() {
       <section className="royal-hero" aria-labelledby="royal-hero-title">
         <div className="royal-hero-art">
           <Image
-            src="/images/royal/hero-regalia.webp"
-            alt="Royal blue and gold embroidered Masonic regalia, a ceremonial apron, collar, cuffs and white gloves on black marble"
+            src="/images/royal/hero-regalia-no-gloves.webp"
+            alt="Royal blue and gold embroidered Masonic regalia, a ceremonial apron, collar and cuffs on black marble"
             fill
             priority
             sizes="100vw"

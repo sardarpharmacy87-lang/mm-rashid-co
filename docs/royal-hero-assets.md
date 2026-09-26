@@ -5,7 +5,11 @@ The owner supplied the contact composition and the homepage design reference on 
 Final website assets:
 
 - `public/images/royal/contact-regalia.webp` — the second supplied image, with composition unchanged and WebP compression for delivery.
-- `public/images/royal/hero-regalia.webp` — background derived from the third reference with the built-in image-generation editing tool, then encoded as WebP.
+- `public/images/royal/hero-regalia-no-gloves.webp` — current background, edited with the built-in image-generation tool to remove the gloves at the owner's request, then encoded as WebP. The previous artwork is retained as `hero-regalia.webp`.
+
+Final glove-removal prompt (built-in tool):
+
+> Use case: precise-object-edit. Edit target: the supplied website hero background. Remove ONLY the pair of white gloves near the lower-left centre, including their blue embroidered marks. Seamlessly reconstruct the black marble pedestal and its natural reflections where the gloves were. Keep the blue and gold ceremonial apron, collar, cuffs, embroidered symbols, book, architecture, lighting, colors, camera angle, landscape composition and dark empty left side unchanged. Do not add any objects, text, logos or gloves. Preserve the same 1536x1024 canvas and premium photographic appearance.
 
 Contact hours: Monday–Sunday, 24 hours, Pakistan time (UTC+5), as requested by the owner.
 

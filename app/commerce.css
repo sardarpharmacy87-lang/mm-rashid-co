@@ -5006,15 +5006,17 @@ html {
     #020b1b;
 }
 
-.bloom-workshop-frame .workshop-reel-stage video {
+.workshop-reel-stage > video {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
   max-height: none;
   padding: 0;
-  aspect-ratio: 16 / 9;
   background: #020b1b;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
   cursor: pointer;
 }
 
