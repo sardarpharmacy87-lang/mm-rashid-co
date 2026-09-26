@@ -3,7 +3,7 @@
   --ink: #06172e;
   --midnight: #041329;
   --brass: #bc8b32;
-  --paper: #fcf8ef;
+  --paper: #ffffff;
   --line: #ddd2bd;
   --muted: #596474;
   --royal-gold: #d9ad52;
@@ -352,11 +352,11 @@ body,
   width: 100%;
   min-width: 0;
   height: auto;
-  background: #f0e9dc;
-  border: 1px solid #e2d6be;
+  background: #fff;
+  border: 0;
 }
 .collection-caption {
-  border-color: #c8b38b;
+  border-color: #e5e7eb;
 }
 .collection-number {
   color: #a17a37;
@@ -435,8 +435,8 @@ body,
   border-color: #deceb0;
 }
 .store-shell .product-main-image {
-  background: #f0e9dc;
-  border: 1px solid #e2d6be;
+  background: #fff;
+  border: 0;
 }
 .store-shell .catalogue-toolbar button {
   background: #06172e;
