@@ -5465,9 +5465,9 @@ html {
   text-underline-offset: 3px;
 }
 .stock-pill {
-  top: auto !important;
+  top: 12px !important;
   right: auto !important;
-  bottom: 10px;
+  bottom: auto;
   left: 10px;
   padding: 6px 10px !important;
   color: #fff !important;

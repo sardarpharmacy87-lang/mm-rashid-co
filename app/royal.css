@@ -422,12 +422,78 @@ body,
   color: #f4dfae;
 }
 .store-shell .stock-pill {
-  color: #081b36;
-  background: #f7eed9d9;
-  border: 1px solid #d6bd89;
+  left: 12px;
+  z-index: 2;
+  width: max-content;
+  max-width: calc(100% - 24px);
+  color: #fffaf0 !important;
+  background: #10243b !important;
+  border: 1px solid #c6b185 !important;
+  border-radius: 3px !important;
+  padding: 7px 10px !important;
+  font-size: 9px !important;
+  line-height: 1.4;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  box-shadow: 0 2px 7px #06172e12;
 }
-.store-shell .bag-add {
-  color: #8d672a;
+.store-shell .stock-pill.stock-in_stock {
+  background: #173d35 !important;
+  border-color: #6e9185 !important;
+}
+.store-shell .stock-pill.stock-out_of_stock {
+  background: #693543 !important;
+  border-color: #ba8e99 !important;
+}
+.store-shell .store-product-content h3 {
+  color: #10243b !important;
+}
+.store-shell .product-card-actions {
+  flex-wrap: wrap;
+}
+.store-shell .product-card-actions a,
+.store-shell .product-card-actions .bag-add {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  max-width: 100%;
+  padding: 10px 13px !important;
+  border: 1px solid #10243b !important;
+  border-radius: 3px !important;
+  color: #fffaf0 !important;
+  background: #10243b !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  line-height: 1.4;
+  letter-spacing: 0.025em;
+  text-decoration: none !important;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease;
+}
+.store-shell .product-card-actions .bag-add {
+  color: #10243b !important;
+  background: #faf7f0 !important;
+  border-color: #cbbb9e !important;
+}
+.store-shell .product-card-actions a:hover {
+  color: #fffaf0 !important;
+  background: #243f5b !important;
+  border-color: #243f5b !important;
+}
+.store-shell .product-card-actions .bag-add:hover {
+  background: #efe7d8 !important;
+  border-color: #ac9264 !important;
+}
+.store-shell .product-card-actions .bag-add[aria-pressed="true"] {
+  color: #173d35 !important;
+  background: #edf3ef !important;
+  border-color: #96afa3 !important;
+}
+.store-shell .product-card-actions :focus-visible {
+  outline: 2px solid #10243b;
+  outline-offset: 3px;
 }
 .store-shell .product-rate-request,
 .bag-form {
