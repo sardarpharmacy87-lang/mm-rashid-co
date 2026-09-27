@@ -4,6 +4,7 @@ import "./commerce.css";
 import "./portal.css";
 import "./atelier.css";
 import "./royal.css";
+import "./studio.css";
 import { SupportChat } from "@/components/support-chat";
 import { LocaleProvider } from "@/components/locale-provider";
 import { getStorefrontSettings } from "@/lib/storefront-settings";
@@ -67,7 +68,7 @@ export default async function RootLayout({
     "PK";
   const initialCountry = regionCodes.includes(preferred) ? preferred : "PK";
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <body>
         <LocaleProvider
           initialCountry={initialCountry}

@@ -5,7 +5,9 @@ The owner supplied the contact composition and the homepage design reference on 
 Final website assets:
 
 - `public/images/royal/contact-regalia.webp` — the second supplied image, with composition unchanged and WebP compression for delivery.
-- `public/images/royal/hero-regalia-no-gloves.webp` — current background, edited with the built-in image-generation tool to remove the gloves at the owner's request, then encoded as WebP. The previous artwork is retained as `hero-regalia.webp`.
+- `public/images/royal/hero-regalia-no-gloves.webp` — archived background, edited with the built-in image-generation tool to remove the gloves at the owner's request, then encoded as WebP. The previous artwork is retained as `hero-regalia.webp`.
+
+On 2026-09-27 the homepage changed to a white product studio featuring the existing catalogue image of the MASON jacket (with another available product as fallback). The owner supplied a video of an interactive car unveiling as a motion reference. The new hero adapts its reveal concept using a navy CSS fabric cover, a native keyboard-accessible slider and a reveal/reset button. It does not claim to be a 3D model or a cloth physics simulation. Reduced-motion settings disable the cover transition. Product colours and photographs are unchanged.
 
 Final glove-removal prompt (built-in tool):
 

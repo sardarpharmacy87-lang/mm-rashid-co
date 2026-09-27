@@ -25,8 +25,8 @@ export default async function Collections() {
         <p className="eyebrow">MM Rashid &amp; Co.</p>
         <h1 className="editorial-title">The collections.</h1>
         <p className="editorial-intro">
-          Distinctive pieces. Shared craftsmanship. Explore our work, then make
-          it your own.
+          Browse by product type, then choose the pieces you would like us to
+          quote.
         </p>
         <div className="atelier-collections">
           {(groups ?? []).map((g, i) => {

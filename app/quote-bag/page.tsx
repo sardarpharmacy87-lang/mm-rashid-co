@@ -23,7 +23,8 @@ export default async function Page() {
         <p className="eyebrow">Made to your specification</p>
         <h1 className="editorial-title">Your quotation bag.</h1>
         <p className="editorial-intro">
-          A considered collection. A price prepared just for you.
+          Review your products and quantities, then send the details for your
+          quotation.
         </p>
         <QuoteBag signedIn={Boolean(user)} country={country} />
       </main>

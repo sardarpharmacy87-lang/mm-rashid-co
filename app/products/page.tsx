@@ -191,7 +191,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
                 </select>
               </div>
               <span className="catalogue-total-count">
-                {productCount} products
+                {productCount} {productCount === 1 ? "product" : "products"}
               </span>
               <input
                 className="catalogue-search-compact"
@@ -206,7 +206,9 @@ export default async function ProductsPage({ searchParams }: PageProps) {
 
             <div className="product-group-heading collection-heading">
               <h2>{selectedGroup?.name ?? "All products"}</h2>
-              <span>{productCount} products</span>
+              <span>
+                {productCount} {productCount === 1 ? "product" : "products"}
+              </span>
             </div>
 
             {products.length ? (

@@ -48,7 +48,7 @@ export function ProductCard({ product }: { product: ProductCardData }) {
         ) : null}
 
         <div className="product-card-actions">
-          <Link href={"/products/" + product.slug}>Discover piece ↗</Link>
+          <Link href={"/products/" + product.slug}>View product ↗</Link>
           {product.stock_status !== "out_of_stock" && (
             <AddToBag
               product={{

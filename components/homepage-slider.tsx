@@ -44,8 +44,8 @@ export function HomepageSlider({ slides }: { slides: HomepageSlide[] }) {
   if (!slides.length) return null;
 
   const onPointerDown = (event: React.PointerEvent<HTMLElement>) => {
+    if ((event.target as HTMLElement).closest("button")) return;
     pointerStart.current = event.clientX;
-    event.currentTarget.setPointerCapture?.(event.pointerId);
   };
 
   const onPointerUp = (event: React.PointerEvent<HTMLElement>) => {
@@ -53,6 +53,7 @@ export function HomepageSlider({ slides }: { slides: HomepageSlide[] }) {
     const distance = event.clientX - pointerStart.current;
     pointerStart.current = null;
     if (Math.abs(distance) < 45) return;
+    setPaused(true);
     if (distance < 0) next();
     else previous();
   };
@@ -60,9 +61,12 @@ export function HomepageSlider({ slides }: { slides: HomepageSlide[] }) {
   return (
     <section
       className="homepage-slider"
-      aria-label="Featured MM Rashid & Co. work"
+      aria-label="Regalia design references"
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
+      onPointerLeave={() => {
+        pointerStart.current = null;
+      }}
       onPointerCancel={() => {
         pointerStart.current = null;
       }}
@@ -81,7 +85,10 @@ export function HomepageSlider({ slides }: { slides: HomepageSlide[] }) {
               src={slide.image_url}
               alt={
                 index === visibleIndex
-                  ? slide.alt_text || "MM Rashid & Co. featured work"
+                  ? slide.alt_text &&
+                    !/ChatGPT Image|\.(png|jpe?g|webp)$/i.test(slide.alt_text)
+                    ? slide.alt_text
+                    : `Regalia design reference ${index + 1}`
                   : ""
               }
               fill

@@ -47,10 +47,17 @@ export default async function HomePage({
     }))
     .filter((group) => group.products.length > 0);
   return (
-    <div className="store-shell atelier royal-home">
+    <div className="store-shell atelier studio-home">
       <CommerceHeader />
       <main id="main-content">
-        <RoyalHero />
+        <RoyalHero
+          product={
+            products.find(
+              (product) =>
+                product.slug === "mason-jacket" && product.primary_image,
+            ) || products.find((product) => product.primary_image)
+          }
+        />
         <div className="home-categories" id="collections">
           {categories.map((group) => (
             <section
@@ -90,15 +97,15 @@ export default async function HomePage({
           )}
         </div>
         <section className="atelier-manifesto">
-          <p className="eyebrow">The MM Rashid signature</p>
+          <p className="eyebrow">Inside the workshop</p>
           <h2>
-            Some things should
+            Bullion, thread
             <br />
-            always be <em>made by hand.</em>
+            and <em>handwork.</em>
           </h2>
           <p>
-            The weight of bullion. The precision of a stitch. The care in a
-            finished edge. These are the details we have built our name on.
+            We work from artwork, measurements and reference samples. See how
+            our team prepares and stitches the details of each piece.
           </p>
           <Link className="text-link" href="/capabilities">
             Discover our craft ↗
@@ -117,9 +124,9 @@ export default async function HomePage({
           <div className="atelier-story-copy">
             <p className="eyebrow">Our story · Since 1922</p>
             <h2>
-              A family craft.
+              Our workshop
               <br />
-              <em>A lasting legacy.</em>
+              <em>in Sialkot.</em>
             </h2>
             <p>
               Our story began in Sialkot in 1922. Through three generations, the
@@ -140,7 +147,7 @@ export default async function HomePage({
             <div className="atelier-section-heading">
               <div>
                 <p className="eyebrow">A closer look</p>
-                <h2>Details that define us.</h2>
+                <h2>Regalia and embroidery.</h2>
               </div>
             </div>
             <HomepageSlider slides={slides} />
@@ -164,13 +171,13 @@ export default async function HomePage({
           <div>
             <p className="eyebrow">Made for you</p>
             <h2>
-              Your vision.
+              Start with
               <br />
-              <em>Our craftsmanship.</em>
+              <em>your design.</em>
             </h2>
             <p>
-              From a single insignia to a complete ceremonial collection, every
-              commission begins with a conversation.
+              Send a reference, the quantity you need and your delivery date. We
+              will discuss the materials and prepare a quotation.
             </p>
             <Link className="atelier-button" href="/contact">
               Discuss your project ↗
@@ -245,12 +252,12 @@ export default async function HomePage({
           <Faq />
         </section>
         <section className="atelier-closing">
-          <p className="eyebrow">Your next piece starts here</p>
+          <p className="eyebrow">Have a design in mind?</p>
           <h2>
-            Let’s make something <em>exceptional.</em>
+            Talk to <em>our workshop.</em>
           </h2>
-          <Link className="atelier-button" href="/products">
-            Find your piece ↗
+          <Link className="atelier-button" href="/contact">
+            Send your requirements ↗
           </Link>
         </section>
       </main>

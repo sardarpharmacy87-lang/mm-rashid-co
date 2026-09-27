@@ -14,15 +14,11 @@ export default function ContactPage() {
     <div className="store-shell atelier">
       <CommerceHeader />
       <main className="editorial-page" id="main-content">
-        <p className="eyebrow">A conversation starts here</p>
-        <h1 className="editorial-title">
-          Made personal.
-          <br />
-          <em>From the first hello.</em>
-        </h1>
+        <p className="eyebrow">MM Rashid &amp; Co.</p>
+        <h1 className="editorial-title">Contact the workshop.</h1>
         <p className="editorial-intro">
-          A new design, a ceremonial collection, or a piece you have been
-          searching for. Tell us what you have in mind.
+          Send your design, quantity and delivery country, or ask us about an
+          existing order. You can reach our team by phone or email.
         </p>
         <div className="workshop-contact">
           <div className="contact-photograph">
@@ -30,6 +26,7 @@ export default function ContactPage() {
               src="/images/royal/contact-regalia.webp"
               alt="Masonic jacket, embroidered ceremonial banner, decorated fez caps and white gloves displayed on royal blue velvet"
               fill
+              priority
               sizes="(max-width:760px) 100vw, 50vw"
             />
           </div>
