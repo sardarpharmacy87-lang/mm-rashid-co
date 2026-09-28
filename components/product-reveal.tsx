@@ -3,7 +3,7 @@
 import { useState, type ReactNode, type CSSProperties } from "react";
 import Image from "next/image";
 
-export function ProductReveal({ children }: { children: ReactNode }) {
+export function ProductReveal({ children }: { children?: ReactNode }) {
   const [reveal, setReveal] = useState(0);
   const [logoReady, setLogoReady] = useState(false);
   return (
@@ -12,21 +12,29 @@ export function ProductReveal({ children }: { children: ReactNode }) {
       style={{ "--reveal": `${reveal}%` } as CSSProperties}
     >
       <div className="product-reveal-stage">
-        {children}
+        {children || (
+          <div className="product-reveal-identity" aria-hidden={reveal < 100}>
+            <Image
+              className={
+                logoReady && reveal === 100
+                  ? "reveal-logo is-ready"
+                  : "reveal-logo"
+              }
+              src="/images/royal/reveal-logo.webp"
+              alt="MM Rashid & Co."
+              width={350}
+              height={337}
+              priority
+              onLoad={() => setLogoReady(true)}
+            />
+          </div>
+        )}
         <div className="product-reveal-cloth" aria-hidden="true">
-          <Image
-            className={logoReady ? "reveal-logo is-ready" : "reveal-logo"}
-            src="/images/royal/reveal-logo.webp"
-            alt=""
-            width={220}
-            height={212}
-            priority
-            onLoad={() => setLogoReady(true)}
-          />
+          <span className="reveal-wordmark">MM RASHID &amp; CO.</span>
           <span className="reveal-invitation">
             Slide to reveal
             <br />
-            our featured piece
+            {children ? "our featured piece" : "our signature"}
           </span>
         </div>
       </div>
@@ -41,7 +49,9 @@ export function ProductReveal({ children }: { children: ReactNode }) {
           min="0"
           max="100"
           value={reveal}
-          aria-label="Reveal featured product"
+          aria-label={
+            children ? "Reveal featured product" : "Reveal company logo"
+          }
           aria-valuetext={`${reveal}% revealed`}
           disabled={reveal === 100}
           onChange={(event) =>

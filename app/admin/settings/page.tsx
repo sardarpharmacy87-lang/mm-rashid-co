@@ -53,8 +53,9 @@ export default async function AdminSettingsPage({ searchParams }: PageProps) {
       <section className="portal-section" id="hero-settings">
         <h2>Homepage reveal</h2>
         <p>
-          Choose the product visitors will discover behind your logo curtain.
-          Its image, name and product link will update together.
+          Reveal your rotating company logo, or choose a product to feature
+          instead. A product selection updates its image, name and link
+          together.
         </p>
         {hero && (
           <p
@@ -65,7 +66,7 @@ export default async function AdminSettingsPage({ searchParams }: PageProps) {
             }
           >
             {hero === "1"
-              ? "Featured product saved."
+              ? "Homepage reveal saved."
               : hero === "invalid"
                 ? "Choose an active product with an image."
                 : "The featured product could not be saved. Please try again."}
@@ -79,19 +80,19 @@ export default async function AdminSettingsPage({ searchParams }: PageProps) {
         {!savedHeroAvailable && (
           <p>
             The previously selected product is no longer available. The homepage
-            is using an automatic selection.
+            is showing your company logo.
           </p>
         )}
         <form action={saveFeaturedProduct} className="portal-form">
           <label>
-            Featured product
+            Reveal content
             <select
               name="featured_product_id"
               defaultValue={
                 savedHeroAvailable ? preferences.featuredProductId || "" : ""
               }
             >
-              <option value="">Automatic selection</option>
+              <option value="">Company logo · rotating reveal</option>
               {(heroProducts || []).map((product) => (
                 <option key={product.id} value={product.id}>
                   {product.name}
@@ -102,14 +103,13 @@ export default async function AdminSettingsPage({ searchParams }: PageProps) {
           </label>
           <p>
             Only active products with a main image are listed. If a selected
-            product is removed or hidden, another available product will be
-            shown.
+            product is removed or hidden, your company logo will be shown.
           </p>
           <button
             className="portal-button"
             disabled={!!heroProductsError || !preferences.configured}
           >
-            Save featured product
+            Save homepage reveal
           </button>
           <Link href="/" target="_blank" rel="noopener noreferrer">
             Preview homepage ↗

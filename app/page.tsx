@@ -62,16 +62,7 @@ export default async function HomePage({
     <div className="store-shell atelier studio-home">
       <CommerceHeader />
       <main id="main-content">
-        <RoyalHero
-          product={
-            featured?.data ||
-            products.find(
-              (product) =>
-                product.slug === "mason-jacket" && product.primary_image,
-            ) ||
-            products.find((product) => product.primary_image)
-          }
-        />
+        <RoyalHero product={featured?.data || undefined} />
         <div className="home-categories" id="collections">
           {categories.map((group) => (
             <section

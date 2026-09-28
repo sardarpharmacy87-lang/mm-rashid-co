@@ -33,33 +33,38 @@ export function RoyalHero({ product }: { product?: ProductCardData }) {
           </p>
         </div>
         <div className="studio-hero-feature">
-          <p className="studio-feature-label">From our collection</p>
+          <p className="studio-feature-label">
+            {product ? "From our collection" : "Our signature"}
+          </p>
           <ProductReveal>
-            <Link
-              className="studio-feature-image"
-              href={product ? "/products/" + product.slug : "/capabilities"}
-              aria-label={
-                product ? "View " + product.name : "Explore our embroidery work"
-              }
-            >
-              <Image
-                src={
-                  product?.primary_image ||
-                  "/images/gallery/gold-bullion-naval-badge.webp"
+            {product ? (
+              <Link
+                className="studio-feature-image"
+                href={product ? "/products/" + product.slug : "/capabilities"}
+                aria-label={
+                  product
+                    ? "View " + product.name
+                    : "Explore our embroidery work"
                 }
-                alt={product?.name || "Gold bullion embroidered naval badge"}
-                fill
-                priority
-                sizes="(max-width:760px) 90vw, 48vw"
-              />
-            </Link>
+              >
+                <Image
+                  src={
+                    product?.primary_image ||
+                    "/images/gallery/gold-bullion-naval-badge.webp"
+                  }
+                  alt={product?.name || "Gold bullion embroidered naval badge"}
+                  fill
+                  priority
+                  sizes="(max-width:760px) 90vw, 48vw"
+                />
+              </Link>
+            ) : null}
           </ProductReveal>
           <div className="studio-feature-caption">
-            <span>{product?.name || "Bullion embroidery"}</span>
-            <Link
-              href={product ? "/products/" + product.slug : "/capabilities"}
-            >
-              View details <span aria-hidden="true">↗</span>
+            <span>{product?.name || "MM Rashid & Co."}</span>
+            <Link href={product ? "/products/" + product.slug : "/#heritage"}>
+              {product ? "View details" : "Our story"}{" "}
+              <span aria-hidden="true">↗</span>
             </Link>
           </div>
         </div>
