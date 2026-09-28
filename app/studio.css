@@ -4,6 +4,296 @@
   --premium-green-2: #243f5b;
   --premium-charcoal: #10243b;
   --line: #dfe3e7;
+  --brass: #10243b;
+  --royal-gold: #10243b;
+  --royal-pale: #e8edf3;
+  --premium-gold: #10243b;
+  --premium-gold-soft: #e8edf3;
+  --premium-ivory: #f7f9fb;
+  --premium-muted: #617080;
+  --portal-navy: #10243b;
+  --portal-blue: #243f5b;
+  --portal-gold: #526b86;
+  --portal-cream: #f7f9fb;
+  --portal-line: #dfe3e7;
+}
+
+/* Shared neutral surfaces and navy accents; product and logo artwork stay original. */
+.atelier-section-heading .eyebrow,
+.eyebrow,
+.store-kicker,
+.collection-number,
+.atelier-manifesto .eyebrow,
+.workshop-contact-details .eyebrow,
+.portal-kicker,
+.admin-order-head small,
+.commission-checklist article > span {
+  color: #52677f;
+}
+.atelier-manifesto,
+.atelier-story,
+.atelier-closing,
+.craft-page .capabilities-hero,
+.craft-page .capability-card-media {
+  background: #fff;
+  border-color: #dfe3e7;
+}
+.atelier-manifesto h2 em,
+.atelier-story-copy h2 em,
+.craft-page .capabilities-hero h1 span,
+.text-link:hover {
+  color: #10243b;
+}
+.atelier-commission {
+  background: #f7f9fb;
+  color: #10243b;
+  border-color: #dfe3e7;
+}
+.atelier-commission p,
+.atelier-commission > div > p:not(.eyebrow) {
+  color: #536171;
+}
+.atelier-commission h2,
+.atelier-commission h3,
+.atelier-commission .text-link,
+.atelier-commission .eyebrow,
+.atelier-commission li > span {
+  color: #10243b;
+}
+.atelier-commission li {
+  border-color: #dfe3e7;
+}
+.atelier-topbar {
+  background: #10243b;
+  color: #fff;
+  border-color: #dfe3e7;
+}
+.bag-count {
+  background: #10243b;
+  color: #fff;
+}
+.atelier-button,
+.atelier-closing .atelier-button,
+.store-shell .store-primary-button,
+.portal-button,
+.portal-layout .portal-button,
+.reference-catalogue-toolbar button,
+.detail-add-button,
+.cart-enquiry-form button {
+  background: #10243b !important;
+  color: #fff !important;
+  border-color: #10243b !important;
+  box-shadow: none;
+}
+.atelier-button:hover,
+.atelier-closing .atelier-button:hover,
+.store-shell .store-primary-button:hover,
+.portal-button:hover,
+.portal-layout .portal-button:hover {
+  background: #243f5b !important;
+  color: #fff !important;
+  border-color: #243f5b !important;
+}
+.store-shell .stock-pill {
+  color: #fff !important;
+  border-color: #10243b !important;
+  box-shadow: none;
+}
+.store-shell .stock-pill.stock-in_stock,
+.store-shell .stock-pill.stock-out_of_stock {
+  background: #edf1f5 !important;
+  color: #10243b !important;
+  border-color: #dfe3e7 !important;
+}
+.store-shell .product-card-actions a {
+  color: #fff !important;
+}
+.store-shell .product-card-actions .bag-add {
+  background: #fff !important;
+  border-color: #c3cdd8 !important;
+}
+.store-shell .product-card-actions .bag-add:hover,
+.store-shell .product-card-actions .bag-add[aria-pressed="true"] {
+  background: #edf1f5 !important;
+  border-color: #52677f !important;
+  color: #10243b !important;
+}
+.store-shell .product-rate-request,
+.bag-form {
+  background: #f7f9fb;
+  border-color: #dfe3e7;
+}
+.store-shell .catalogue-toolbar button {
+  background: #10243b;
+  color: #fff;
+}
+.store-shell .product-group-nav .is-active {
+  border-color: #10243b;
+  color: #10243b;
+}
+.store-shell .clean-store-footer {
+  border-color: #dfe3e7;
+}
+.store-shell .clean-footer-social a:hover {
+  border-color: #fff;
+  color: #fff;
+}
+.support-chat-toggle {
+  background: #10243b !important;
+  border: 0 !important;
+  color: #fff !important;
+}
+.contact-photograph {
+  border: 0;
+}
+.portal-header {
+  background: #10243b;
+  color: #fff;
+  border-color: #dfe3e7;
+}
+.portal-header .portal-logo,
+.portal-header nav a,
+.portal-header nav button,
+.portal-header nav a:hover,
+.portal-header nav button:hover {
+  color: #fff;
+}
+.auth-page,
+.portal-layout {
+  background: #f7f9fb;
+}
+.portal-layout .portal-section {
+  border-color: #dfe3e7;
+}
+.portal-form input,
+.portal-form select,
+.portal-form textarea,
+.order-update-form input,
+.order-update-form select,
+.portal-empty,
+.attachment-uploader input[type="file"] {
+  border-color: #c3cdd8;
+}
+.portal-form input:focus,
+.portal-form select:focus,
+.portal-form textarea:focus {
+  border-color: #52677f;
+  box-shadow: 0 0 0 3px #10243b12;
+}
+.summary-grid article {
+  background: #10243b;
+  border-color: #dfe3e7;
+}
+.summary-grid strong,
+.quote-heading small,
+.quote-breakdown .quote-total {
+  color: #fff;
+}
+.commission-enquiry-intro {
+  background: #10243b;
+  border-color: #dfe3e7;
+}
+.commission-enquiry-intro .portal-kicker,
+.commission-enquiry-note > span {
+  color: #d9e1ea !important;
+}
+.status-ready {
+  background: #edf1f5;
+  color: #10243b;
+}
+.homepage-slider {
+  background: #fff;
+}
+.homepage-slider::before,
+.homepage-slider::after {
+  display: none;
+}
+.homepage-slider-track {
+  border-color: #dfe3e7;
+  box-shadow: none;
+}
+.homepage-slider-track::after {
+  border: 0;
+}
+.homepage-slider-dots button.is-active {
+  background: #10243b;
+  border-color: #10243b;
+}
+.homepage-slider-counter,
+.workshop-reel-counter {
+  border-color: #ffffff30;
+}
+.homepage-slider-arrow,
+.workshop-reel-arrow {
+  color: #10243b;
+  background: #fff;
+  border-color: #dfe3e7;
+}
+.homepage-slider-arrow:hover,
+.workshop-reel-arrow:hover,
+.workshop-reel-play {
+  color: #fff;
+  background: #10243b;
+  border-color: #ffffff40;
+}
+.workshop-reel-play:hover {
+  color: #10243b;
+  background: #fff;
+}
+.bloom-workshop-label.workshop-reel-label {
+  background: #10243b;
+  border-color: #ffffff30;
+}
+.workshop-reel-copy span,
+.store-shell .footer-newsletter-form button {
+  color: #fff;
+}
+.workshop-reel-tabs button {
+  color: #d9e1ea;
+  border-color: #ffffff40;
+}
+.workshop-reel-tabs button:hover {
+  border-color: #fff;
+}
+.workshop-reel-tabs button.is-active {
+  color: #10243b;
+  background: #fff;
+  border-color: #fff;
+  box-shadow: none;
+}
+.craft-page .capability-hero-main,
+.craft-page .capability-hero-small {
+  border-color: #dfe3e7;
+  box-shadow: none;
+}
+.craft-page .capability-card-media > span {
+  color: #10243b;
+  background: #fff;
+  border-color: #dfe3e7;
+}
+.capability-spec-list > article > span {
+  color: #d9e1ea;
+}
+.bloom-eyebrow-light {
+  color: #d9e1ea !important;
+}
+.bloom-eyebrow::before {
+  background: currentColor;
+}
+.product-group-heading span {
+  color: #617080;
+}
+.attachment-picker,
+.admin-products-empty {
+  background: #f7f9fb;
+  border-color: #c3cdd8;
+}
+.capabilities-closing {
+  background: #fff;
+}
+.atelier-nav > a,
+.atelier-nav > details > summary {
+  border-color: #dfe3e7;
 }
 .studio-home .atelier-topbar {
   display: none;
@@ -345,6 +635,7 @@
   .atelier-nav.is-open {
     background: #fff;
     color: #10243b;
+    border-color: #dfe3e7;
   }
 }
 @media (max-width: 760px) {

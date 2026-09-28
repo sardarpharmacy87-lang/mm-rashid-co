@@ -4,6 +4,7 @@ The white product hero reveals the owner's supplied logo, with an optional produ
 
 Verified during this update:
 
+- The shared UI palette uses the hero's navy (#10243b), white surfaces and gray dividers. Gold button fills, badges, decorative borders, gallery indicators and workshop controls were replaced; original product and logo artwork keeps its supplied colors. Contact, collections, product listing, catalogue, journal and sign-in pages were checked for remaining decorative gold, alongside desktop and phone homepage layouts.
 - Next.js production build and TypeScript compilation pass; targeted ESLint passes.
 - Desktop, 768px tablet, 390px phone and 320px narrow-phone layouts have no page-level horizontal overflow. Mobile curtain, logo and controls fit the viewport.
 - Reveal button and keyboard slider work. Attempting to move backward leaves progress unchanged. Full reveal disables both controls, with no reset action. A second tab starts at zero.
