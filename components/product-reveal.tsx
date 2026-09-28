@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, type ReactNode, type CSSProperties } from "react";
+import Image from "next/image";
 
 export function ProductReveal({ children }: { children: ReactNode }) {
-  const [reveal, setReveal] = useState(72);
+  const [reveal, setReveal] = useState(0);
+  const [logoReady, setLogoReady] = useState(false);
   return (
     <div
       className="product-reveal"
@@ -12,13 +14,26 @@ export function ProductReveal({ children }: { children: ReactNode }) {
       <div className="product-reveal-stage">
         {children}
         <div className="product-reveal-cloth" aria-hidden="true">
-          <span>MM RASHID &amp; CO.</span>
-          <small>MADE IN SIALKOT</small>
+          <Image
+            className={logoReady ? "reveal-logo is-ready" : "reveal-logo"}
+            src="/images/royal/reveal-logo.webp"
+            alt=""
+            width={220}
+            height={212}
+            priority
+            onLoad={() => setLogoReady(true)}
+          />
+          <span className="reveal-invitation">
+            Slide to reveal
+            <br />
+            our featured piece
+          </span>
         </div>
       </div>
       <div className="product-reveal-controls">
         <label htmlFor="hero-reveal">
-          Slide to unveil <span aria-hidden="true">→</span>
+          {reveal === 100 ? "Revealed" : "Slide to reveal"}{" "}
+          <span aria-hidden="true">→</span>
         </label>
         <input
           id="hero-reveal"
@@ -28,13 +43,19 @@ export function ProductReveal({ children }: { children: ReactNode }) {
           value={reveal}
           aria-label="Reveal featured product"
           aria-valuetext={`${reveal}% revealed`}
-          onChange={(event) => setReveal(Number(event.target.value))}
+          disabled={reveal === 100}
+          onChange={(event) =>
+            setReveal((current) =>
+              Math.max(current, Number(event.target.value)),
+            )
+          }
         />
         <button
           type="button"
-          onClick={() => setReveal(reveal === 100 ? 0 : 100)}
+          disabled={reveal === 100}
+          onClick={() => setReveal(100)}
         >
-          {reveal === 100 ? "Cover again" : "Reveal all"}
+          {reveal === 100 ? "Revealed ✓" : "Reveal"}
         </button>
       </div>
     </div>

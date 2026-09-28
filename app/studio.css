@@ -123,6 +123,9 @@
   align-items: center;
   gap: 14px;
   margin-bottom: 18px;
+  opacity: 0;
+}
+.product-reveal-cloth .reveal-logo.is-ready {
 }
 .studio-feature-label::before {
   content: "";
@@ -148,7 +151,7 @@
 .product-reveal-cloth {
   position: absolute;
   inset: 0;
-  pointer-events: none;
+  pointer-events: auto;
   transform: translateY(calc(-1.05 * var(--reveal)));
   display: flex;
   flex-direction: column;
@@ -167,16 +170,38 @@
   box-shadow: 0 12px 20px #10243b24;
   transition: transform 0.35s ease-out;
 }
-.product-reveal-cloth span {
-  font:
-    400 clamp(18px, 2vw, 28px) Georgia,
-    serif;
-  letter-spacing: 0.07em;
+.product-reveal-cloth .reveal-logo {
+  width: clamp(130px, 16vw, 220px);
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 18px;
+  animation: reveal-logo-arrive 1.8s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
-.product-reveal-cloth small {
-  font-size: 8px;
-  letter-spacing: 0.3em;
-  margin-top: 12px;
+.product-reveal-cloth .reveal-invitation {
+  font:
+    400 clamp(16px, 1.65vw, 23px)/1.4 Georgia,
+    serif;
+  letter-spacing: 0.025em;
+  text-align: center;
+  color: #f4f6f8;
+}
+@keyframes reveal-logo-arrive {
+  from {
+    transform: rotate(-240deg) scale(0.65);
+    opacity: 0;
+  }
+  to {
+    transform: rotate(0) scale(1);
+    opacity: 1;
+  }
+}
+.product-reveal-controls button:disabled {
+  cursor: default;
+  text-decoration: none;
+  color: #536171;
+}
+.product-reveal-controls input:disabled {
+  cursor: default;
 }
 .product-reveal-controls {
   display: flex;
@@ -308,6 +333,10 @@
   }
 }
 @media (max-width: 760px) {
+  .product-reveal-cloth .reveal-logo {
+    width: clamp(135px, 38vw, 195px);
+    margin-bottom: 12px;
+  }
   .studio-hero {
     grid-template-columns: 1fr;
     padding: 25px 6vw 32px;
@@ -357,6 +386,10 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .product-reveal-cloth .reveal-logo.is-ready {
+    animation: none;
+    opacity: 1;
+  }
   .product-reveal-cloth,
   .studio-button {
     transition: none;

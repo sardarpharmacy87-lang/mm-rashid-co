@@ -11,6 +11,38 @@ function cleanUrl(value: FormDataEntryValue | null) {
   return safeHttpsUrl(url);
 }
 
+export async function saveFeaturedProduct(form: FormData) {
+  await requireAdmin();
+  const id = String(form.get("featured_product_id") || "").trim();
+  if (
+    id &&
+    !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)
+  )
+    redirect("/admin/settings?hero=invalid#hero-settings");
+  const db = await createClient();
+  if (id) {
+    const { data, error } = await db
+      .from("products")
+      .select("id")
+      .eq("id", id)
+      .eq("active", true)
+      .not("primary_image", "is", null)
+      .neq("primary_image", "")
+      .maybeSingle();
+    if (error) redirect("/admin/settings?hero=error#hero-settings");
+    if (!data) redirect("/admin/settings?hero=invalid#hero-settings");
+  }
+  const { error } = await db.from("storefront_preferences").upsert({
+    id: "main",
+    featured_product_id: id || null,
+    updated_at: new Date().toISOString(),
+  });
+  if (error) redirect("/admin/settings?hero=error#hero-settings");
+  revalidatePath("/");
+  revalidatePath("/admin/settings");
+  redirect("/admin/settings?hero=1#hero-settings");
+}
+
 export async function saveSocialSettings(formData: FormData) {
   await requireAdmin();
   const keys = [
@@ -69,14 +101,12 @@ export async function saveTranslationSettings(form: FormData) {
   )
     redirect("/admin/settings?translation=invalid");
   const db = await createClient();
-  const { error } = await db
-    .from("storefront_preferences")
-    .upsert({
-      id: "main",
-      translation_key: key,
-      translation_languages: languages,
-      updated_at: new Date().toISOString(),
-    });
+  const { error } = await db.from("storefront_preferences").upsert({
+    id: "main",
+    translation_key: key,
+    translation_languages: languages,
+    updated_at: new Date().toISOString(),
+  });
   revalidatePath("/", "layout");
   redirect("/admin/settings?translation=" + (error ? "error" : "1"));
 }

@@ -7,7 +7,9 @@ Final website assets:
 - `public/images/royal/contact-regalia.webp` — the second supplied image, with composition unchanged and WebP compression for delivery.
 - `public/images/royal/hero-regalia-no-gloves.webp` — archived background, edited with the built-in image-generation tool to remove the gloves at the owner's request, then encoded as WebP. The previous artwork is retained as `hero-regalia.webp`.
 
-On 2026-09-27 the homepage changed to a white product studio featuring the existing catalogue image of the MASON jacket (with another available product as fallback). The owner supplied a video of an interactive car unveiling as a motion reference. The new hero adapts its reveal concept using a navy CSS fabric cover, a native keyboard-accessible slider and a reveal/reset button. It does not claim to be a 3D model or a cloth physics simulation. Reduced-motion settings disable the cover transition. Product colours and photographs are unchanged.
+On 2026-09-27 the homepage changed to a white product studio featuring an existing catalogue image. The owner supplied a video of an interactive car unveiling as a motion reference. The hero adapts its reveal concept using a navy CSS fabric cover and a keyboard-accessible slider. It does not claim to be a 3D model or a cloth physics simulation. Product colours and photographs are unchanged.
+
+On 2026-09-28 the owner supplied the new circular logo. `public/images/royal/reveal-logo.webp` is the supplied transparent PNG, resized to 512 pixels wide and encoded as WebP without changing the artwork. The logo rotates into its upright position once when the hero mounts. The curtain reads “Slide to reveal our featured piece”. Reveal progress only moves forward; the fully revealed state has no reset action. Each new tab starts closed, without browser storage. Reduced-motion settings disable both rotation and the cover transition. Admins choose the product in Website settings → Homepage reveal; MASON Jacket remains the automatic first choice when available.
 
 Final glove-removal prompt (built-in tool):
 

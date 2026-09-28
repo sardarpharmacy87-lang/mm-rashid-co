@@ -1,16 +1,34 @@
 import { createClient } from "@/lib/supabase/server";
-import { saveSocialSettings, saveTranslationSettings } from "./actions";
+import {
+  saveSocialSettings,
+  saveTranslationSettings,
+  saveFeaturedProduct,
+} from "./actions";
 import { getStorefrontSettings } from "@/lib/storefront-settings";
 import Link from "next/link";
 
 type PageProps = {
-  searchParams: Promise<{ saved?: string; translation?: string }>;
+  searchParams: Promise<{
+    saved?: string;
+    translation?: string;
+    hero?: string;
+  }>;
 };
 
 export default async function AdminSettingsPage({ searchParams }: PageProps) {
-  const { saved, translation } = await searchParams;
+  const { saved, translation, hero } = await searchParams;
   const preferences = await getStorefrontSettings();
   const supabase = await createClient();
+  const { data: heroProducts, error: heroProductsError } = await supabase
+    .from("products")
+    .select("id,name,sku")
+    .eq("active", true)
+    .not("primary_image", "is", null)
+    .neq("primary_image", "")
+    .order("name");
+  const savedHeroAvailable =
+    !preferences.featuredProductId ||
+    heroProducts?.some((p) => p.id === preferences.featuredProductId);
 
   const { data: settings } = await supabase
     .from("site_settings")
@@ -25,13 +43,79 @@ export default async function AdminSettingsPage({ searchParams }: PageProps) {
       <div className="portal-title-row">
         <div>
           <p className="portal-kicker">Website settings</p>
-          <h1>Website connections</h1>
+          <h1>Website settings</h1>
           <p>
-            Add or change social links at any time. Leave a field blank to hide
-            that platform from the website.
+            Choose your homepage feature and manage your website connections.
           </p>
         </div>
       </div>
+
+      <section className="portal-section" id="hero-settings">
+        <h2>Homepage reveal</h2>
+        <p>
+          Choose the product visitors will discover behind your logo curtain.
+          Its image, name and product link will update together.
+        </p>
+        {hero && (
+          <p
+            role="status"
+            className={
+              "form-alert " +
+              (hero === "1" ? "form-alert-success" : "form-alert-error")
+            }
+          >
+            {hero === "1"
+              ? "Featured product saved."
+              : hero === "invalid"
+                ? "Choose an active product with an image."
+                : "The featured product could not be saved. Please try again."}
+          </p>
+        )}
+        {heroProductsError && (
+          <p role="alert">
+            Products could not be loaded. Refresh the page to try again.
+          </p>
+        )}
+        {!savedHeroAvailable && (
+          <p>
+            The previously selected product is no longer available. The homepage
+            is using an automatic selection.
+          </p>
+        )}
+        <form action={saveFeaturedProduct} className="portal-form">
+          <label>
+            Featured product
+            <select
+              name="featured_product_id"
+              defaultValue={
+                savedHeroAvailable ? preferences.featuredProductId || "" : ""
+              }
+            >
+              <option value="">Automatic selection</option>
+              {(heroProducts || []).map((product) => (
+                <option key={product.id} value={product.id}>
+                  {product.name}
+                  {product.sku ? ` · ${product.sku}` : ""}
+                </option>
+              ))}
+            </select>
+          </label>
+          <p>
+            Only active products with a main image are listed. If a selected
+            product is removed or hidden, another available product will be
+            shown.
+          </p>
+          <button
+            className="portal-button"
+            disabled={!!heroProductsError || !preferences.configured}
+          >
+            Save featured product
+          </button>
+          <Link href="/" target="_blank" rel="noopener noreferrer">
+            Preview homepage ↗
+          </Link>
+        </form>
+      </section>
 
       {saved === "1" ? (
         <p className="form-alert form-alert-success">

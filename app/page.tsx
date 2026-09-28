@@ -11,6 +11,7 @@ import { StoreFooter } from "@/components/store-footer";
 import { createClient } from "@/lib/supabase/server";
 import { Faq } from "@/components/faq";
 import { RoyalHero } from "@/components/royal-hero";
+import { getStorefrontSettings } from "@/lib/storefront-settings";
 
 type Group = { id: string; name: string; slug: string };
 type HomeProduct = ProductCardData & { product_group_id: string | null };
@@ -22,7 +23,7 @@ export default async function HomePage({
 }) {
   const { newsletter } = await searchParams;
   const supabase = await createClient();
-  const [g, p, s] = await Promise.all([
+  const [g, p, s, preferences] = await Promise.all([
     supabase
       .from("product_groups")
       .select("id,name,slug")
@@ -34,10 +35,21 @@ export default async function HomePage({
       .select("id,image_url,alt_text,sort_order,delay_ms")
       .eq("active", true)
       .order("sort_order"),
+    getStorefrontSettings(),
   ]);
   const groups = (g.data ?? []) as Group[];
   const products = (p.data ?? []) as HomeProduct[];
   const slides = (s.data ?? []) as HomepageSlide[];
+  const featured = preferences.featuredProductId
+    ? await supabase
+        .from("products")
+        .select("id,name,slug,primary_image,stock_status")
+        .eq("id", preferences.featuredProductId)
+        .eq("active", true)
+        .not("primary_image", "is", null)
+        .neq("primary_image", "")
+        .maybeSingle()
+    : null;
   const categories = groups
     .map((group) => ({
       ...group,
@@ -52,10 +64,12 @@ export default async function HomePage({
       <main id="main-content">
         <RoyalHero
           product={
+            featured?.data ||
             products.find(
               (product) =>
                 product.slug === "mason-jacket" && product.primary_image,
-            ) || products.find((product) => product.primary_image)
+            ) ||
+            products.find((product) => product.primary_image)
           }
         />
         <div className="home-categories" id="collections">

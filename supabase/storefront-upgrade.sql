@@ -15,6 +15,8 @@ create policy "Admins manage storefront preferences" on public.storefront_prefer
 grant select on public.storefront_preferences to anon,authenticated;
 grant insert,update,delete on public.storefront_preferences to authenticated;
 insert into public.storefront_preferences(id) values('main') on conflict do nothing;
+-- Homepage reveal selection; existing RLS continues to restrict writes to admins.
+alter table public.storefront_preferences add column if not exists featured_product_id uuid references public.products(id) on delete set null;
 
 create table if not exists public.payment_methods (
  id integer primary key check(id between 1 and 3),
