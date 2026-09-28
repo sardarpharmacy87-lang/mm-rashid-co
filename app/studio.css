@@ -1,5 +1,9 @@
 /* White product studio, with navy fabric reveal inspired by the owner's clip. */
 :root {
+  --ink: #10243b;
+  --midnight: #10243b;
+  --paper: #fff;
+  --muted: #617080;
   --premium-green: #10243b;
   --premium-green-2: #243f5b;
   --premium-charcoal: #10243b;
@@ -16,6 +20,35 @@
   --portal-gold: #526b86;
   --portal-cream: #f7f9fb;
   --portal-line: #dfe3e7;
+}
+
+:focus-visible {
+  outline-color: #526b86;
+}
+.legal-page {
+  background: #fff;
+}
+.legal-hero {
+  background: #f2f5f9;
+  border-color: #dfe3e7;
+}
+.legal-hero h1,
+.legal-content h2,
+.legal-content a {
+  color: #10243b;
+}
+.legal-content a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.legal-content section {
+  border-color: #dfe3e7;
+}
+.integration-status,
+.bag-status {
+  background: #edf1f5;
+  border-color: #526b86;
+  color: #10243b;
 }
 
 /* Shared neutral surfaces and navy accents; product and logo artwork stay original. */
@@ -158,9 +191,14 @@
 .portal-header nav button:hover {
   color: #fff;
 }
-.auth-page,
 .portal-layout {
   background: #f7f9fb;
+}
+.auth-page {
+  background: #10243b;
+}
+.auth-panel {
+  border-color: #526b86;
 }
 .portal-layout .portal-section {
   border-color: #dfe3e7;
@@ -585,6 +623,37 @@
 .store-shell .clean-store-footer {
   background: #10243b !important;
   color: #d9e1ea !important;
+}
+.store-shell .clean-store-footer .footer-newsletter {
+  background: transparent;
+  color: #fff;
+  border-color: #ffffff30;
+}
+.store-shell .clean-store-footer .footer-newsletter-form {
+  background: transparent;
+  border-color: #aabbd0;
+}
+.store-shell .clean-store-footer .footer-newsletter-form input {
+  background: transparent;
+}
+.store-shell .clean-store-footer .footer-newsletter-form:focus-within {
+  border-color: #fff;
+  outline: 2px solid #aabbd0;
+  outline-offset: 5px;
+}
+.store-shell .clean-store-footer .footer-newsletter-form button {
+  background: transparent;
+  color: #fff;
+  min-width: 52px;
+}
+.store-shell .clean-store-footer .footer-newsletter-form button:hover,
+.store-shell .clean-store-footer .footer-newsletter-form button:focus-visible {
+  background: #243f5b;
+  color: #fff;
+}
+.store-shell .clean-store-footer select option {
+  background: #fff;
+  color: #10243b;
 }
 .store-shell .clean-store-footer h2,
 .store-shell .clean-store-footer strong,
