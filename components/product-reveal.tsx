@@ -38,36 +38,32 @@ export function ProductReveal({ children }: { children?: ReactNode }) {
           </span>
         </div>
       </div>
-      <div className="product-reveal-controls">
-        <label htmlFor="hero-reveal">
-          {reveal === 100 ? "Revealed" : "Slide to reveal"}{" "}
-          <span aria-hidden="true">→</span>
-        </label>
-        <input
-          id="hero-reveal"
-          type="range"
-          min="0"
-          max="100"
-          value={reveal}
-          aria-label={
-            children ? "Reveal featured product" : "Reveal company logo"
-          }
-          aria-valuetext={`${reveal}% revealed`}
-          disabled={reveal === 100}
-          onChange={(event) =>
-            setReveal((current) =>
-              Math.max(current, Number(event.target.value)),
-            )
-          }
-        />
-        <button
-          type="button"
-          disabled={reveal === 100}
-          onClick={() => setReveal(100)}
-        >
-          {reveal === 100 ? "Revealed ✓" : "Reveal"}
-        </button>
-      </div>
+      {reveal < 100 && (
+        <div className="product-reveal-controls">
+          <label htmlFor="hero-reveal">
+            Slide to reveal <span aria-hidden="true">→</span>
+          </label>
+          <input
+            id="hero-reveal"
+            type="range"
+            min="0"
+            max="100"
+            value={reveal}
+            aria-label={
+              children ? "Reveal featured product" : "Reveal company logo"
+            }
+            aria-valuetext={`${reveal}% revealed`}
+            onChange={(event) =>
+              setReveal((current) =>
+                Math.max(current, Number(event.target.value)),
+              )
+            }
+          />
+          <button type="button" onClick={() => setReveal(100)}>
+            Reveal
+          </button>
+        </div>
+      )}
     </div>
   );
 }
