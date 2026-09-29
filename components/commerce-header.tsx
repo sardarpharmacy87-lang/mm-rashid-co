@@ -17,5 +17,17 @@ export async function CommerceHeader() {
     role = profile?.role === "admin" ? "admin" : "customer";
   }
 
-  return <CommerceHeaderClient signedIn={Boolean(user)} role={role} />;
+  const client = await createClient();
+  const { data: groups } = await client
+    .from("product_groups")
+    .select("id,name,slug")
+    .eq("active", true)
+    .order("sort_order");
+  return (
+    <CommerceHeaderClient
+      signedIn={Boolean(user)}
+      role={role}
+      groups={groups ?? []}
+    />
+  );
 }

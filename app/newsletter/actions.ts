@@ -4,8 +4,10 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
 export async function subscribeNewsletter(formData: FormData) {
-  const email = String(formData.get("email") ?? "").trim().toLowerCase();
-  if (!email || !email.includes("@")) {
+  const email = String(formData.get("email") ?? "")
+    .trim()
+    .toLowerCase();
+  if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     redirect("/?newsletter=invalid#newsletter");
   }
 

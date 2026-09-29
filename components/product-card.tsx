@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getShopSettings } from "@/lib/shop";
+import { formatMoney, visiblePrice } from "@/lib/shop-rules";
 
 export type ProductCardData = {
   id: string;
@@ -9,9 +11,16 @@ export type ProductCardData = {
   short_description?: string | null;
   primary_image?: string | null;
   stock_status: string;
+  public_price?: number | null;
+  price_on_request?: boolean;
 };
 
-export function ProductCard({ product }: { product: ProductCardData }) {
+export async function ProductCard({ product }: { product: ProductCardData }) {
+  const shop = await getShopSettings();
+  const price = visiblePrice({
+    public_price: product.public_price ?? null,
+    price_on_request: product.price_on_request !== false,
+  });
   const stockLabel =
     product.stock_status === "in_stock"
       ? "In stock"
@@ -33,17 +42,38 @@ export function ProductCard({ product }: { product: ProductCardData }) {
         ) : (
           <div className="store-image-placeholder">MM RASHID & CO.</div>
         )}
-        <span className={"stock-pill stock-" + product.stock_status}>{stockLabel}</span>
+        <span className={"stock-pill stock-" + product.stock_status}>
+          {stockLabel}
+        </span>
       </Link>
 
       <div className="store-product-content">
         <Link href={"/products/" + product.slug}>
           <h3>{product.name}</h3>
         </Link>
-        {product.short_description ? <p className="product-short">{product.short_description}</p> : null}
+        {product.short_description ? (
+          <p className="product-short">{product.short_description}</p>
+        ) : null}
 
+        {price !== null && (
+          <p className="public-product-price">
+            {formatMoney(price, shop.currency)}
+          </p>
+        )}
         <div className="product-card-actions">
-          <Link href={"/products/" + product.slug}>Request rate</Link>
+          <Link href={"/products/" + product.slug}>View product ↗</Link>
+          {product.stock_status !== "out_of_stock" && (
+            <Link
+              className="product-options-link"
+              href={
+                price === null
+                  ? "/quotation?product=" + product.id
+                  : "/products/" + product.slug
+              }
+            >
+              {price === null ? "Request quotation" : "Choose options"}
+            </Link>
+          )}
         </div>
       </div>
     </article>

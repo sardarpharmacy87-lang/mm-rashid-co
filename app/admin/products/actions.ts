@@ -4,6 +4,8 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireAdmin } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
+import { parseOptions } from "@/lib/shop-rules";
+import { unstable_rethrow } from "next/navigation";
 
 function textValue(formData: FormData, key: string) {
   return String(formData.get(key) ?? "").trim();
@@ -35,31 +37,6 @@ function parseSpecifications(value: string) {
   return result;
 }
 
-function parseVariants(value: string) {
-  return value
-    .split("\n")
-    .map((line) => line.trim())
-    .filter(Boolean)
-    .map((line, index) => {
-      const label = line.split("|")[0].trim();
-      if (!label) return null;
-      return {
-        label,
-        price_pkr: null,
-        price_usd: null,
-        sort_order: index,
-        active: true,
-      };
-    })
-    .filter(Boolean) as Array<{
-      label: string;
-      price_pkr: null;
-      price_usd: null;
-      sort_order: number;
-      active: boolean;
-    }>;
-}
-
 function storagePathFromUrl(url: string) {
   const marker = "/storage/v1/object/public/product-images/";
   const index = url.indexOf(marker);
@@ -69,7 +46,11 @@ function storagePathFromUrl(url: string) {
 
 async function removeManagedImages(urls: string[]) {
   const paths = Array.from(
-    new Set(urls.map(storagePathFromUrl).filter((value): value is string => Boolean(value))),
+    new Set(
+      urls
+        .map(storagePathFromUrl)
+        .filter((value): value is string => Boolean(value)),
+    ),
   );
   if (!paths.length) return;
 
@@ -90,20 +71,28 @@ async function collectImages(formData: FormData, existing: string[]) {
 
   for (const entry of files) {
     if (!(entry instanceof File) || entry.size === 0) continue;
-    if (entry.size > 5 * 1024 * 1024) throw new Error("Each image must be 5MB or smaller.");
+    if (entry.size > 5 * 1024 * 1024)
+      throw new Error("Each image must be 5MB or smaller.");
     if (!["image/jpeg", "image/png", "image/webp"].includes(entry.type)) {
       throw new Error("Product images must be JPG, PNG or WebP.");
     }
 
     const extension =
-      entry.type === "image/png" ? "png" : entry.type === "image/webp" ? "webp" : "jpg";
-    const path = "catalogue/" + Date.now() + "-" + crypto.randomUUID() + "." + extension;
+      entry.type === "image/png"
+        ? "png"
+        : entry.type === "image/webp"
+          ? "webp"
+          : "jpg";
+    const path =
+      "catalogue/" + Date.now() + "-" + crypto.randomUUID() + "." + extension;
 
-    const { error } = await supabase.storage.from("product-images").upload(path, entry, {
-      cacheControl: "31536000",
-      contentType: entry.type,
-      upsert: false,
-    });
+    const { error } = await supabase.storage
+      .from("product-images")
+      .upload(path, entry, {
+        cacheControl: "31536000",
+        contentType: entry.type,
+        upsert: false,
+      });
     if (error) throw new Error(error.message);
 
     const { data } = supabase.storage.from("product-images").getPublicUrl(path);
@@ -116,6 +105,18 @@ async function collectImages(formData: FormData, existing: string[]) {
 function productPayload(formData: FormData, images: string[]) {
   const name = textValue(formData, "name");
   const requestedSlug = textValue(formData, "slug");
+  const showPrice = formData.get("showPrice") === "on";
+  const publicPrice = Number(textValue(formData, "publicPrice"));
+  if (
+    showPrice &&
+    (!Number.isFinite(publicPrice) ||
+      publicPrice <= 0 ||
+      publicPrice > 1000000 ||
+      Math.abs(publicPrice * 100 - Math.round(publicPrice * 100)) > 0.00001)
+  )
+    throw new Error(
+      "Enter a positive unit price with no more than two decimal places.",
+    );
 
   return {
     name,
@@ -131,7 +132,10 @@ function productPayload(formData: FormData, images: string[]) {
     price_usd: null,
     previous_price_pkr: null,
     previous_price_usd: null,
-    price_on_request: true,
+    price_on_request: !showPrice,
+    public_price: showPrice ? publicPrice : null,
+    sizes: parseOptions(textValue(formData, "sizes")),
+    colors: parseOptions(textValue(formData, "colors")),
     stock_status: textValue(formData, "stockStatus") || "made_to_order",
     featured: formData.get("featured") === "on",
     active: formData.get("active") === "on",
@@ -174,10 +178,14 @@ export async function deleteProductGroup(formData: FormData) {
   await requireAdmin();
 
   const groupId = textValue(formData, "groupId");
-  if (!groupId) redirect("/admin/products?error=" + encodeURIComponent("Item not found"));
+  if (!groupId)
+    redirect("/admin/products?error=" + encodeURIComponent("Item not found"));
 
   const supabase = await createClient();
-  const { error } = await supabase.from("product_groups").delete().eq("id", groupId);
+  const { error } = await supabase
+    .from("product_groups")
+    .delete()
+    .eq("id", groupId);
 
   if (error) {
     redirect("/admin/products?error=" + encodeURIComponent(error.message));
@@ -201,7 +209,10 @@ export async function createProduct(formData: FormData) {
     const payload = productPayload(formData, images);
 
     if (!payload.name || !payload.slug) {
-      redirect("/admin/products?error=" + encodeURIComponent("Product name is required"));
+      redirect(
+        "/admin/products?error=" +
+          encodeURIComponent("Product name is required"),
+      );
     }
 
     const supabase = await createClient();
@@ -212,17 +223,10 @@ export async function createProduct(formData: FormData) {
       .single();
 
     if (error || !product) {
-      redirect("/admin/products?error=" + encodeURIComponent(error?.message ?? "Unable to add product"));
-    }
-
-    const variants = parseVariants(textValue(formData, "variants"));
-    if (variants.length) {
-      const { error: variantError } = await supabase
-        .from("product_variants")
-        .insert(variants.map((variant) => ({ ...variant, product_id: product.id })));
-      if (variantError) {
-        redirect("/admin/products?error=" + encodeURIComponent(variantError.message));
-      }
+      redirect(
+        "/admin/products?error=" +
+          encodeURIComponent(error?.message ?? "Unable to add product"),
+      );
     }
 
     revalidatePath("/");
@@ -230,9 +234,12 @@ export async function createProduct(formData: FormData) {
     revalidatePath("/admin/products");
     redirect("/admin/products?message=" + encodeURIComponent("Product added"));
   } catch (error) {
+    unstable_rethrow(error);
     redirect(
       "/admin/products?error=" +
-        encodeURIComponent(error instanceof Error ? error.message : "Unable to add product"),
+        encodeURIComponent(
+          error instanceof Error ? error.message : "Unable to add product",
+        ),
     );
   }
 }
@@ -258,20 +265,17 @@ export async function updateProduct(formData: FormData) {
     const images = await collectImages(formData, existingImages);
     const payload = productPayload(formData, images);
 
-    const { error } = await supabase.from("products").update(payload).eq("id", productId);
+    const { error } = await supabase
+      .from("products")
+      .update(payload)
+      .eq("id", productId);
     if (error) {
-      redirect("/admin/products/" + productId + "?error=" + encodeURIComponent(error.message));
-    }
-
-    const variants = parseVariants(textValue(formData, "variants"));
-    await supabase.from("product_variants").delete().eq("product_id", productId);
-    if (variants.length) {
-      const { error: variantError } = await supabase
-        .from("product_variants")
-        .insert(variants.map((variant) => ({ ...variant, product_id: productId })));
-      if (variantError) {
-        redirect("/admin/products/" + productId + "?error=" + encodeURIComponent(variantError.message));
-      }
+      redirect(
+        "/admin/products/" +
+          productId +
+          "?error=" +
+          encodeURIComponent(error.message),
+      );
     }
 
     const removedImages = previousImages.filter((url) => !images.includes(url));
@@ -281,13 +285,21 @@ export async function updateProduct(formData: FormData) {
     revalidatePath("/products");
     revalidatePath("/admin/products");
     revalidatePath("/products/" + payload.slug);
-    redirect("/admin/products/" + productId + "?message=" + encodeURIComponent("Product updated"));
+    redirect(
+      "/admin/products/" +
+        productId +
+        "?message=" +
+        encodeURIComponent("Product updated"),
+    );
   } catch (error) {
+    unstable_rethrow(error);
     redirect(
       "/admin/products/" +
         productId +
         "?error=" +
-        encodeURIComponent(error instanceof Error ? error.message : "Unable to update product"),
+        encodeURIComponent(
+          error instanceof Error ? error.message : "Unable to update product",
+        ),
     );
   }
 }
@@ -304,10 +316,14 @@ export async function deleteProduct(formData: FormData) {
     .eq("id", productId)
     .maybeSingle();
 
-  const { error } = await supabase.from("products").delete().eq("id", productId);
-  if (error) redirect("/admin/products?error=" + encodeURIComponent(error.message));
+  const { error } = await supabase
+    .from("products")
+    .delete()
+    .eq("id", productId);
+  if (error)
+    redirect("/admin/products?error=" + encodeURIComponent(error.message));
 
-  await removeManagedImages(((product?.images ?? []) as string[]));
+  await removeManagedImages((product?.images ?? []) as string[]);
 
   revalidatePath("/");
   revalidatePath("/products");
