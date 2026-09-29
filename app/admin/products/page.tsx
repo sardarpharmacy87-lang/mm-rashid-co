@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { AdminProductOptions } from "@/components/admin-product-options";
+import { getShopSettings } from "@/lib/shop";
 import {
   createProduct,
   createProductGroup,
@@ -13,6 +15,7 @@ type PageProps = {
 
 export default async function AdminProductsPage({ searchParams }: PageProps) {
   const feedback = await searchParams;
+  const shop = await getShopSettings();
   const supabase = await createClient();
 
   const [productsResult, groupsResult] = await Promise.all([
@@ -238,14 +241,7 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
                 placeholder={"Material: Velvet\nFinish: Gold bullion"}
               />
             </label>
-            <label className="form-span-two">
-              Options / sizes — one per line
-              <textarea
-                name="variants"
-                rows={5}
-                placeholder={"Small\nLarge\nCustom size"}
-              />
-            </label>
+            <AdminProductOptions currency={shop.currency} />
           </div>
 
           <div className="admin-check-row">

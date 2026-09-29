@@ -18,7 +18,7 @@ export default async function CustomerDashboard() {
       supabase
         .from("enquiries")
         .select(
-          "id, enquiry_number, title, quantity, delivery_country, status, created_at",
+          "id, enquiry_number, title, quantity, delivery_country, status, uploads_complete, request_kind, created_at",
         )
         .eq("customer_id", user.id)
         .order("created_at", { ascending: false })
@@ -48,8 +48,7 @@ export default async function CustomerDashboard() {
           </p>
           <h1>Welcome, {profile?.full_name ?? "Customer"}</h1>
           <p>
-            Your private MM Rashid &amp; Co. account, rate requests and
-            quotations.
+            Your private MM Rashid &amp; Co. account, orders and quotations.
           </p>
         </div>
         {profile?.role === "admin" ? (
@@ -65,7 +64,7 @@ export default async function CustomerDashboard() {
 
       <section className="portal-section">
         <div className="portal-section-head">
-          <h2>My rate requests</h2>
+          <h2>My orders &amp; quotations</h2>
         </div>
         {(enquiries ?? []).length ? (
           <div className="portal-table-wrap">
@@ -76,17 +75,13 @@ export default async function CustomerDashboard() {
                   <th>Product</th>
                   <th>Qty</th>
                   <th>Status</th>
-                  <th>Rate</th>
+                  <th>Details</th>
                   <th>Total</th>
                 </tr>
               </thead>
               <tbody>
                 {(enquiries ?? []).map((enquiry) => {
                   const quote = quoteMap.get(enquiry.id);
-                  const unitRate =
-                    quote && enquiry.quantity
-                      ? Number(quote.subtotal) / enquiry.quantity
-                      : null;
 
                   return (
                     <tr key={enquiry.id}>
@@ -101,16 +96,18 @@ export default async function CustomerDashboard() {
                       <td>{enquiry.quantity}</td>
                       <td>
                         <span className="status">
-                          {enquiry.status.replace("_", " ")}
+                          {!enquiry.uploads_complete
+                            ? "Upload incomplete"
+                            : enquiry.status.replace("_", " ")}
                         </span>
                       </td>
                       <td>
-                        {quote && unitRate !== null
-                          ? quote.currency +
-                            " " +
-                            unitRate.toFixed(2) +
-                            " / unit"
-                          : "Awaiting rate"}
+                        <Link
+                          className="text-link"
+                          href={"/customer/enquiries/" + enquiry.id}
+                        >
+                          View request
+                        </Link>
                       </td>
                       <td>
                         {quote ? (
@@ -138,7 +135,7 @@ export default async function CustomerDashboard() {
           </div>
         ) : (
           <div>
-            <p>You have not requested any rates yet.</p>
+            <p>You have no requests or orders yet.</p>
             <Link className="portal-button" href="/products">
               Browse products
             </Link>

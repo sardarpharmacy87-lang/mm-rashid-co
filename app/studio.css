@@ -767,3 +767,202 @@
     transition: none;
   }
 }
+/* Ordering uses the same navy and white palette as the storefront. */
+.public-product-price {
+  display: block !important;
+  color: var(--ink, #10243b) !important;
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 12px 0;
+}
+.public-product-price small {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 400;
+  margin-top: 6px;
+  color: #526174;
+}
+.quotation-page {
+  max-width: 1100px;
+  margin-inline: auto;
+}
+.custom-quotation-form {
+  margin-top: 40px;
+}
+.commerce-options {
+  border: 0;
+  border-top: 1px solid #dbe1e8;
+  padding: 28px 0;
+  margin: 0;
+  min-width: 0;
+}
+.commerce-options legend {
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: 1.5rem;
+  padding-right: 20px;
+  color: #10243b;
+}
+.custom-quotation-form label,
+.shopping-cart label {
+  display: grid;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: #10243b;
+}
+.custom-quotation-form input:not([type="checkbox"]),
+.custom-quotation-form select,
+.custom-quotation-form textarea,
+.shopping-cart input:not([type="checkbox"]),
+.shopping-cart select,
+.shopping-cart textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #bac5d1;
+  background: #fff;
+  color: #10243b;
+  border-radius: 2px;
+  font: inherit;
+}
+.custom-quotation-form .checkbox-label,
+.shopping-cart .checkbox-label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 22px;
+  gap: 8px;
+}
+.custom-quotation-form input[type="checkbox"],
+.shopping-cart input[type="checkbox"] {
+  accent-color: #10243b;
+  width: 18px;
+  height: 18px;
+}
+.custom-quotation-form p,
+.shopping-cart p {
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+.custom-quotation-form input[type="file"] {
+  padding: 18px;
+  border: 1px dashed #9aaabd;
+}
+.quote-selected-products {
+  padding: 16px 20px;
+  background: #f4f6f8;
+  margin-bottom: 24px;
+}
+.shopping-cart {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.8fr);
+  gap: 60px;
+  align-items: start;
+  margin-top: 40px;
+}
+.cart-line {
+  padding: 24px 0;
+  border-top: 1px solid #dbe1e8;
+}
+.cart-line-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 20px;
+  margin-bottom: 22px;
+}
+.cart-line-heading a {
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: 1.4rem;
+}
+.cart-line-heading button {
+  background: none;
+  border: 0;
+  text-decoration: underline;
+  color: #526174;
+  cursor: pointer;
+  padding: 8px 0;
+}
+.shopping-cart .bag-form {
+  padding: 28px;
+  background: #f4f6f8;
+  border: 1px solid #dbe1e8;
+}
+.shopping-cart .bag-form h2 {
+  font-size: 1.8rem;
+}
+.shopping-cart fieldset {
+  border: 0;
+  padding: 0;
+  margin: 24px 0 0;
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+}
+.shopping-cart legend {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+.cart-totals {
+  margin: 24px 0;
+}
+.cart-totals div {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin: 12px 0;
+}
+.cart-totals div:last-child {
+  border-top: 1px solid #bfc9d4;
+  padding-top: 16px;
+  font-weight: 600;
+}
+.cart-totals dd {
+  margin: 0;
+}
+.reference-files {
+  list-style: none;
+  padding: 0;
+}
+.reference-files li {
+  padding: 14px 0;
+  border-bottom: 1px solid #dbe1e8;
+  overflow-wrap: anywhere;
+}
+.reference-files small {
+  display: block;
+  margin-top: 6px;
+  color: #526174;
+}
+.upload-progress {
+  display: grid;
+  gap: 12px;
+  margin: 20px 0;
+}
+.upload-progress progress {
+  width: 100%;
+  accent-color: #10243b;
+}
+.storefront-order-panel .product-rate-form {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.storefront-order-panel .product-rate-form button {
+  grid-column: 1/-1;
+}
+@media (max-width: 760px) {
+  .shopping-cart {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .shopping-cart .bag-form {
+    padding: 22px 18px;
+  }
+  .commerce-options legend {
+    font-size: 1.25rem;
+  }
+  .quotation-page {
+    padding-inline: 22px;
+  }
+  .storefront-order-panel .product-rate-form {
+    grid-template-columns: 1fr;
+  }
+}

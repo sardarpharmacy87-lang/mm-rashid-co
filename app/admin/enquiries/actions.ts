@@ -12,7 +12,7 @@ export async function sendQuotation(formData: FormData) {
 
   const enquiryId = String(formData.get("enquiry_id") ?? "");
   const currency = String(formData.get("currency") ?? "USD");
-  const unitRate = Number(formData.get("unit_rate") ?? 0);
+  const subtotal = Number(formData.get("subtotal") ?? 0);
   const shipping = Number(formData.get("shipping") ?? 0);
   const tax = Number(formData.get("tax") ?? 0);
   const discount = Number(formData.get("discount") ?? 0);
@@ -21,17 +21,20 @@ export async function sendQuotation(formData: FormData) {
 
   const { data: enquiry } = await supabase
     .from("enquiries")
-    .select("id, customer_id, quantity, enquiry_number, title")
+    .select(
+      "id, customer_id, quantity, enquiry_number, title, uploads_complete",
+    )
     .eq("id", enquiryId)
     .single();
 
   if (
     !enquiry ||
+    !enquiry.uploads_complete ||
     !["USD", "GBP", "EUR", "PKR", "AED"].includes(currency) ||
-    [unitRate, shipping, tax, discount].some(
+    [subtotal, shipping, tax, discount].some(
       (n) => !Number.isFinite(n) || n < 0 || n > 100000000,
     ) ||
-    unitRate === 0 ||
+    subtotal === 0 ||
     !/^\d{4}-\d{2}-\d{2}$/.test(validUntil) ||
     Number.isNaN(Date.parse(validUntil)) ||
     validUntil < new Date().toISOString().slice(0, 10) ||
@@ -42,7 +45,6 @@ export async function sendQuotation(formData: FormData) {
     );
   }
 
-  const subtotal = Number((unitRate * enquiry.quantity).toFixed(2));
   if (subtotal + shipping + tax - discount <= 0)
     redirect(
       "/admin/enquiries/" + encodeURIComponent(enquiryId) + "?quote=invalid",
@@ -91,7 +93,7 @@ export async function sendQuotation(formData: FormData) {
       );
   }
   const quoteNotes = [
-    "Rate per unit: " + currency + " " + unitRate.toFixed(2),
+    "Product subtotal: " + currency + " " + subtotal.toFixed(2),
     notes || null,
   ]
     .filter(Boolean)
@@ -125,7 +127,8 @@ export async function sendQuotation(formData: FormData) {
     supabase
       .from("enquiries")
       .update({ status: "quoted" })
-      .eq("id", enquiry.id),
+      .eq("id", enquiry.id)
+      .in("status", ["submitted", "under_review", "quoted"]),
     supabase.from("notifications").insert({
       customer_id: enquiry.customer_id,
       kind: "quotation",
@@ -174,4 +177,79 @@ export async function confirmPayment(form: FormData) {
   redirect(
     "/admin/enquiries/" + q.enquiry_id + "?quote=" + (error ? "error" : "paid"),
   );
+}
+
+export async function updateOrder(form: FormData) {
+  await requireAdmin();
+  const db = await createClient();
+  const id = String(form.get("enquiry_id") || "");
+  const status = String(form.get("status") || "");
+  const tracking = String(form.get("tracking_number") || "").trim();
+  if (
+    ![
+      "pending",
+      "confirmed",
+      "in_production",
+      "quality_check",
+      "ready",
+      "dispatched",
+      "delivered",
+      "cancelled",
+    ].includes(status) ||
+    tracking.length > 200
+  )
+    redirect("/admin/enquiries/" + encodeURIComponent(id) + "?quote=invalid");
+  const { error } = await db
+    .from("orders")
+    .update({ status, tracking_number: tracking || null })
+    .eq("enquiry_id", id);
+  revalidatePath("/customer", "layout");
+  revalidatePath("/admin/enquiries/" + id);
+  redirect(
+    "/admin/enquiries/" +
+      encodeURIComponent(id) +
+      "?quote=" +
+      (error ? "error" : "updated"),
+  );
+}
+
+export async function updatePaymentLink(form: FormData) {
+  await requireAdmin();
+  const db = await createClient();
+  const id = String(form.get("quotation_id") || "");
+  const url = String(form.get("payment_url") || "").trim();
+  const methodId = Number(form.get("payment_method_id"));
+  const { data: q } = await db
+    .from("quotations")
+    .select("id,enquiry_id,status,payment_status")
+    .eq("id", id)
+    .single();
+  if (!q) redirect("/admin/enquiries");
+  const path = "/admin/enquiries/" + q.enquiry_id;
+  const { data: m } = await db
+    .from("payment_methods")
+    .select("id,kind,gateway_host")
+    .eq("id", methodId)
+    .eq("enabled", true)
+    .maybeSingle();
+  if (
+    !m ||
+    q.payment_status === "paid" ||
+    !["sent", "accepted"].includes(q.status) ||
+    (m.kind === "hosted_gateway"
+      ? !isMatchingGateway(url, m.gateway_host)
+      : Boolean(url))
+  )
+    redirect(path + "?quote=payment-invalid");
+  const { error } = await db
+    .from("quotations")
+    .update({
+      payment_method_id: m.id,
+      payment_url: m.kind === "hosted_gateway" ? safeHttpsUrl(url) : null,
+    })
+    .eq("id", id)
+    .eq("payment_status", "unpaid");
+  revalidatePath("/customer", "layout");
+  revalidatePath(path);
+  redirect(path + "?quote=" + (error ? "error" : "updated"));
 }

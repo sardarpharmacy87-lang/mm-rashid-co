@@ -62,7 +62,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
   let productsQuery = supabase
     .from("products")
     .select(
-      "id, name, slug, sku, short_description, primary_image, stock_status, created_at, product_group_id",
+      "id, name, slug, sku, short_description, primary_image, stock_status, created_at, product_group_id, public_price, price_on_request",
       { count: "exact" },
     )
     .eq("active", true);
@@ -131,7 +131,8 @@ export default async function ProductsPage({ searchParams }: PageProps) {
             <h1>{selectedGroup?.name ?? "Ceremonial & Military Products"}</h1>
             <p>
               Browse our made-to-order collection. Open any product to select
-              specifications and request a rate for your required quantity.
+              sizes and colors, order priced pieces or request a private
+              quotation.
             </p>
           </div>
         </div>

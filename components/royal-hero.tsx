@@ -24,7 +24,7 @@ export function RoyalHero({ product }: { product?: ProductCardData }) {
             <Link className="studio-button" href="#collections">
               Explore products <span aria-hidden="true">→</span>
             </Link>
-            <Link className="studio-text-link" href="/contact">
+            <Link className="studio-text-link" href="/quotation">
               Discuss a custom order
             </Link>
           </div>

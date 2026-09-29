@@ -6,8 +6,8 @@ import { ProductGallery } from "@/components/product-gallery";
 import { ProductCard, type ProductCardData } from "@/components/product-card";
 import { StoreFooter } from "@/components/store-footer";
 import { createClient } from "@/lib/supabase/server";
-import { submitProductEnquiry } from "./actions";
-import { AddToBag } from "@/components/quote-bag";
+import { ProductPurchase } from "@/components/product-purchase";
+import { getShopSettings } from "@/lib/shop";
 import { ProductShare } from "@/components/product-share";
 
 type PageProps = {
@@ -43,34 +43,18 @@ export async function generateMetadata({
 
 export default async function ProductPage({ params, searchParams }: PageProps) {
   const { slug } = await params;
-  const { enquiry } = await searchParams;
+  await searchParams;
+  const shop = await getShopSettings();
   const supabase = await createClient();
   const product = await getProduct(slug);
   if (!product) notFound();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  const { data: customerProfile } = user
-    ? await supabase
-        .from("profiles")
-        .select("country")
-        .eq("id", user.id)
-        .maybeSingle()
-    : { data: null };
-
-  const [variantsResult, relatedResult, groupResult] = await Promise.all([
-    supabase
-      .from("product_variants")
-      .select("id, label")
-      .eq("product_id", product.id)
-      .eq("active", true)
-      .order("sort_order", { ascending: true }),
+  const [relatedResult, groupResult] = await Promise.all([
     product.product_group_id
       ? supabase
           .from("products")
           .select(
-            "id, name, slug, sku, short_description, primary_image, stock_status",
+            "id, name, slug, sku, short_description, primary_image, stock_status, public_price, price_on_request",
           )
           .eq("active", true)
           .eq("product_group_id", product.product_group_id)
@@ -80,7 +64,7 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
       : supabase
           .from("products")
           .select(
-            "id, name, slug, sku, short_description, primary_image, stock_status",
+            "id, name, slug, sku, short_description, primary_image, stock_status, public_price, price_on_request",
           )
           .eq("active", true)
           .neq("id", product.id)
@@ -95,7 +79,6 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
       : Promise.resolve({ data: null }),
   ]);
 
-  const variants = variantsResult.data ?? [];
   const related = (relatedResult.data ?? []) as ProductCardData[];
   const group = groupResult.data as {
     id: string;
@@ -109,19 +92,7 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
     product.specifications && typeof product.specifications === "object"
       ? Object.entries(product.specifications as Record<string, unknown>)
       : [];
-  const selectableSpecifications = specifications
-    .map(([key, value]) => [key, String(value)] as const)
-    .filter(([, value]) => value.includes("|"))
-    .map(([key, value]) => ({
-      key,
-      options: value
-        .split("|")
-        .map((option) => option.trim())
-        .filter(Boolean),
-    }));
-  const staticSpecifications = specifications.filter(
-    ([, value]) => !String(value).includes("|"),
-  );
+  const staticSpecifications = specifications;
 
   const productSchema = {
     "@context": "https://schema.org",
@@ -174,160 +145,25 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
             {product.short_description ? (
               <p className="product-lead">{product.short_description}</p>
             ) : null}
-            {product.stock_status !== "out_of_stock" && (
-              <AddToBag
-                product={{
-                  id: product.id,
-                  name: product.name,
-                  slug: product.slug,
-                }}
-              />
-            )}
+
             <ProductShare name={product.name} />
 
-            <div className="product-rate-request storefront-order-panel">
-              <p className="store-kicker">Made to order</p>
-              <h2>Request a quotation</h2>
-              <p>
-                Select the required options, enter your quantity, and send an
-                enquiry. We will quote the rate according to your quantity and
-                specification.
-              </p>
-
-              {enquiry === "sent" ? (
-                <p className="rate-request-success">
-                  Your rate request has been submitted. We will send your
-                  quotation through your customer account.
-                </p>
-              ) : null}
-              {enquiry === "invalid" ? (
-                <p className="rate-request-error">
-                  Please enter a valid quantity and delivery country.
-                </p>
-              ) : null}
-              {enquiry === "error" ? (
-                <p className="rate-request-error">
-                  Your request could not be submitted. Please try again.
-                </p>
-              ) : null}
-
-              {product.stock_status === "out_of_stock" ? (
-                <p>
-                  This piece is currently unavailable.{" "}
-                  <Link className="text-link" href="/contact">
-                    Ask about a similar commission
-                  </Link>
-                  .
-                </p>
-              ) : user ? (
-                <form
-                  action={submitProductEnquiry}
-                  className="product-rate-form"
-                >
-                  <input type="hidden" name="product_id" value={product.id} />
-                  <input type="hidden" name="slug" value={product.slug} />
-                  {variants.length ? (
-                    <label className="rate-option-full">
-                      Size / option
-                      <select
-                        name="option__Size / option"
-                        defaultValue=""
-                        required
-                      >
-                        <option value="" disabled>
-                          Choose one
-                        </option>
-                        {variants.map((variant) => (
-                          <option key={variant.id} value={variant.label}>
-                            {variant.label}
-                          </option>
-                        ))}
-                      </select>
-                    </label>
-                  ) : null}
-
-                  {selectableSpecifications.map((specification) => (
-                    <label className="rate-option-full" key={specification.key}>
-                      {specification.key}
-                      <select
-                        name={"option__" + specification.key}
-                        defaultValue=""
-                      >
-                        <option value="">Choose one</option>
-                        {specification.options.map((option) => (
-                          <option key={option} value={option}>
-                            {option}
-                          </option>
-                        ))}
-                      </select>
-                    </label>
-                  ))}
-
-                  <label className="rate-option-full">
-                    Additional information <span>(optional)</span>
-                    <input
-                      name="notes"
-                      type="text"
-                      placeholder="Any custom requirements or notes"
-                    />
-                  </label>
-
-                  <label>
-                    Quantity
-                    <input
-                      name="quantity"
-                      type="number"
-                      min="1"
-                      step="1"
-                      defaultValue="1"
-                      required
-                    />
-                  </label>
-                  <label>
-                    Delivery country
-                    <input
-                      name="delivery_country"
-                      type="text"
-                      defaultValue={customerProfile?.country ?? ""}
-                      placeholder="e.g. United Kingdom"
-                      required
-                    />
-                  </label>
-                  <label className="rate-option-full">
-                    Required by <span>(optional)</span>
-                    <input name="required_by" type="date" />
-                  </label>
-
-                  <button
-                    className="store-primary-button rate-submit-button"
-                    type="submit"
-                  >
-                    Send enquiry for rate
-                  </button>
-                  <p className="rate-private-note">
-                    Your enquiry and quotation are private to your signed-in
-                    customer account.
-                  </p>
-                </form>
-              ) : (
-                <div className="rate-login-actions">
-                  <Link
-                    className="store-primary-button"
-                    href="/sign-in?message=Please sign in to send an enquiry and receive your private rate."
-                  >
-                    Sign in to request rate
-                  </Link>
-                  <Link className="store-secondary-button" href="/sign-up">
-                    Create customer account
-                  </Link>
-                  <p className="rate-private-note">
-                    Login is required to send an enquiry and receive a
-                    quotation.
-                  </p>
-                </div>
-              )}
-            </div>
-
+            <ProductPurchase
+              product={{
+                id: product.id,
+                name: product.name,
+                slug: product.slug,
+                stock_status: product.stock_status,
+                sizes: product.sizes ?? [],
+                colors: product.colors ?? [],
+                public_price: product.price_on_request
+                  ? null
+                  : product.public_price,
+                price_on_request: product.price_on_request,
+              }}
+              currency={shop.currency}
+              maxQuantity={shop.max_quantity}
+            />
             <div className="product-description">
               <h2>Product details</h2>
               <p>

@@ -38,7 +38,20 @@ export default async function HomePage({
     getStorefrontSettings(),
   ]);
   const groups = (g.data ?? []) as Group[];
-  const products = (p.data ?? []) as HomeProduct[];
+  const baseProducts = (p.data ?? []) as HomeProduct[];
+  const { data: prices } = baseProducts.length
+    ? await supabase
+        .from("products")
+        .select("id,public_price,price_on_request")
+        .in(
+          "id",
+          baseProducts.map((p) => p.id),
+        )
+    : { data: [] };
+  const products = baseProducts.map((product) => ({
+    ...product,
+    ...prices?.find((p) => p.id === product.id),
+  }));
   const slides = (s.data ?? []) as HomepageSlide[];
   const featured = preferences.featuredProductId
     ? await supabase

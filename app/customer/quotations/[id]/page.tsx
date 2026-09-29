@@ -1,3 +1,5 @@
+import { OrderDetails } from "@/components/order-details";
+import { acceptQuotation } from "../actions";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { requireUser } from "@/lib/auth";
@@ -9,9 +11,12 @@ export const metadata = {
 };
 export default async function Quotation({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ error?: string }>;
 }) {
+  const { error: requestError } = await searchParams;
   const user = await requireUser();
   const { id } = await params;
   const db = await createClient();
@@ -60,6 +65,16 @@ export default async function Quotation({
           </p>
         </div>
       </div>
+      {requestError && (
+        <p role="alert" className="form-alert form-alert-error">
+          This quotation could not be accepted. Refresh to check its status or
+          contact the workshop.
+        </p>
+      )}
+      <OrderDetails enquiryId={q.enquiry_id} />
+      <Link className="text-link" href={"/customer/enquiries/" + q.enquiry_id}>
+        View request &amp; reference files →
+      </Link>
       <section className="portal-section">
         <h2>Your quotation</h2>
         <dl className="account-detail-grid">
@@ -92,6 +107,21 @@ export default async function Quotation({
         </dl>
         {q.notes && <p style={{ whiteSpace: "pre-line" }}>{q.notes}</p>}
       </section>
+      {q.status === "sent" && payableQuote(q) && (
+        <section className="portal-section">
+          <h2>Accept your quotation</h2>
+          <form action={acceptQuotation} className="portal-form">
+            <input name="id" type="hidden" value={q.id} />
+            <label className="checkbox-label">
+              <input name="terms" type="checkbox" required />I accept this
+              quotation and the <Link href="/terms">order terms</Link>.
+            </label>
+            <button className="portal-button">
+              Accept quotation &amp; place order
+            </button>
+          </form>
+        </section>
+      )}
       {q.payment_status === "paid" ? (
         <section className="portal-section">
           <h2>Payment received</h2>

@@ -103,7 +103,8 @@ export async function StoreFooter({
         <div className="clean-footer-column">
           <strong>Customer service</strong>
           <Link href="/customer">Customer account</Link>
-          <Link href="/quote-bag">Your quotation bag</Link>
+          <Link href="/cart">Your cart</Link>
+          <Link href="/quotation">Custom quotation</Link>
           <Link href="/privacy">Privacy policy</Link>
           <Link href="/terms">Terms &amp; conditions</Link>
           <Link href="/contact">Contact information</Link>
