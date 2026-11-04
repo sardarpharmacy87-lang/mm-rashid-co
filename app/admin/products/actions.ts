@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireAdmin } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
@@ -168,6 +168,7 @@ export async function createProductGroup(formData: FormData) {
     redirect("/admin/products?error=" + encodeURIComponent(error.message));
   }
 
+  updateTag("storefront-groups");
   revalidatePath("/");
   revalidatePath("/products");
   revalidatePath("/admin/products");
@@ -191,6 +192,7 @@ export async function deleteProductGroup(formData: FormData) {
     redirect("/admin/products?error=" + encodeURIComponent(error.message));
   }
 
+  updateTag("storefront-groups");
   revalidatePath("/");
   revalidatePath("/products");
   revalidatePath("/admin/products");
@@ -229,6 +231,7 @@ export async function createProduct(formData: FormData) {
       );
     }
 
+    updateTag("storefront-groups");
     revalidatePath("/");
     revalidatePath("/products");
     revalidatePath("/admin/products");
@@ -281,6 +284,7 @@ export async function updateProduct(formData: FormData) {
     const removedImages = previousImages.filter((url) => !images.includes(url));
     await removeManagedImages(removedImages);
 
+    updateTag("storefront-groups");
     revalidatePath("/");
     revalidatePath("/products");
     revalidatePath("/admin/products");
@@ -325,6 +329,7 @@ export async function deleteProduct(formData: FormData) {
 
   await removeManagedImages((product?.images ?? []) as string[]);
 
+  updateTag("storefront-groups");
   revalidatePath("/");
   revalidatePath("/products");
   revalidatePath("/admin/products");

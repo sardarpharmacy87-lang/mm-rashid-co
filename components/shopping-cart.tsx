@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { useCart, saveCart } from "@/lib/cart-store";
 import {
@@ -22,7 +23,72 @@ type Profile = {
   address?: string;
   postal_code?: string;
 };
-export function ShoppingCart({
+type CartProps = {
+  settings: ShopSettings;
+  profile: Profile | null;
+  signedIn: boolean;
+  methods: { id: number; name: string; kind: string }[];
+};
+export function ShoppingCart(props: CartProps) {
+  const items = useCart();
+  const ids = JSON.stringify([...new Set(items.map((item) => item.id))].sort());
+  const [result, setResult] = useState<{
+    ids: string;
+    products: ShopProduct[];
+    error: boolean;
+  } | null>(null);
+  const [attempt, setAttempt] = useState(0);
+  useEffect(() => {
+    const productIds: string[] = JSON.parse(ids);
+    if (!productIds.length) return;
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 10000);
+    let current = true;
+    void (async () => {
+      try {
+        const { data, error } = await createClient()
+          .from("products")
+          .select(
+            "id,name,slug,stock_status,sizes,colors,public_price,price_on_request",
+          )
+          .eq("active", true)
+          .in("id", productIds)
+          .abortSignal(controller.signal);
+        if (current) setResult({ ids, products: data ?? [], error: !!error });
+      } catch {
+        if (current) setResult({ ids, products: [], error: true });
+      } finally {
+        clearTimeout(timer);
+      }
+    })();
+    return () => {
+      current = false;
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [ids, attempt]);
+  if (!items.length) return <LoadedShoppingCart {...props} products={[]} />;
+  if (result?.ids !== ids)
+    return <p role="status">Checking your cart prices and availability…</p>;
+  if (result.error)
+    return (
+      <section role="alert">
+        <p>We could not load your cart details. Your selections are saved.</p>
+        <button
+          type="button"
+          className="atelier-button"
+          onClick={() => {
+            setResult(null);
+            setAttempt((n) => n + 1);
+          }}
+        >
+          Try again
+        </button>
+      </section>
+    );
+  return <LoadedShoppingCart {...props} products={result.products} />;
+}
+function LoadedShoppingCart({
   products,
   settings,
   profile,

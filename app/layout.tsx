@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+import Loading from "./loading";
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import "./commerce.css";
@@ -56,28 +58,37 @@ export const viewport: Viewport = {
   themeColor: "#041329",
 };
 
-export default async function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
-  const settings = await getStorefrontSettings();
-  const jar = await cookies();
-  const requestHeaders = await headers();
+async function StorefrontLocale({ children }: { children: React.ReactNode }) {
+  const [settings, jar, requestHeaders] = await Promise.all([
+    getStorefrontSettings(),
+    cookies(),
+    headers(),
+  ]);
   const preferred =
     jar.get("mmr-country")?.value ||
     requestHeaders.get("x-vercel-ip-country") ||
     "PK";
   const initialCountry = regionCodes.includes(preferred) ? preferred : "PK";
   return (
+    <LocaleProvider
+      initialCountry={initialCountry}
+      translationKey={settings.translationKey}
+      languages={settings.languages}
+    >
+      {children}
+      <SupportChat />
+    </LocaleProvider>
+  );
+}
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
+  return (
     <html lang="en" data-scroll-behavior="smooth">
       <body>
-        <LocaleProvider
-          initialCountry={initialCountry}
-          translationKey={settings.translationKey}
-          languages={settings.languages}
-        >
-          {children}
-          <SupportChat />
-        </LocaleProvider>
+        <Suspense fallback={<Loading />}>
+          <StorefrontLocale>{children}</StorefrontLocale>
+        </Suspense>
       </body>
     </html>
   );

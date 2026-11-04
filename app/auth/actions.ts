@@ -100,7 +100,9 @@ export async function signIn(formData: FormData) {
       destination(
         "/sign-in",
         "error",
-        "Email or password is incorrect, or the email is not verified.",
+        !error.status || error.status >= 500
+          ? "Sign-in is temporarily unavailable. Please try again shortly."
+          : "Email or password is incorrect, or the email is not verified.",
         next,
       ),
     );

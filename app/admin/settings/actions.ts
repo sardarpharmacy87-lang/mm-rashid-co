@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { requireAdmin } from "@/lib/auth";
@@ -38,6 +38,8 @@ export async function saveFeaturedProduct(form: FormData) {
     updated_at: new Date().toISOString(),
   });
   if (error) redirect("/admin/settings?hero=error#hero-settings");
+  updateTag("storefront-preferences");
+  updateTag("storefront-social");
   revalidatePath("/");
   revalidatePath("/admin/settings");
   redirect("/admin/settings?hero=1#hero-settings");
@@ -107,6 +109,7 @@ export async function saveTranslationSettings(form: FormData) {
     translation_languages: languages,
     updated_at: new Date().toISOString(),
   });
+  if (!error) updateTag("storefront-preferences");
   revalidatePath("/", "layout");
   redirect("/admin/settings?translation=" + (error ? "error" : "1"));
 }

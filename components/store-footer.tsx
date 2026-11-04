@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Brand } from "@/components/brand";
-import { createClient } from "@/lib/supabase/server";
+import { getPublicSocialSettings } from "@/lib/public-storefront";
 import { LocaleControls } from "@/components/locale-controls";
 import { subscribeNewsletter } from "@/app/newsletter/actions";
 
@@ -12,14 +12,7 @@ type SocialLink = {
 export async function StoreFooter({
   newsletter,
 }: { newsletter?: string } = {}) {
-  const supabase = await createClient();
-  const { data: settings } = await supabase
-    .from("site_settings")
-    .select(
-      "facebook_url, instagram_url, tiktok_url, pinterest_url, youtube_url, linkedin_url",
-    )
-    .eq("id", "main")
-    .maybeSingle();
+  const settings = await getPublicSocialSettings().catch(() => null);
 
   const socialLinks: SocialLink[] = [
     { label: "Facebook", href: settings?.facebook_url ?? null },

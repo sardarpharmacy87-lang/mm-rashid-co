@@ -1,3 +1,4 @@
+import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { getShopSettings } from "@/lib/shop";
 import { ShoppingCart } from "@/components/shopping-cart";
@@ -9,27 +10,19 @@ export const metadata = {
 };
 export default async function CartPage() {
   const db = await createClient();
-  const {
-    data: { user },
-  } = await db.auth.getUser();
-  const [settings, { data: products }, { data: profile }, { data: methods }] =
-    await Promise.all([
-      getShopSettings(),
-      db
-        .from("products")
-        .select(
-          "id,name,slug,stock_status,sizes,colors,public_price,price_on_request",
-        )
-        .eq("active", true),
-      user
-        ? db
-            .from("profiles")
-            .select("full_name,phone,country,city,address,postal_code")
-            .eq("id", user.id)
-            .single()
-        : Promise.resolve({ data: null }),
-      user ? db.rpc("checkout_methods") : Promise.resolve({ data: [] }),
-    ]);
+  const settingsPromise = getShopSettings();
+  const user = await getCurrentUser();
+  const [settings, { data: profile }, { data: methods }] = await Promise.all([
+    settingsPromise,
+    user
+      ? db
+          .from("profiles")
+          .select("full_name,phone,country,city,address,postal_code")
+          .eq("id", user.id)
+          .single()
+      : Promise.resolve({ data: null }),
+    user ? db.rpc("checkout_methods") : Promise.resolve({ data: [] }),
+  ]);
   return (
     <div className="store-shell">
       <CommerceHeader />
@@ -41,7 +34,6 @@ export default async function CartPage() {
           or request a quotation for custom work.
         </p>
         <ShoppingCart
-          products={products ?? []}
           settings={settings}
           profile={profile}
           signedIn={!!user}
