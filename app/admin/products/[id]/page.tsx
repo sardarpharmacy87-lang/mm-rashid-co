@@ -1,3 +1,4 @@
+import { AdminProductForm } from "@/components/admin-product-form";
 import Link from "next/link";
 import { AdminProductOptions } from "@/components/admin-product-options";
 import { getShopSettings } from "@/lib/shop";
@@ -65,7 +66,7 @@ export default async function EditProductPage({
         <p className="form-alert form-alert-success">{feedback.message}</p>
       ) : null}
 
-      <form
+      <AdminProductForm
         action={updateProduct}
         className="portal-form portal-card commerce-admin-form"
       >
@@ -175,7 +176,7 @@ export default async function EditProductPage({
         <button className="portal-button" type="submit">
           Save product changes
         </button>
-      </form>
+      </AdminProductForm>
     </main>
   );
 }

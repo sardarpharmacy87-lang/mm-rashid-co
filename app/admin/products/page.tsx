@@ -1,3 +1,4 @@
+import { AdminProductForm } from "@/components/admin-product-form";
 import Link from "next/link";
 import { AdminProductOptions } from "@/components/admin-product-options";
 import { getShopSettings } from "@/lib/shop";
@@ -172,7 +173,7 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
           </div>
         </div>
 
-        <form
+        <AdminProductForm
           action={createProduct}
           className="portal-form portal-card commerce-admin-form"
         >
@@ -254,7 +255,7 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
           <button className="portal-button" type="submit">
             Add product
           </button>
-        </form>
+        </AdminProductForm>
       </section>
 
       <section className="portal-section">
