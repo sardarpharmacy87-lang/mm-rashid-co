@@ -1,5 +1,4 @@
 import type { MetadataRoute } from "next";
-import { articles } from "@/lib/journal";
 import { createClient } from "@supabase/supabase-js";
 import { SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL } from "@/lib/supabase/config";
 
@@ -13,8 +12,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...[
       "/collections",
       "/contact",
-      "/journal",
-      ...articles.map((article) => "/journal/" + article.slug),
     ].map((path) => ({
       url: baseUrl + path,
       changeFrequency: "monthly" as const,

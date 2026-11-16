@@ -122,9 +122,6 @@ export function CommerceHeaderClient({ signedIn, role, groups = [] }: Props) {
             <Link href="/#heritage" onClick={closeMenu}>
               Heritage
             </Link>
-            <Link href="/journal" onClick={closeMenu}>
-              Journal
-            </Link>
             <Link href="/catalogue" onClick={closeMenu}>
               Catalogue
             </Link>

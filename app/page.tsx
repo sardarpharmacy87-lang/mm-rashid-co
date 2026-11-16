@@ -155,9 +155,6 @@ export default async function HomePage({
               Today we make ceremonial headwear, embroidered insignia and
               regalia for customers with their own traditions to honour.
             </p>
-            <Link className="text-link" href="/journal/a-century-of-craft">
-              Read our story ↗
-            </Link>
           </div>
         </section>
         {slides.length > 0 && (

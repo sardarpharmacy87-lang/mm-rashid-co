@@ -86,11 +86,10 @@ export async function StoreFooter({
           <strong>Explore</strong>
           <Link href="/collections">Our collections</Link>
           <Link href="/products">All products</Link>
-          <Link href="/capabilities">Capabilities</Link>
+          <Link href="/capabilities">Our craft</Link>
           <Link href="/catalogue">Catalogue</Link>
           <Link href="/#heritage">Our history</Link>
           <Link href="/#workshop">Workshop</Link>
-          <Link href="/journal">Journal &amp; care guides</Link>
         </div>
 
         <div className="clean-footer-column">
