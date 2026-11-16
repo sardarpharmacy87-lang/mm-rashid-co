@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { CommerceHeader } from "@/components/commerce-header";
 import { StoreFooter } from "@/components/store-footer";
@@ -20,17 +19,7 @@ export default function ContactPage() {
           Send your design, quantity and delivery country, or ask us about an
           existing order. You can reach our team by phone or email.
         </p>
-        <div className="workshop-contact">
-          <div className="contact-photograph">
-            <Image
-              src="/images/royal/contact-regalia.webp"
-              alt="Masonic jacket, embroidered ceremonial banner, decorated fez caps and white gloves displayed on royal blue velvet"
-              fill
-              priority
-              sizes="(max-width:760px) 100vw, 50vw"
-            />
-          </div>
-          <div className="workshop-contact-details">
+        <div className="workshop-contact-details">
             <div>
               <p className="eyebrow">Write to us</p>
               <a href="mailto:mmrashidco@hotmail.com">
@@ -66,7 +55,6 @@ export default function ContactPage() {
                 Choose pieces for your quotation ↗
               </Link>
             </div>
-          </div>
         </div>
       </main>
       <StoreFooter />
