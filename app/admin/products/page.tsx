@@ -1,3 +1,5 @@
+import Image from "next/image";
+import { redirect } from "next/navigation";
 import { AdminProductForm } from "@/components/admin-product-form";
 import Link from "next/link";
 import { AdminProductOptions } from "@/components/admin-product-options";
@@ -11,27 +13,34 @@ import {
 import { createClient } from "@/lib/supabase/server";
 
 type PageProps = {
-  searchParams: Promise<{ error?: string; message?: string }>;
+  searchParams: Promise<{ error?: string; message?: string; page?: string; q?: string }>;
 };
 
 export default async function AdminProductsPage({ searchParams }: PageProps) {
   const feedback = await searchParams;
-  const shop = await getShopSettings();
+
   const supabase = await createClient();
 
-  const [productsResult, groupsResult] = await Promise.all([
-    supabase
-      .from("products")
-      .select(
-        "id, name, slug, sku, primary_image, stock_status, active, featured, product_group_id",
-      )
-      .order("sort_order", { ascending: true }),
-    supabase
-      .from("product_groups")
-      .select("id, name, slug, sort_order, active")
-      .order("sort_order", { ascending: true })
-      .order("name", { ascending: true }),
+  const requestedPage = Number(feedback.page);
+  const page = Number.isSafeInteger(requestedPage) && requestedPage > 0 && requestedPage <= 10000 ? requestedPage : 1;
+  const pageSize = 25;
+  const search = (feedback.q ?? "").trim().slice(0, 200);
+  const safeSearch = search.replace(/[(),%_\\"]/g, " ");
+  let query = supabase.from("products").select(
+    "id, name, slug, sku, primary_image, stock_status, active, featured, product_group_id",
+    { count: "exact" },
+  );
+  if (safeSearch) query = query.or("name.ilike.%" + safeSearch + "%,sku.ilike.%" + safeSearch + "%");
+  const [productsResult, groupsResult, totalResult, liveResult, shop] = await Promise.all([
+    query.order("sort_order").order("name").order("id").range((page - 1) * pageSize, page * pageSize - 1),
+    supabase.from("product_groups").select("id, name, slug, sort_order, active").order("sort_order").order("name"),
+    supabase.from("products").select("id", { count: "exact", head: true }),
+    supabase.from("products").select("id", { count: "exact", head: true }).eq("active", true),
+    getShopSettings(),
   ]);
+  const pageCount = Math.max(1, Math.ceil((productsResult.count ?? 0) / pageSize));
+  const pageHref = (number: number) => "/admin/products?" + new URLSearchParams({ page: String(number), ...(search ? { q: search } : {}) }).toString();
+  if (!productsResult.error && page > pageCount) redirect(pageHref(pageCount));
 
   const products = (productsResult.data ?? []) as {
     id: string;
@@ -78,7 +87,7 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
 
       <section className="summary-grid">
         <article>
-          <strong>{products.length}</strong>
+          <strong>{totalResult.count ?? 0}</strong>
           <span>Products</span>
         </article>
         <article>
@@ -86,7 +95,7 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
           <span>Sections</span>
         </article>
         <article>
-          <strong>{products.filter((item) => item.active).length}</strong>
+          <strong>{liveResult.count ?? 0}</strong>
           <span>Live</span>
         </article>
       </section>
@@ -261,9 +270,13 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
       <section className="portal-section">
         <div className="portal-section-head">
           <h2>Current products</h2>
+          <form action="/admin/products" className="portal-form">
+            <label>Search by product name or SKU<input name="q" type="search" defaultValue={search} /></label>
+            <button className="portal-button" type="submit">Search</button>
+          </form>
         </div>
 
-        {products.length ? (
+        {productsResult.error ? <p role="alert">Unable to load products. Please reload.</p> : products.length ? (
           <div className="portal-table-wrap">
             <table className="portal-table">
               <thead>
@@ -281,7 +294,7 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
                     <td>
                       <div className="admin-product-cell">
                         {product.primary_image ? (
-                          <img src={product.primary_image} alt="" />
+                          <Image src={product.primary_image} alt="" width={64} height={64} sizes="64px" loading="lazy" style={{ objectFit: "contain" }} />
                         ) : null}
                         <div>
                           <strong>{product.name}</strong>
@@ -317,9 +330,16 @@ export default async function AdminProductsPage({ searchParams }: PageProps) {
           </div>
         ) : (
           <div className="portal-empty admin-products-empty">
-            <strong>No products added yet.</strong>
-            <p>Your real products will appear here after you add them above.</p>
+            <strong>{search ? "No matching products." : "No products added yet."}</strong>
+            <p>{search ? "Try another name or SKU." : "Your real products will appear here after you add them above."}</p>
           </div>
+        )}
+        {!productsResult.error && pageCount > 1 && (
+          <nav className="catalogue-pagination" aria-label="Admin product pages">
+            {page > 1 ? <Link href={pageHref(page - 1)}>← Previous</Link> : <span />}
+            <span>Page {page} of {pageCount}</span>
+            {page < pageCount ? <Link href={pageHref(page + 1)}>Next →</Link> : <span />}
+          </nav>
         )}
       </section>
     </main>
