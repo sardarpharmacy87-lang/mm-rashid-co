@@ -1,24 +1,37 @@
 "use server";
 
+import { safeReturnPath } from "@/lib/shop-rules";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { createClient as createRecoveryClient } from "@supabase/supabase-js";
+import { SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY } from "@/lib/supabase/config";
 import { firstError, signInSchema, signUpSchema } from "@/lib/validation";
 
 function value(formData: FormData, key: string) {
   return String(formData.get(key) ?? "");
 }
 
-function destination(path: string, key: "error" | "message", message: string) {
-  return `${path}?${key}=${encodeURIComponent(message)}`;
+function destination(
+  path: string,
+  key: "error" | "message",
+  message: string,
+  next = "",
+) {
+  return `${path}?${key}=${encodeURIComponent(message)}${next ? "&next=" + encodeURIComponent(next) : ""}`;
 }
 
 async function siteOrigin() {
   const requestHeaders = await headers();
-  return requestHeaders.get("origin") ?? process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  return (
+    requestHeaders.get("origin") ??
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    "http://localhost:3000"
+  );
 }
 
 export async function signUp(formData: FormData) {
+  const next = safeReturnPath(formData.get("next"));
   const parsed = signUpSchema.safeParse({
     fullName: value(formData, "fullName"),
     companyName: value(formData, "companyName"),
@@ -35,7 +48,8 @@ export async function signUp(formData: FormData) {
     terms: value(formData, "terms"),
   });
 
-  if (!parsed.success) redirect(destination("/sign-up", "error", firstError(parsed.error)));
+  if (!parsed.success)
+    redirect(destination("/sign-up", "error", firstError(parsed.error), next));
 
   const data = parsed.data;
   const supabase = await createClient();
@@ -44,7 +58,7 @@ export async function signUp(formData: FormData) {
     email: data.email,
     password: data.password,
     options: {
-      emailRedirectTo: `${origin}/auth/callback?next=/customer`,
+      emailRedirectTo: `${origin}/auth/callback?next=${encodeURIComponent(next || "/customer")}`,
       data: {
         full_name: data.fullName,
         company_name: data.companyName,
@@ -59,28 +73,41 @@ export async function signUp(formData: FormData) {
     },
   });
 
-  if (error) redirect(destination("/sign-up", "error", error.message));
+  if (error) redirect(destination("/sign-up", "error", error.message, next));
 
   redirect(
     destination(
       "/sign-in",
       "message",
       "Account created. Check your email and click the verification link before signing in.",
+      next,
     ),
   );
 }
 
 export async function signIn(formData: FormData) {
+  const next = safeReturnPath(formData.get("next"));
   const parsed = signInSchema.safeParse({
     email: value(formData, "email"),
     password: value(formData, "password"),
   });
 
-  if (!parsed.success) redirect(destination("/sign-in", "error", firstError(parsed.error)));
+  if (!parsed.success)
+    redirect(destination("/sign-in", "error", firstError(parsed.error), next));
 
   const supabase = await createClient();
   const { data, error } = await supabase.auth.signInWithPassword(parsed.data);
-  if (error) redirect(destination("/sign-in", "error", "Email or password is incorrect, or the email is not verified."));
+  if (error)
+    redirect(
+      destination(
+        "/sign-in",
+        "error",
+        !error.status || error.status >= 500
+          ? "Sign-in is temporarily unavailable. Please try again shortly."
+          : "Email or password is incorrect, or the email is not verified.",
+        next,
+      ),
+    );
 
   const { data: profile } = await supabase
     .from("profiles")
@@ -88,21 +115,33 @@ export async function signIn(formData: FormData) {
     .eq("id", data.user.id)
     .maybeSingle();
 
-  redirect(profile?.role === "admin" ? "/admin" : "/customer");
+  redirect(next || (profile?.role === "admin" ? "/admin" : "/customer"));
 }
 
 export async function requestPasswordReset(formData: FormData) {
   const email = value(formData, "email").trim();
-  if (!email) redirect(destination("/forgot-password", "error", "Email address is required"));
+  if (!email)
+    redirect(
+      destination("/forgot-password", "error", "Email address is required"),
+    );
 
-  const supabase = await createClient();
-  const origin = await siteOrigin();
+  // Recovery links may be opened in a different browser from the request.
+  const supabase = createRecoveryClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+    auth: { flowType: "implicit", persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
+  });
+  const origin = "https://mmrashidnco.com";
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: `${origin}/auth/callback?next=/update-password`,
   });
 
   if (error) redirect(destination("/forgot-password", "error", error.message));
-  redirect(destination("/forgot-password", "message", "Password reset instructions have been emailed to you."));
+  redirect(
+    destination(
+      "/forgot-password",
+      "message",
+      "Password reset instructions have been emailed to you.",
+    ),
+  );
 }
 
 export async function updatePassword(formData: FormData) {
@@ -110,17 +149,31 @@ export async function updatePassword(formData: FormData) {
   const confirmPassword = value(formData, "confirmPassword");
 
   if (password.length < 8) {
-    redirect(destination("/update-password", "error", "Password must contain at least 8 characters"));
+    redirect(
+      destination(
+        "/update-password",
+        "error",
+        "Password must contain at least 8 characters",
+      ),
+    );
   }
   if (password !== confirmPassword) {
-    redirect(destination("/update-password", "error", "Passwords do not match"));
+    redirect(
+      destination("/update-password", "error", "Passwords do not match"),
+    );
   }
 
   const supabase = await createClient();
   const { error } = await supabase.auth.updateUser({ password });
   if (error) redirect(destination("/update-password", "error", error.message));
 
-  redirect(destination("/sign-in", "message", "Password updated successfully. You can now sign in."));
+  redirect(
+    destination(
+      "/sign-in",
+      "message",
+      "Password updated successfully. You can now sign in.",
+    ),
+  );
 }
 
 export async function signOut() {

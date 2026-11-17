@@ -1,26 +1,32 @@
+import { safeReturnPath } from "@/lib/shop-rules";
 import Link from "next/link";
 import { signUp } from "@/app/auth/actions";
 
 type PageProps = {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ next?: string; error?: string }>;
 };
 
 export default async function SignUpPage({ searchParams }: PageProps) {
-  const { error } = await searchParams;
+  const { error, next: requestedNext } = await searchParams;
+  const next = safeReturnPath(requestedNext);
 
   return (
     <main className="auth-page">
       <section className="auth-panel auth-panel-wide">
-        <Link className="auth-brand" href="/">MM RASHID &amp; CO.</Link>
+        <Link className="auth-brand" href="/">
+          MM RASHID &amp; CO.
+        </Link>
         <p className="portal-kicker">Customer registration</p>
         <h1>Create your account</h1>
         <p className="auth-intro">
-          Create a private customer account for easy access to the catalogue and company information.
+          Create a private customer account for easy access to the catalogue and
+          company information.
         </p>
 
         {error ? <p className="form-alert form-alert-error">{error}</p> : null}
 
         <form action={signUp} className="portal-form">
+          <input type="hidden" name="next" value={next} />
           <div className="form-grid">
             <label>
               Full name
@@ -36,7 +42,9 @@ export default async function SignUpPage({ searchParams }: PageProps) {
                 <option value="individual">Individual</option>
                 <option value="company">Company</option>
                 <option value="institution">Institution</option>
-                <option value="military">Military / ceremonial organisation</option>
+                <option value="military">
+                  Military / ceremonial organisation
+                </option>
                 <option value="fraternal">Fraternal organisation</option>
               </select>
             </label>
@@ -62,7 +70,12 @@ export default async function SignUpPage({ searchParams }: PageProps) {
             </label>
             <label className="form-span-two">
               Full billing/delivery address
-              <textarea name="address" rows={3} autoComplete="street-address" required />
+              <textarea
+                name="address"
+                rows={3}
+                autoComplete="street-address"
+                required
+              />
             </label>
             <label>
               Postal or ZIP code
@@ -70,23 +83,49 @@ export default async function SignUpPage({ searchParams }: PageProps) {
             </label>
             <label>
               Password
-              <input name="password" type="password" minLength={8} autoComplete="new-password" required />
+              <input
+                name="password"
+                type="password"
+                minLength={8}
+                autoComplete="new-password"
+                required
+              />
             </label>
             <label>
               Confirm password
-              <input name="confirmPassword" type="password" minLength={8} autoComplete="new-password" required />
+              <input
+                name="confirmPassword"
+                type="password"
+                minLength={8}
+                autoComplete="new-password"
+                required
+              />
             </label>
           </div>
 
           <label className="checkbox-label">
             <input name="terms" type="checkbox" required />
-            <span>I confirm that these details are correct and agree to receive account-related emails.</span>
+            <span>
+              I confirm that these details are correct and agree to receive
+              account-related emails.
+            </span>
           </label>
 
-          <button className="portal-button" type="submit">Create account</button>
+          <button className="portal-button" type="submit">
+            Create account
+          </button>
         </form>
 
-        <p className="auth-switch">Already registered? <Link href="/sign-in">Sign in</Link></p>
+        <p className="auth-switch">
+          Already registered?{" "}
+          <Link
+            href={
+              "/sign-in" + (next ? "?next=" + encodeURIComponent(next) : "")
+            }
+          >
+            Sign in
+          </Link>
+        </p>
       </section>
     </main>
   );

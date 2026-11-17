@@ -1,9 +1,13 @@
 import { CommerceHeaderClient } from "@/components/commerce-header-client";
+import { getPublicGroups } from "@/lib/public-storefront";
 import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 
 export async function CommerceHeader() {
-  const user = await getCurrentUser();
+  const [user, groups] = await Promise.all([
+    getCurrentUser(),
+    getPublicGroups().catch(() => []),
+  ]);
   let role: "admin" | "customer" | null = null;
 
   if (user) {
@@ -17,5 +21,11 @@ export async function CommerceHeader() {
     role = profile?.role === "admin" ? "admin" : "customer";
   }
 
-  return <CommerceHeaderClient signedIn={Boolean(user)} role={role} />;
+  return (
+    <CommerceHeaderClient
+      signedIn={Boolean(user)}
+      role={role}
+      groups={groups ?? []}
+    />
+  );
 }
