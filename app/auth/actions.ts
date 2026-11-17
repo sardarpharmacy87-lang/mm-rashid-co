@@ -4,6 +4,8 @@ import { safeReturnPath } from "@/lib/shop-rules";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { createClient as createRecoveryClient } from "@supabase/supabase-js";
+import { SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY } from "@/lib/supabase/config";
 import { firstError, signInSchema, signUpSchema } from "@/lib/validation";
 
 function value(formData: FormData, key: string) {
@@ -123,8 +125,11 @@ export async function requestPasswordReset(formData: FormData) {
       destination("/forgot-password", "error", "Email address is required"),
     );
 
-  const supabase = await createClient();
-  const origin = await siteOrigin();
+  // Recovery links may be opened in a different browser from the request.
+  const supabase = createRecoveryClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+    auth: { flowType: "implicit", persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
+  });
+  const origin = "https://mmrashidnco.com";
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: `${origin}/auth/callback?next=/update-password`,
   });

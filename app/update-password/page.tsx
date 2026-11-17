@@ -1,10 +1,12 @@
-import { updatePassword } from "@/app/auth/actions";
+import { RecoveryPasswordForm } from "@/components/recovery-password-form";
 
-type PageProps = {
-  searchParams: Promise<{ error?: string }>;
+export const metadata = {
+  title: "Choose a new password",
+  robots: { index: false, follow: false },
+  referrer: "no-referrer" as const,
 };
 
-export default async function UpdatePasswordPage({ searchParams }: PageProps) {
+export default async function UpdatePasswordPage({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
   const { error } = await searchParams;
   return (
     <main className="auth-page">
@@ -12,12 +14,7 @@ export default async function UpdatePasswordPage({ searchParams }: PageProps) {
         <span className="auth-brand">MM RASHID &amp; CO.</span>
         <p className="portal-kicker">Secure account</p>
         <h1>Choose a new password</h1>
-        {error ? <p className="form-alert form-alert-error">{error}</p> : null}
-        <form action={updatePassword} className="portal-form">
-          <label>New password<input name="password" type="password" minLength={8} autoComplete="new-password" required /></label>
-          <label>Confirm password<input name="confirmPassword" type="password" minLength={8} autoComplete="new-password" required /></label>
-          <button className="portal-button" type="submit">Update password</button>
-        </form>
+        <RecoveryPasswordForm initialError={error} />
       </section>
     </main>
   );
