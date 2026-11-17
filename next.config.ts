@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "gjdyrkbabmdfgxcsvenw.supabase.co",
+        pathname: "/storage/v1/object/public/craft-images/**",
+      },
+      {
+        protocol: "https",
+        hostname: "gjdyrkbabmdfgxcsvenw.supabase.co",
         pathname: "/storage/v1/object/public/product-images/**",
       },
       {
